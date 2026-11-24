@@ -3,6 +3,7 @@ package com.geedkajannada.ui.nav
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -25,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.geedkajannada.R
+import com.geedkajannada.ui.adhkar.AdhkarScreen
 import com.geedkajannada.ui.counter.CounterScreen
 import com.geedkajannada.ui.counter.PickerScreen
 import com.geedkajannada.ui.history.HistoryScreen
@@ -42,6 +44,7 @@ object Routes {
     const val COUNTER = "counter"
     const val QURAN = "quran"
     const val PRAYER = "prayer"
+    const val ADHKAR = "adhkar"
     const val HISTORY = "history"
     const val SETTINGS = "settings"
     const val PICKER = "picker"
@@ -54,6 +57,7 @@ private data class Tab(val route: String, val labelRes: Int, val icon: ImageVect
 private val tabs = listOf(
     Tab(Routes.COUNTER, R.string.nav_counter, Icons.Filled.Home),
     Tab(Routes.QURAN, R.string.nav_quran, Icons.Filled.Menu),
+    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Favorite),
     Tab(Routes.PRAYER, R.string.nav_prayer, Icons.Filled.Notifications),
     Tab(Routes.HISTORY, R.string.nav_history, Icons.Filled.DateRange),
 )
@@ -135,6 +139,7 @@ fun AppNav() {
                     },
                 )
             }
+            composable(Routes.ADHKAR) { AdhkarScreen() }
             composable(Routes.PRAYER) { PrayerScreen() }
             composable(Routes.HISTORY) { HistoryScreen() }
         }
