@@ -42,7 +42,7 @@ class SettingsStoreTest {
 
     @Test fun defaults() = runTest {
         val s = newStore()
-        assertFalse(s.soundEnabled.first())
+        assertTrue(s.soundEnabled.first())
         assertFalse(s.hapticsEnabled.first())
         assertEquals(0, s.count("subxaanallaah").first())
         assertEquals(33, s.goal(Dhikrs.all.first()).first())

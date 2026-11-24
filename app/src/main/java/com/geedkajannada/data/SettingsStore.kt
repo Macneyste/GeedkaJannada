@@ -75,7 +75,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     }
 
     // ---- Dejimaha ----
-    val soundEnabled: Flow<Boolean> = dataStore.data.map { it[Keys.sound] ?: false }
+    val soundEnabled: Flow<Boolean> = dataStore.data.map { it[Keys.sound] ?: true }
     val hapticsEnabled: Flow<Boolean> = dataStore.data.map { it[Keys.haptics] ?: false }
     suspend fun setSound(v: Boolean) {
         dataStore.edit { it[Keys.sound] = v }
