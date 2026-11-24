@@ -10,8 +10,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.geedkajannada.data.Prayer
+import com.geedkajannada.data.PrayerTimesCalc
 import com.geedkajannada.data.SettingsStore
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.first
@@ -69,14 +69,21 @@ object ReminderScheduler {
     /** Dib u deji dhammaan ogeysiisyada la furay (ka dib bedelid, fire, ama boot). */
     suspend fun rescheduleAll(context: Context, store: SettingsStore) {
         val offset = store.reminderOffset.first()
-        val now = ZonedDateTime.now(ZoneId.systemDefault())
-        for (e in store.prayerEntries.first()) {
-            val minute = e.minuteOfDay
-            if (e.notify && minute != null) {
-                schedule(context, e.prayer, nextTrigger(minute, offset, now), offset)
-            } else {
+        val now = ZonedDateTime.now(PrayerTimesCalc.ZONE)
+        val today = now.toLocalDate()
+        val todayEntries = store.prayerEntriesFor(today)
+        val tomorrowEntries = store.prayerEntriesFor(today.plusDays(1))
+        for (e in todayEntries) {
+            val tomorrow = tomorrowEntries.first { it.prayer == e.prayer }
+            if (!e.notify || e.minuteOfDay == null || tomorrow.minuteOfDay == null) {
                 cancel(context, e.prayer)
+                continue
             }
+            // Maanta haddii weli soo socoto, haddii kale berri (waqtiga berrito si sax ah loo xisaabiyay).
+            val todayAt = today.atStartOfDay(now.zone).plusMinutes((e.minuteOfDay - offset).toLong())
+            val at = if (todayAt.isAfter(now)) todayAt
+            else today.plusDays(1).atStartOfDay(now.zone).plusMinutes((tomorrow.minuteOfDay - offset).toLong())
+            schedule(context, e.prayer, at, offset)
         }
     }
 }

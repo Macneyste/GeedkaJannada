@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 /** Dhammaan xogta isticmaalaha waxay ku kaydsan tahay DataStore (qalabka kaliya). */
@@ -17,6 +19,8 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val sound = booleanPreferencesKey("sound_enabled")
         val haptics = booleanPreferencesKey("haptics_enabled")
         val reminderOffset = intPreferencesKey("reminder_offset")
+        val prayerAuto = booleanPreferencesKey("prayer_auto")
+        val prayerCity = stringPreferencesKey("prayer_city")
         val quranFontSize = intPreferencesKey("quran_font_size")
         val lastSurah = intPreferencesKey("last_surah")
         val lastVerse = intPreferencesKey("last_verse")
@@ -86,12 +90,40 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     }
 
     // ---- Salaad ----
-    val prayerEntries: Flow<List<PrayerEntry>> = dataStore.data.map { p ->
-        Prayer.entries.map { pr ->
-            val t = p[Keys.prayerTime(pr.key)]
-            PrayerEntry(pr, t?.takeIf { it >= 0 }, p[Keys.prayerNotify(pr.key)] ?: false)
+    private fun entriesFrom(p: Preferences, date: LocalDate): List<PrayerEntry> {
+        val auto = p[Keys.prayerAuto] ?: true
+        val calc = if (auto) PrayerTimesCalc.compute(date, Cities.byId(p[Keys.prayerCity])) else null
+        return Prayer.entries.map { pr ->
+            val minute = calc?.get(pr) ?: p[Keys.prayerTime(pr.key)]?.takeIf { it >= 0 }
+            PrayerEntry(pr, minute, p[Keys.prayerNotify(pr.key)] ?: false)
         }
     }
+
+    /** Waqtiyada maanta (si toos ah loo xisaabiyay, ama gacanta loo geliyay). */
+    val prayerEntries: Flow<List<PrayerEntry>> = dataStore.data.map { entriesFrom(it, LocalDate.now(PrayerTimesCalc.ZONE)) }
+
+    /** Waqtiyada taariikh gaar ah (loogu isticmaalo dejinta alarm-ka berrito). */
+    suspend fun prayerEntriesFor(date: LocalDate): List<PrayerEntry> = entriesFrom(dataStore.data.first(), date)
+
+    val prayerAuto: Flow<Boolean> = dataStore.data.map { it[Keys.prayerAuto] ?: true }
+    val prayerCity: Flow<City> = dataStore.data.map { Cities.byId(it[Keys.prayerCity]) }
+
+    suspend fun setPrayerCity(id: String) {
+        dataStore.edit { it[Keys.prayerCity] = id }
+    }
+
+    /** Auto ON: waqtiyada la xisaabiyo. Auto OFF: waqtiyada hadda la muujinayo ayaa gacanta loo koobiyeeyaa si loo bedelo. */
+    suspend fun setPrayerAuto(auto: Boolean) {
+        dataStore.edit { p ->
+            if (!auto && (p[Keys.prayerAuto] ?: true)) {
+                for (e in entriesFrom(p, LocalDate.now(PrayerTimesCalc.ZONE))) {
+                    e.minuteOfDay?.let { p[Keys.prayerTime(e.prayer.key)] = it }
+                }
+            }
+            p[Keys.prayerAuto] = auto
+        }
+    }
+
     val reminderOffset: Flow<Int> = dataStore.data.map { it[Keys.reminderOffset] ?: 0 }
 
     suspend fun setPrayerTime(prayer: Prayer, minuteOfDay: Int) {

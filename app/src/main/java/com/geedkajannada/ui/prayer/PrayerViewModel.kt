@@ -2,6 +2,8 @@ package com.geedkajannada.ui.prayer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.geedkajannada.data.Cities
+import com.geedkajannada.data.City
 import com.geedkajannada.data.Prayer
 import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.PrayerRepository
@@ -16,6 +18,8 @@ import kotlinx.coroutines.launch
 data class PrayerUiState(
     val entries: List<PrayerEntry> = emptyList(),
     val offset: Int = 0,
+    val auto: Boolean = true,
+    val city: City = Cities.default,
     /** Isticmaaluhu wuu diiday ogeysiinta: tus sharaxaad (ma jiro badhan been ah). */
     val notificationsDenied: Boolean = false,
 )
@@ -27,7 +31,7 @@ class PrayerViewModel(
     private val denied = MutableStateFlow(false)
 
     val uiState: StateFlow<PrayerUiState> =
-        combine(repo.entries, repo.offset, denied) { e, o, d -> PrayerUiState(e, o, d) }
+        combine(repo.entries, repo.offset, repo.auto, repo.city, denied) { e, o, a, c, d -> PrayerUiState(e, o, a, c, d) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PrayerUiState())
 
     fun setTime(prayer: Prayer, minuteOfDay: Int) {
@@ -40,6 +44,20 @@ class PrayerViewModel(
     fun setNotify(prayer: Prayer, on: Boolean) {
         viewModelScope.launch {
             repo.setNotify(prayer, on)
+            reschedule()
+        }
+    }
+
+    fun setAuto(on: Boolean) {
+        viewModelScope.launch {
+            repo.setAuto(on)
+            reschedule()
+        }
+    }
+
+    fun setCity(id: String) {
+        viewModelScope.launch {
+            repo.setCity(id)
             reschedule()
         }
     }
