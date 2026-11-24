@@ -30,6 +30,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         fun goal(id: String) = intPreferencesKey("goal_$id")
         fun rounds(id: String) = intPreferencesKey("rounds_$id")
         fun day(dateKey: String, id: String) = intPreferencesKey("day_${dateKey}_$id")
+        fun adhkar(date: String, period: String, id: String) = booleanPreferencesKey("adhkar_${date}_${period}_$id")
         fun prayerTime(key: String) = intPreferencesKey("prayer_time_$key")
         fun prayerNotify(key: String) = booleanPreferencesKey("prayer_notify_$key")
     }
@@ -174,6 +175,21 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         dataStore.edit {
             it.remove(Keys.bookmarkSurah)
             it.remove(Keys.bookmarkVerse)
+        }
+    }
+
+    // ---- Adkaar ----
+    /** Adkaarta la dhammeeyay (id-yo) ee taariikh iyo waqti gaar ah. */
+    fun adhkarDone(date: String, period: AdhkarPeriod): Flow<Set<String>> = dataStore.data.map { p ->
+        val prefix = "adhkar_${date}_${period.key}_"
+        p.asMap().entries.filter { it.key.name.startsWith(prefix) && it.value == true }
+            .map { it.key.name.removePrefix(prefix) }.toSet()
+    }
+
+    suspend fun setAdhkarDone(date: String, period: AdhkarPeriod, id: String, done: Boolean) {
+        dataStore.edit { p ->
+            val k = Keys.adhkar(date, period.key, id)
+            if (done) p[k] = true else p.remove(k)
         }
     }
 
