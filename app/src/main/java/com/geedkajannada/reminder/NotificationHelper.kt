@@ -16,16 +16,19 @@ import com.geedkajannada.R
 import com.geedkajannada.data.Prayer
 
 object NotificationHelper {
-    const val CHANNEL_ID = "prayer_reminders"
+    const val CHANNEL_ID = "prayer_reminders_v2"
+    private const val OLD_CHANNEL_ID = "prayer_reminders"
 
     fun ensureChannel(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val channel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.notif_channel_name),
-            NotificationManager.IMPORTANCE_DEFAULT,
+            NotificationManager.IMPORTANCE_HIGH,
         ).apply { description = context.getString(R.string.notif_channel_desc) }
-        context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        val nm = context.getSystemService(NotificationManager::class.java)
+        nm.deleteNotificationChannel(OLD_CHANNEL_ID)
+        nm.createNotificationChannel(channel)
     }
 
     fun hasPermission(context: Context): Boolean =
@@ -51,6 +54,9 @@ object NotificationHelper {
             .setContentTitle(context.getString(R.string.notif_title))
             .setContentText(text)
             .setContentIntent(open)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setAutoCancel(true)
             .build()
         NotificationManagerCompat.from(context).notify(prayer.ordinal + 100, n)
