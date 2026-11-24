@@ -26,10 +26,23 @@ class AdhkarCatalogTest {
         assertEquals(286, surahs[1].verses.size)
     }
 
+    @Test fun idsAreUniqueAndEveryPeriodHasItems() {
+        val ids = AdhkarCatalog.items.map { it.id }
+        assertEquals(ids.size, ids.toSet().size)
+        AdhkarPeriod.entries.forEach { assertTrue("$it", AdhkarCatalog.forPeriod(it).isNotEmpty()) }
+        assertTrue(AdhkarCatalog.items.all { it.count >= 1 })
+    }
+
     @Test fun periodsFilterAndDefault() {
-        assertTrue(AdhkarCatalog.forPeriod(AdhkarPeriod.MASAA).any { it.id == "baqara_end" })
-        assertTrue(AdhkarCatalog.forPeriod(AdhkarPeriod.SUBAX).none { it.id == "baqara_end" })
+        assertTrue(AdhkarCatalog.forPeriod(AdhkarPeriod.MASAA).any { it.id.startsWith("baqara_end") })
+        assertTrue(AdhkarCatalog.forPeriod(AdhkarPeriod.SUBAX).none { it.id.startsWith("baqara_end") })
         assertEquals(AdhkarPeriod.SUBAX, AdhkarCatalog.periodAt(7))
         assertEquals(AdhkarPeriod.MASAA, AdhkarCatalog.periodAt(17))
+    }
+
+    @Test fun afterPrayerFollowsSunnahCounts() {
+        val p = AdhkarCatalog.forPeriod(AdhkarPeriod.SALAAD)
+        assertEquals(listOf(33, 33, 33), p.filter { it.id in setOf("p_tasbih", "p_tahmid", "p_takbir") }.map { it.count })
+        assertEquals(3, p.first { it.id == "p_istighfar" }.count)
     }
 }
