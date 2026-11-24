@@ -83,6 +83,10 @@
 
     <!-- Prayer -->
     <string name="prayer_title">Waqtiyada salaadda</string>
+    <string name="prayer_auto">Waqtiyada si toos ah</string>
+    <string name="prayer_auto_hint">Waxaa loo xisaabiyaa magaaladaada (internet iyo location lama isticmaalo). Waqtiyada masaajidkaaga way ka duwanaan karaan; dami si aad gacanta u geliso.</string>
+    <string name="prayer_city">Magaalada: %1$s</string>
+    <string name="prayer_city_title">Dooro magaalada</string>
     <string name="prayer_next">Salaadda soo socota</string>
     <string name="prayer_remaining">Waxaa ka hadhay %1$s</string>
     <string name="prayer_none_set">Geli waqtiga salaadda si aad u aragto tan xigta.</string>

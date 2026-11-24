@@ -49,7 +49,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geedkajannada.R
 import com.geedkajannada.data.Prayer
 import com.geedkajannada.data.PrayerEntry
+import com.geedkajannada.data.Cities
 import com.geedkajannada.data.PrayerMath
+import com.geedkajannada.data.PrayerTimesCalc
 import com.geedkajannada.data.ReminderOffsets
 import com.geedkajannada.reminder.NotificationHelper
 import com.geedkajannada.reminder.ReminderScheduler
@@ -77,16 +79,17 @@ fun PrayerScreen(
     val context = LocalContext.current
     var pendingPrayer by remember { mutableStateOf<Prayer?>(null) }
     var editing by remember { mutableStateOf<Prayer?>(null) }
+    var pickingCity by remember { mutableStateOf(false) }
 
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
         pendingPrayer?.let { vm.onPermissionResult(ok, it) }
         pendingPrayer = null
     }
 
-    var nowSec by remember { mutableIntStateOf(LocalTime.now().toSecondOfDay()) }
+    var nowSec by remember { mutableIntStateOf(LocalTime.now(PrayerTimesCalc.ZONE).toSecondOfDay()) }
     LaunchedEffect(Unit) {
         while (true) {
-            val t = LocalTime.now()
+            val t = LocalTime.now(PrayerTimesCalc.ZONE)
             nowSec = t.toSecondOfDay()
             delay(1000)
         }
@@ -125,9 +128,47 @@ fun PrayerScreen(
         }
 
         GeedkaCard {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = Dimens.TouchMin)
+                    .toggleable(value = state.auto, role = Role.Switch, onValueChange = vm::setAuto),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(stringResource(R.string.prayer_auto), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.prayer_auto_hint),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = state.auto,
+                    onCheckedChange = null,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = White, checkedTrackColor = Emerald,
+                        uncheckedThumbColor = White, uncheckedTrackColor = Line, uncheckedBorderColor = Line,
+                    ),
+                )
+            }
+            if (state.auto) {
+                OutlinedButton(
+                    onClick = { pickingCity = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .heightIn(min = Dimens.TouchMin),
+                    shape = RoundedCornerShape(Dimens.CardRadiusSmall),
+                ) { Text(stringResource(R.string.prayer_city, state.city.nameSo)) }
+            }
+        }
+
+        GeedkaCard {
             state.entries.forEachIndexed { i, e ->
                 PrayerRow(
                     e,
+                    auto = state.auto,
                     onEdit = { editing = e.prayer },
                     onToggle = { on ->
                         if (!on) {
@@ -170,6 +211,17 @@ fun PrayerScreen(
                 )
             }
         }
+    }
+
+    if (pickingCity) {
+        CityDialog(
+            selectedId = state.city.id,
+            onDismiss = { pickingCity = false },
+            onPick = {
+                vm.setCity(it)
+                pickingCity = false
+            },
+        )
     }
 
     editing?.let { p ->
@@ -216,7 +268,7 @@ private fun NextPrayerCard(entries: List<PrayerEntry>, nowSec: Int) {
 }
 
 @Composable
-private fun PrayerRow(e: PrayerEntry, onEdit: () -> Unit, onToggle: (Boolean) -> Unit) {
+private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit, onToggle: (Boolean) -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -226,6 +278,7 @@ private fun PrayerRow(e: PrayerEntry, onEdit: () -> Unit, onToggle: (Boolean) ->
         Text(stringResource(e.prayer.nameRes), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         OutlinedButton(
             onClick = onEdit,
+            enabled = !auto,
             modifier = Modifier.heightIn(min = Dimens.TouchMin),
             shape = RoundedCornerShape(Dimens.CardRadiusSmall),
         ) {
@@ -258,6 +311,36 @@ private fun TimeDialog(title: String, initialMinute: Int, onDismiss: () -> Unit,
             }
         },
         dismissButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        containerColor = White,
+    )
+}
+
+@Composable
+private fun CityDialog(selectedId: String, onDismiss: () -> Unit, onPick: (String) -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.prayer_city_title)) },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                Cities.all.forEach { c ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = Dimens.TouchMin)
+                            .selectable(selected = c.id == selectedId, role = Role.RadioButton, onClick = { onPick(c.id) }),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = c.id == selectedId, onClick = null)
+                        Text(c.nameSo, modifier = Modifier.padding(start = 12.dp))
+                    }
+                }
+            }
+        },
+        confirmButton = {
             TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
                 Text(stringResource(R.string.cancel))
             }
