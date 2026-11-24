@@ -13,7 +13,19 @@ data class StatsSummary(
     val streak: Int,
     val last7: List<DayBar>,
     val perDhikr: Map<String, Int>,
+    /** Silsiladda ugu dheer abid. */
+    val bestStreak: Int = 0,
 )
+
+/** Caqabadaha silsiladda: maalmo isku xigta oo dikhri la sameeyay. */
+object Challenges {
+    val milestones = listOf(3, 7, 14, 30, 100)
+
+    /** Caqabadda xigta ee aan weli la gaarin, ama null haddii dhammaan la gaaray. */
+    fun next(bestStreak: Int): Int? = milestones.firstOrNull { it > bestStreak }
+
+    fun achieved(bestStreak: Int): List<Int> = milestones.filter { it <= bestStreak }
+}
 
 object StatsCalc {
     fun dateKey(date: LocalDate): String = date.toString() // yyyy-MM-dd
@@ -30,7 +42,16 @@ object StatsCalc {
         }
         val perDhikr = HashMap<String, Int>()
         for ((_, m) in daily) for ((id, n) in m) perDhikr[id] = (perDhikr[id] ?: 0) + n
-        return StatsSummary(total(today), last7.sumOf { it.total }, streak, last7, perDhikr)
+        val days = daily.filter { (_, m) -> m.values.sum() > 0 }.keys.mapNotNull { runCatching { LocalDate.parse(it) }.getOrNull() }.sorted()
+        var best = 0
+        var run = 0
+        var prev: LocalDate? = null
+        for (d in days) {
+            run = if (prev != null && prev.plusDays(1) == d) run + 1 else 1
+            if (run > best) best = run
+            prev = d
+        }
+        return StatsSummary(total(today), last7.sumOf { it.total }, streak, last7, perDhikr, maxOf(best, streak))
     }
 }
 
