@@ -159,7 +159,7 @@ fun ReaderScreen(
                         ) {
                             Text(
                                 verse,
-                                style = arabicStyle(state.fontSize).copy(textDirection = TextDirection.Rtl),
+                                style = arabicStyle(state.fontSize, quran = true).copy(textDirection = TextDirection.Rtl),
                                 color = MaterialTheme.colorScheme.onBackground,
                                 textAlign = TextAlign.Start,
                                 modifier = Modifier.weight(1f),

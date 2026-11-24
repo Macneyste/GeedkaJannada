@@ -115,7 +115,7 @@ fun AdhkarScreen(
                     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                         Text(
                             row.arabic,
-                            style = arabicStyle(26).copy(textDirection = TextDirection.Rtl),
+                            style = arabicStyle(26, quran = true).copy(textDirection = TextDirection.Rtl),
                             textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .fillMaxWidth()

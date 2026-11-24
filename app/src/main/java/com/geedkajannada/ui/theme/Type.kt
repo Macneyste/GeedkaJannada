@@ -10,6 +10,9 @@ import com.geedkajannada.R
 
 val AmiriFamily = FontFamily(Font(R.font.amiri_regular, FontWeight.Normal))
 
+/** Amiri Quran: loogu talagalay qoraalka Quraanka (calaamadaha tajwiidka). */
+val AmiriQuranFamily = FontFamily(Font(R.font.amiri_quran, FontWeight.Normal))
+
 val AppTypography = Typography(
     displayLarge = TextStyle(fontWeight = FontWeight.Bold, fontSize = 64.sp, lineHeight = 70.sp),
     headlineMedium = TextStyle(fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 34.sp),
@@ -21,8 +24,8 @@ val AppTypography = Typography(
 )
 
 /** Qoraalka Carabiga (dikhri iyo Quraan) — Amiri. */
-fun arabicStyle(sizeSp: Int, lineHeightFactor: Float = 1.8f) = TextStyle(
-    fontFamily = AmiriFamily,
+fun arabicStyle(sizeSp: Int, lineHeightFactor: Float = 1.8f, quran: Boolean = false) = TextStyle(
+    fontFamily = if (quran) AmiriQuranFamily else AmiriFamily,
     fontSize = sizeSp.sp,
     lineHeight = (sizeSp * lineHeightFactor).sp,
 )
