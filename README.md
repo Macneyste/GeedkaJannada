@@ -6,7 +6,7 @@ Akoon ma jiro, xayeysiis ma jiro, analytics ma jiro, backend ma jiro, `INTERNET`
 ## Muuqaallada
 - **Tirin**: geedka jannada oo koraya marka la taabto (hal taabasho = hal tiro, debounce 120ms), yool, bar horumar, dialog-ka "Hambalyo!", "Dib u bilow" oo xaqiijin leh.
 - **Xulashada dikriga**: Subxaanallaah, Alxamdulillaah, Allaahu Akbar; yoolal 33 / 100 iyo yool gaar ah (1–9999).
-- **Dejimaha**: codka (SoundPool) iyo gariirka (haptic), labadaba default OFF.
+- **Dejimaha**: codka (SoundPool, default ON) iyo gariirka (haptic, default OFF).
 - **Quraan**: liiska 114 suuradood, raadin, "Sii wad akhriska", akhriska RTL oo leh Amiri, cabbirka qoraalka, calaamad, suurad hore/xigta.
 - **Salaad**: waqtiyada si toos ah ayaa loo xisaabiyaa (offline, magaalo Soomaaliyeed la doorto) ama gacanta ayaa lagu geliyaa; salaadda soo socota + waqti ka hadhay; ogeysiin dhawaaq leh (waqtiga / 5 / 10 daqiiqo ka hor).
 - **Adkaar**: adkaarta subaxa iyo masaa oo leh calaamad maalinle ah.
@@ -26,7 +26,7 @@ Samee `local.properties` oo ku jira `sdk.dir=<jidka SDK>` (ma la commit-gareeyo)
 Single Activity + navigation-compose; MVVM (ViewModel + UiState + SharedFlow events); `SettingsStore` (DataStore), `QuranRepository` (assets/quran.json), `PrayerRepository`, `StatsRepository`. Dependencies: AndroidX/Compose/DataStore/Navigation/WorkManager kaliya.
 
 ## Hubinta (verification)
-La hubiyay (orodsiiyay): `assembleDebug` guul, `testDebugUnitTest` 35 tests oo dhan guul, manifest-ka APK-ga ma laha `INTERNET`.
+La hubiyay (orodsiiyay): `assembleDebug` guul, `testDebugUnitTest` dhammaan unit tests-ka guul, manifest-ka APK-ga ma laha `INTERNET`.
 **Aan la hubin**: app-ka lama tijaabin qalab/emulator dhab ah (muuqaalka, SoundPool, gariirka, ogeysiinta iyo alarm-ka way dhisan yihiin laakiin lama arkin shaqeynaya); `androidTest` ma jiro; release build lama saxiixin.
 
 ## Decisions
