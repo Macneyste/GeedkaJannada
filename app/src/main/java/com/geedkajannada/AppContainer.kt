@@ -1,0 +1,33 @@
+package com.geedkajannada
+
+import android.app.Application
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
+import com.geedkajannada.data.PrayerRepository
+import com.geedkajannada.data.QuranRepository
+import com.geedkajannada.data.SettingsStore
+import com.geedkajannada.data.StatsRepository
+import com.geedkajannada.reminder.NotificationHelper
+
+private val Context.dataStore by preferencesDataStore(name = "geedka_settings")
+
+class AppContainer(context: Context) {
+    val settings = SettingsStore(context.applicationContext.dataStore)
+    val quran = QuranRepository(context.applicationContext)
+    val prayers = PrayerRepository(settings)
+    val stats = StatsRepository(settings)
+}
+
+class GeedkaApp : Application() {
+    lateinit var container: AppContainer
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+        container = AppContainer(this)
+        NotificationHelper.ensureChannel(this)
+    }
+}
+
+val Context.container: AppContainer
+    get() = (applicationContext as GeedkaApp).container
