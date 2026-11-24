@@ -108,6 +108,23 @@
     <string name="notif_open_settings">Fur dejimaha app-ka</string>
     <string name="exact_alarm_note">Alarm-ka saxda ah lama oggola; ogeysiisku wuxuu yeelan karaa dib u dhac yar.</string>
 
+    <!-- Adhkar -->
+    <string name="nav_adhkar">Adkaar</string>
+    <string name="adhkar_title">Adkaarta</string>
+    <string name="adhkar_subax">Subax</string>
+    <string name="adhkar_masaa">Masaa</string>
+    <string name="adhkar_progress">Maanta waad dhammaysay %1$d / %2$d</string>
+    <string name="adhkar_times">%1$d jeer</string>
+    <string name="adhkar_mark_done">Calaamadee inaan dhammeeyay</string>
+    <string name="adhkar_done">Waa la dhammeeyay</string>
+    <string name="adhkar_kursi">Aayatul Kursi</string>
+    <string name="adhkar_ikhlaas">Suuratul Ikhlaas</string>
+    <string name="adhkar_falaq">Suuratul Falaq</string>
+    <string name="adhkar_naas">Suuratun Naas</string>
+    <string name="adhkar_baqara_end">Labada aayadood ee ugu dambeeya Al-Baqara</string>
+    <string name="adhkar_tasbih">Subxaanallaahi wa bixamdihi</string>
+    <string name="adhkar_istighfar">Astaqfurullaah</string>
+
     <!-- Notification -->
     <string name="notif_channel_name">Xusuusinta salaadda</string>
     <string name="notif_channel_desc">Ogeysiisyada waqtiyada salaadda ee aad gacanta ku gelisay</string>
