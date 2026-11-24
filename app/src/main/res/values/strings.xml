@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Geedka Jannada</string>
+
+    <!-- Nav -->
+    <string name="nav_counter">Tirin</string>
+    <string name="nav_quran">Quraan</string>
+    <string name="nav_prayer">Salaad</string>
+    <string name="nav_history">Taariikh</string>
+
+    <!-- Dhikr -->
+    <string name="dhikr_subxaanallaah">Subxaanallaah</string>
+    <string name="dhikr_alxamdulillaah">Alxamdulillaah</string>
+    <string name="dhikr_allaahu_akbar">Allaahu Akbar</string>
+
+    <!-- Counter -->
+    <string name="settings">Dejimo</string>
+    <string name="change_dhikr">Beddel dikhriga</string>
+    <string name="tap_tree_hint">Taabo geedka; wuu koraa</string>
+    <string name="tree_desc">Geedka jannada. Taabo si aad u tirisid. Tirada: %1$d</string>
+    <string name="goal_progress">%1$d / %2$d</string>
+    <string name="goal_label">Yool</string>
+    <string name="goal_message_start">Bilow dikhrigaaga; geedku wuu koraa.</string>
+    <string name="goal_message_progress">Sii wad, waxaa kuu hadhay %1$d.</string>
+    <string name="goal_message_done">Yoolka waad gaartay. Alxamdulillaah!</string>
+    <string name="rounds_done">Wareegyada la dhammeeyay: %1$d</string>
+    <string name="reset">Dib u bilow</string>
+    <string name="new_dhikr">Dikhri cusub</string>
+
+    <!-- Dialogs -->
+    <string name="goal_reached_title">Hambalyo! Yoolka waad gaartay</string>
+    <string name="goal_reached_body">Waxaad dhammaysay %1$d %2$s.</string>
+    <string name="keep_going">Sii wad</string>
+    <string name="new_round">Wareeg cusub</string>
+    <string name="reset_title">Dib u bilow?</string>
+    <string name="reset_body">Tirada dikhrigan waa eber noqonaysaa. Taariikhda maalinlaha ah ma baabbi\'ayso.</string>
+    <string name="confirm">Haa, dib u bilow</string>
+    <string name="cancel">Jooji</string>
+
+    <!-- Picker -->
+    <string name="picker_title">Dooro dikhri</string>
+    <string name="picker_default_goal">Yoolka caadiga ah: %1$d</string>
+    <string name="picker_goal_section">Yoolka</string>
+    <string name="goal_preset_33">33</string>
+    <string name="goal_preset_100">100</string>
+    <string name="custom_goal">Yool gaar ah (1–9999)</string>
+    <string name="custom_goal_apply">Xaqiiji yoolka</string>
+    <string name="custom_goal_empty">Geli tiro.</string>
+    <string name="custom_goal_not_number">Tirooyin kaliya ayaa la oggol yahay.</string>
+    <string name="custom_goal_range">Tirada waa inay u dhaxaysaa 1 iyo 9999.</string>
+    <string name="goal_current">Yoolka hadda: %1$d</string>
+    <string name="back">Dib u noqo</string>
+    <string name="selected">La doortay</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Dejimaha</string>
+    <string name="setting_sound">Codka marka la tirinayo</string>
+    <string name="setting_haptics">Gariirka marka la tirinayo</string>
+    <string name="settings_prayer_section">Xusuusinta salaadda</string>
+    <string name="settings_prayer_body">Waqtiyada salaadda gacanta ayaad ku gelisaa, ogeysiisna waad shid kartaa.</string>
+    <string name="settings_prayer_open">Fur waqtiyada salaadda</string>
+    <string name="privacy_note">Tirinta iyo dejimaha qalabka ayay ku kaydsan yihiin. Xog server looma dirayo, akoon looma baahna.</string>
+
+    <!-- Quran -->
+    <string name="quran_title">Quraan</string>
+    <string name="quran_search">Raadi suurad</string>
+    <string name="quran_continue">Sii wad akhriska</string>
+    <string name="quran_continue_detail">%1$s · aayadda %2$d</string>
+    <string name="quran_verses">%1$d aayad</string>
+    <string name="makki">Makki</string>
+    <string name="madani">Madani</string>
+    <string name="quran_empty">Suurad lama helin.</string>
+    <string name="quran_error">Quraanka lama furi karo. Isku day mar kale.</string>
+    <string name="quran_loading">Waa la soo rarayaa…</string>
+    <string name="reader_smaller">Yaree qoraalka</string>
+    <string name="reader_bigger">Weynee qoraalka</string>
+    <string name="reader_prev">Suuradda hore</string>
+    <string name="reader_next">Suuradda xigta</string>
+    <string name="bookmark_add">Calaamadee aayaddan</string>
+    <string name="bookmark_remove">Ka saar calaamadda</string>
+    <string name="verse_number">Aayadda %1$d</string>
+    <string name="surah_number">Suurad %1$d</string>
+
+    <!-- Prayer -->
+    <string name="prayer_title">Waqtiyada salaadda</string>
+    <string name="prayer_next">Salaadda soo socota</string>
+    <string name="prayer_remaining">Waxaa ka hadhay %1$s</string>
+    <string name="prayer_none_set">Geli waqtiga salaadda si aad u aragto tan xigta.</string>
+    <string name="prayer_subax">Subax</string>
+    <string name="prayer_duhur">Duhur</string>
+    <string name="prayer_casar">Casar</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_cishe">Cishe</string>
+    <string name="prayer_time_unset">Geli waqtiga</string>
+    <string name="prayer_set_time">Dooro waqtiga %1$s</string>
+    <string name="prayer_notify">Ogeysiin</string>
+    <string name="prayer_offset_title">Goorta la ogeysiiyo</string>
+    <string name="offset_0">Waqtiga salaadda</string>
+    <string name="offset_5">5 daqiiqo ka hor</string>
+    <string name="offset_10">10 daqiiqo ka hor</string>
+    <string name="ok">Hagaag</string>
+    <string name="notif_denied_title">Ogeysiisyada waa la diiday</string>
+    <string name="notif_denied_body">App-ku wuu shaqeeyaa, laakiin ogeysiin lama diri karo. Si aad u daarto: Dejimaha qalabka → Apps → Geedka Jannada → Ogeysiisyada.</string>
+    <string name="notif_open_settings">Fur dejimaha app-ka</string>
+    <string name="exact_alarm_note">Alarm-ka saxda ah lama oggola; ogeysiisku wuxuu yeelan karaa dib u dhac yar.</string>
+
+    <!-- Notification -->
+    <string name="notif_channel_name">Xusuusinta salaadda</string>
+    <string name="notif_channel_desc">Ogeysiisyada waqtiyada salaadda ee aad gacanta ku gelisay</string>
+    <string name="notif_title">Geedka Jannada</string>
+    <string name="notif_text_now">Waa waqtiga salaadda %1$s.</string>
+    <string name="notif_text_before">Salaadda %1$s waxaa ka hadhay %2$d daqiiqo.</string>
+
+    <!-- History -->
+    <string name="history_title">Taariikh</string>
+    <string name="history_today">Maanta</string>
+    <string name="history_week">Todobaadkan</string>
+    <string name="history_streak">Silsilad</string>
+    <string name="history_streak_days">%1$d maalmood</string>
+    <string name="history_last7">7-ka maalmood ee ugu dambeeyay</string>
+    <string name="history_per_dhikr">Dikhri kasta</string>
+    <string name="history_empty">Weli wax lama tirin. Tirinta marka aad bilowdo halkan ayay ka muuqan doontaa.</string>
+    <string name="history_total">%1$d</string>
+</resources>
