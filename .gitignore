@@ -13,3 +13,6 @@
 *.apk
 *.aab
 .kotlin/
+
+# APK-ga la daabacay
+!/release/*.apk
