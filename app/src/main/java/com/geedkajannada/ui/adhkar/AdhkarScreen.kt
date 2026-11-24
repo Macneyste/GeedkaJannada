@@ -1,6 +1,7 @@
 package com.geedkajannada.ui.adhkar
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +12,13 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -40,6 +43,7 @@ import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Emerald
+import com.geedkajannada.ui.theme.Leaf
 import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.arabicStyle
 import java.time.LocalDate
@@ -56,6 +60,7 @@ fun AdhkarScreen(
     },
 ) {
     val state by vm.uiState.collectAsStateWithLifecycle()
+    val shape = RoundedCornerShape(Dimens.CardRadiusSmall)
     Column(
         Modifier
             .fillMaxSize()
@@ -65,38 +70,35 @@ fun AdhkarScreen(
         Row(
             Modifier
                 .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
                 .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            listOf(AdhkarPeriod.SUBAX to R.string.adhkar_subax, AdhkarPeriod.MASAA to R.string.adhkar_masaa)
-                .forEach { (p, label) ->
-                    val shape = RoundedCornerShape(Dimens.CardRadiusSmall)
-                    val mod = Modifier
-                        .weight(1f)
-                        .heightIn(min = Dimens.TouchMin)
-                    if (state.period == p) {
-                        Button(onClick = { vm.selectPeriod(p) }, modifier = mod, shape = shape) {
-                            Text(stringResource(label))
-                        }
-                    } else {
-                        OutlinedButton(onClick = { vm.selectPeriod(p) }, modifier = mod, shape = shape) {
-                            Text(stringResource(label))
-                        }
+            AdhkarPeriod.entries.forEach { p ->
+                val mod = Modifier.heightIn(min = Dimens.TouchMin)
+                if (state.period == p) {
+                    Button(onClick = { vm.selectPeriod(p) }, modifier = mod, shape = shape) {
+                        Text(stringResource(p.labelRes))
+                    }
+                } else {
+                    OutlinedButton(onClick = { vm.selectPeriod(p) }, modifier = mod, shape = shape) {
+                        Text(stringResource(p.labelRes))
                     }
                 }
+            }
         }
         Text(
             stringResource(R.string.adhkar_progress, state.doneCount, state.rows.size),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(vertical = 8.dp),
         )
         if (state.error) {
             Text(stringResource(R.string.quran_error), modifier = Modifier.padding(Dimens.ScreenPadding))
         }
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(bottom = Dimens.Spacing),
+            contentPadding = PaddingValues(bottom = 32.dp),
         ) {
             items(state.rows, key = { it.item.id }) { row ->
                 GeedkaCard(border = if (row.done) BorderStroke(2.dp, Emerald) else BorderStroke(1.dp, Line)) {
@@ -110,6 +112,7 @@ fun AdhkarScreen(
                             stringResource(R.string.adhkar_times, row.item.count),
                             style = MaterialTheme.typography.titleMedium,
                             color = Emerald,
+                            modifier = Modifier.padding(start = 12.dp),
                         )
                     }
                     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -122,25 +125,39 @@ fun AdhkarScreen(
                                 .padding(vertical = 10.dp),
                         )
                     }
-                    if (row.done) {
-                        Button(
-                            onClick = { vm.toggle(row.item, false) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = Dimens.TouchMin),
-                            shape = RoundedCornerShape(Dimens.CardRadiusSmall),
-                        ) {
+                    Text(
+                        stringResource(row.item.descRes),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 12.dp),
+                    )
+                    val btn = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = Dimens.TouchMin)
+                    when {
+                        row.done -> Button(onClick = { vm.toggle(row.item, false) }, modifier = btn, shape = shape) {
                             Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
                             Text(stringResource(R.string.adhkar_done))
                         }
-                    } else {
-                        OutlinedButton(
+                        row.item.count == 1 -> OutlinedButton(
                             onClick = { vm.toggle(row.item, true) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = Dimens.TouchMin),
-                            shape = RoundedCornerShape(Dimens.CardRadiusSmall),
+                            modifier = btn,
+                            shape = shape,
                         ) { Text(stringResource(R.string.adhkar_mark_done)) }
+                        else -> {
+                            LinearProgressIndicator(
+                                progress = { row.progress.toFloat() / row.item.count },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp)
+                                    .heightIn(min = 8.dp),
+                                color = Leaf,
+                                trackColor = Line,
+                            )
+                            OutlinedButton(onClick = { vm.tap(row.item) }, modifier = btn, shape = shape) {
+                                Text(stringResource(R.string.adhkar_tap_count, row.progress, row.item.count))
+                            }
+                        }
                     }
                 }
             }
