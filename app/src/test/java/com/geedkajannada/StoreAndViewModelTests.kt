@@ -76,8 +76,22 @@ class SettingsStoreTest {
         assertEquals(1, s.rounds("allaahu_akbar").first())
     }
 
+    @Test fun autoModeComputesTimesAndManualModeKeepsThem() = runTest {
+        val s = newStore()
+        val auto = s.prayerEntries.first()
+        assertTrue(auto.all { it.minuteOfDay != null })
+        s.setPrayerCity("hargeysa")
+        assertEquals("hargeysa", s.prayerCity.first().id)
+        val hargeysaDhuhr = s.prayerEntries.first().first { it.prayer == Prayer.DUHUR }.minuteOfDay
+        s.setPrayerAuto(false)
+        assertEquals(hargeysaDhuhr, s.prayerEntries.first().first { it.prayer == Prayer.DUHUR }.minuteOfDay)
+        s.setPrayerTime(Prayer.DUHUR, 13 * 60)
+        assertEquals(13 * 60, s.prayerEntries.first().first { it.prayer == Prayer.DUHUR }.minuteOfDay)
+    }
+
     @Test fun prayerAndBookmarkRoundTrip() = runTest {
         val s = newStore()
+        s.setPrayerAuto(false)
         s.setPrayerTime(Prayer.CASAR, 15 * 60 + 30)
         s.setPrayerNotify(Prayer.CASAR, true)
         val e = s.prayerEntries.first().first { it.prayer == Prayer.CASAR }
