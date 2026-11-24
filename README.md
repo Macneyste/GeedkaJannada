@@ -36,7 +36,7 @@ La hubiyay (orodsiiyay): `assembleDebug` guul, `testDebugUnitTest` dhammaan unit
 - **Taariikh** waxay ku kaydsan tahay DataStore (`day_<taariikh>_<dikhri>`), Room lama isticmaalo.
 - **Waqtiyada salaadda**: habka Muslim World League (Fajr 18°, Isha 17°), Asr shadow=1, Africa/Mogadishu (UTC+3). Waa xisaab, ma aha waqtiyada rasmiga ah ee masaajidka; isticmaaluhu wuu beddeli karaa gacanta. Location lama isticmaalo; magaalada waa la doortaa.
 - **Dhawaaqa ogeysiinta**: dhawaaqa caadiga ah ee telefoonka (adhaan duuban lama darin, sababtoo ah ma haysanno duubis leh license cad).
-- **Adkaarta**: qoraalka Quraanka (Aayatul Kursi, Ikhlaas, Falaq, Naas, Baqara 285–286) waxaa laga qaadaa dataset-ka; labada dikhri ee gaaban (Subxaanallaahi wa bixamdihi, Astaqfurullaah) gacanta ayaa lagu qoray — **dib u eeg ka hor intaadan daabicin**.
+- **Adkaarta**: qoraalka Quraanka (Aayatul Kursi, Ikhlaas, Falaq, Naas, Baqara 285–286 iyo 2:201) waxaa laga qaadaa dataset-ka. Adkaarta kale (Salaadda kadib, hurdada, cuntada, Bismillaahil-ladhii laa yadurru, Raadiitu, iwm.) gacanta ayaa lagu qoray ee `data/Adhkar.kt` — **ka hor intaadan daabicin ha dib u eego aqoonyahan diineed**; tarjumaadda Soomaaliga ee kaar kasta waa kuwa app-ka.
 - **Caqabadaha silsiladda**: maalin waxay tirsanaysaa haddii dikhri kasta la sameeyay (tiro > 0).
 - **Tarjumaad Quraan** lama darin (ikhtiyaari).
 - **Calaamadda (bookmark)**: hal calaamad oo dhan app-ka; aayad kasta lambarkeeda ayaa badhan ah.

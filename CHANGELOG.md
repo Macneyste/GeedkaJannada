@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+- Adkaar: five categories (Subax, Masaa, Salaadda kadib, Hurdo, Maalinta) with Somali meaning on every card.
+- After-prayer adhkar (istighfar x3, Allaahumma Antas-Salaam, 33/33/33, tahlil, Ayatul Kursi, Ikhlaas/Falaq/Naas).
+- Per-card repetition counter (e.g. 33/33) that marks the card done automatically; progress is saved per day.
+- Quran text uses the Amiri Quran font.
+
 ## 1.1.0
 - Counting sound is now ON by default (tick, chime at goal); can be switched off in Dejimo.
 - New **Adkaar** tab: morning (Subax) and evening (Masaa) adhkar with daily completion marks. Quran passages come from the offline dataset.
