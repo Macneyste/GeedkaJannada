@@ -121,6 +121,10 @@
     <string name="history_week">Todobaadkan</string>
     <string name="history_streak">Silsilad</string>
     <string name="history_streak_days">%1$d maalmood</string>
+    <string name="challenge_title">Caqabadaha silsiladda (maalmo)</string>
+    <string name="challenge_next">Caqabadda xigta: %1$d maalmood isku xigta. Waxaa kuu hadhay %2$d.</string>
+    <string name="challenge_all_done">Dhammaan caqabadaha waad gaartay. Alxamdulillaah!</string>
+    <string name="challenge_best">Silsiladda ugu dheer: %1$d maalmood</string>
     <string name="history_last7">7-ka maalmood ee ugu dambeeyay</string>
     <string name="history_per_dhikr">Dikhri kasta</string>
     <string name="history_empty">Weli wax lama tirin. Tirinta marka aad bilowdo halkan ayay ka muuqan doontaa.</string>

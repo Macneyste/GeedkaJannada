@@ -103,6 +103,19 @@ class StatsCalcTest {
     }
 }
 
+class ChallengesTest {
+    @Test fun bestStreakAndMilestones() {
+        val daily = (0..6).associate { "2025-02-" + "%02d".format(10 + it) to mapOf("a" to 1) } +
+            mapOf("2025-03-10" to mapOf("a" to 1))
+        val s = StatsCalc.summarize(daily, LocalDate.of(2025, 3, 10))
+        assertEquals(1, s.streak)
+        assertEquals(7, s.bestStreak)
+        assertEquals(listOf(3, 7), com.geedkajannada.data.Challenges.achieved(s.bestStreak))
+        assertEquals(14, com.geedkajannada.data.Challenges.next(s.bestStreak))
+        assertNull(com.geedkajannada.data.Challenges.next(100))
+    }
+}
+
 class PrayerMathTest {
     private fun e(p: Prayer, h: Int, m: Int = 0) = PrayerEntry(p, h * 60 + m, false)
     private val all = listOf(e(Prayer.SUBAX, 5), e(Prayer.DUHUR, 12), e(Prayer.CISHE, 20))

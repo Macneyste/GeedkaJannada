@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geedkajannada.R
+import com.geedkajannada.data.Challenges
 import com.geedkajannada.data.DayBar
 import com.geedkajannada.data.Dhikrs
 import com.geedkajannada.data.StatsSummary
@@ -34,6 +36,10 @@ import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Emerald
+import com.geedkajannada.ui.theme.Gold
+import com.geedkajannada.ui.theme.Peach
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.geedkajannada.ui.theme.Leaf
 import com.geedkajannada.ui.theme.Line
 import java.time.format.TextStyle
@@ -67,6 +73,7 @@ fun HistoryScreen(vm: HistoryViewModel = appViewModel { HistoryViewModel(it.stat
             stringResource(R.string.history_streak_days, s.streak),
             Modifier.fillMaxWidth(),
         )
+        ChallengeCard(s)
         WeekChart(s)
         GeedkaCard {
             Text(stringResource(R.string.history_per_dhikr), style = MaterialTheme.typography.titleMedium)
@@ -135,5 +142,61 @@ private fun WeekChart(s: StatsSummary) {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ChallengeCard(s: StatsSummary) {
+    val next = Challenges.next(s.bestStreak)
+    val achieved = Challenges.achieved(s.bestStreak)
+    GeedkaCard {
+        Text(stringResource(R.string.challenge_title), style = MaterialTheme.typography.titleMedium)
+        Row(Modifier.fillMaxWidth().padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Challenges.milestones.forEach { m ->
+                val done = m in achieved
+                androidx.compose.foundation.layout.Box(
+                    Modifier
+                        .weight(1f)
+                        .background(if (done) Gold else Peach, RoundedCornerShape(12.dp))
+                        .padding(vertical = 10.dp)
+                        .semantics {
+                            contentDescription = if (done) "$m: ✓" else "$m"
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        m.toString(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (done) Emerald else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+        if (next != null) {
+            Text(
+                stringResource(R.string.challenge_next, next, (next - s.streak).coerceAtLeast(0)),
+                modifier = Modifier.padding(top = 12.dp),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            LinearProgressIndicator(
+                progress = { (s.streak.toFloat() / next).coerceIn(0f, 1f) },
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp).height(10.dp),
+                color = Leaf,
+                trackColor = Line,
+                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+            )
+        } else {
+            Text(
+                stringResource(R.string.challenge_all_done),
+                modifier = Modifier.padding(top = 12.dp),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+        Text(
+            stringResource(R.string.challenge_best, s.bestStreak),
+            modifier = Modifier.padding(top = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
