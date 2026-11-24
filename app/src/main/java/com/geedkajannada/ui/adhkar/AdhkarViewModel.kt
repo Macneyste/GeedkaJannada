@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-data class AdhkarRow(val item: AdhkarItem, val arabic: String, val done: Boolean)
+data class AdhkarRow(val item: AdhkarItem, val arabic: String, val done: Boolean, val progress: Int)
 
 data class AdhkarUiState(
     val period: AdhkarPeriod = AdhkarPeriod.SUBAX,
@@ -59,17 +59,22 @@ class AdhkarViewModel(
     }
 
     val uiState: StateFlow<AdhkarUiState> = period.flatMapLatest { p ->
-        combine(store.adhkarDone(dateKey(), p), texts, failed) { done, t, bad ->
+        combine(store.adhkarDone(dateKey(), p), store.adhkarCounts(dateKey(), p), texts, failed) { done, counts, t, bad ->
             AdhkarUiState(
                 period = p,
                 rows = if (t == null) emptyList()
-                else AdhkarCatalog.forPeriod(p).map { AdhkarRow(it, t.getValue(it.id), it.id in done) },
+                else AdhkarCatalog.forPeriod(p).map { AdhkarRow(it, t.getValue(it.id), it.id in done, if (it.id in done) it.count else (counts[it.id] ?: 0)) },
                 error = bad,
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AdhkarUiState(initialPeriod))
 
     fun selectPeriod(p: AdhkarPeriod) { period.value = p }
+
+    /** Hal tiro oo dikhri ah (adkaarta tiro badan leh). */
+    fun tap(item: AdhkarItem) {
+        viewModelScope.launch { store.incrementAdhkar(dateKey(), period.value, item.id, item.count) }
+    }
 
     fun toggle(item: AdhkarItem, done: Boolean) {
         viewModelScope.launch { store.setAdhkarDone(dateKey(), period.value, item.id, done) }

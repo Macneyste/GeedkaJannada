@@ -31,6 +31,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         fun rounds(id: String) = intPreferencesKey("rounds_$id")
         fun day(dateKey: String, id: String) = intPreferencesKey("day_${dateKey}_$id")
         fun adhkar(date: String, period: String, id: String) = booleanPreferencesKey("adhkar_${date}_${period}_$id")
+        fun adhkarCount(date: String, period: String, id: String) = intPreferencesKey("adhkarc_${date}_${period}_$id")
         fun prayerTime(key: String) = intPreferencesKey("prayer_time_$key")
         fun prayerNotify(key: String) = booleanPreferencesKey("prayer_notify_$key")
     }
@@ -189,7 +190,27 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     suspend fun setAdhkarDone(date: String, period: AdhkarPeriod, id: String, done: Boolean) {
         dataStore.edit { p ->
             val k = Keys.adhkar(date, period.key, id)
-            if (done) p[k] = true else p.remove(k)
+            if (done) p[k] = true else {
+                p.remove(k)
+                p.remove(Keys.adhkarCount(date, period.key, id))
+            }
+        }
+    }
+
+    /** Tirada adkaar kasta ee maanta la sameeyay (id -> tiro). */
+    fun adhkarCounts(date: String, period: AdhkarPeriod): Flow<Map<String, Int>> = dataStore.data.map { p ->
+        val prefix = "adhkarc_${date}_${period.key}_"
+        p.asMap().entries.filter { it.key.name.startsWith(prefix) && it.value is Int }
+            .associate { it.key.name.removePrefix(prefix) to it.value as Int }
+    }
+
+    /** Hal tiro ku dar; marka la gaaro [target] si toos ah ayaa loo calaamadeeyaa dhammaaday. */
+    suspend fun incrementAdhkar(date: String, period: AdhkarPeriod, id: String, target: Int) {
+        dataStore.edit { p ->
+            val ck = Keys.adhkarCount(date, period.key, id)
+            val n = minOf(target, (p[ck] ?: 0) + 1)
+            p[ck] = n
+            if (n >= target) p[Keys.adhkar(date, period.key, id)] = true
         }
     }
 
