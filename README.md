@@ -8,7 +8,9 @@ Akoon ma jiro, xayeysiis ma jiro, analytics ma jiro, backend ma jiro, `INTERNET`
 - **Xulashada dikriga**: Subxaanallaah, Alxamdulillaah, Allaahu Akbar; yoolal 33 / 100 iyo yool gaar ah (1–9999).
 - **Dejimaha**: codka (SoundPool) iyo gariirka (haptic), labadaba default OFF.
 - **Quraan**: liiska 114 suuradood, raadin, "Sii wad akhriska", akhriska RTL oo leh Amiri, cabbirka qoraalka, calaamad, suurad hore/xigta.
-- **Salaad**: waqtiyada gacanta ayaa lagu geliyaa, salaadda soo socota + waqti ka hadhay, ogeysiin (waqtiga / 5 / 10 daqiiqo ka hor).
+- **Salaad**: waqtiyada si toos ah ayaa loo xisaabiyaa (offline, magaalo Soomaaliyeed la doorto) ama gacanta ayaa lagu geliyaa; salaadda soo socota + waqti ka hadhay; ogeysiin dhawaaq leh (waqtiga / 5 / 10 daqiiqo ka hor).
+- **Adkaar**: adkaarta subaxa iyo masaa oo leh calaamad maalinle ah.
+- **Caqabadaha silsiladda**: 3 / 7 / 14 / 30 / 100 maalmood isku xigta.
 - **Taariikh**: maanta, todobaadka, silsilad, chart 7 maalmood, dhikri kasta.
 
 ## Dhis (build)
@@ -32,6 +34,10 @@ La hubiyay (orodsiiyay): `assembleDebug` guul, `testDebugUnitTest` 35 tests oo d
 - **Alarm**: `setExactAndAllowWhileIdle` haddii `canScheduleExactAlarms()`; haddii kale WorkManager inexact (waxaa lagu sheegay Salaad shaashadda). `SCHEDULE_EXACT_ALARM` waa la dalbanayaa laakiin lama codsado si toos ah.
 - **POST_NOTIFICATIONS** waxaa la codsadaa kaliya marka isticmaaluhu shido switch-ka ogeysiinta salaad; haddii la diido switch-ku wuu ahaanayaa OFF oo sharax ayaa la muujiyaa.
 - **Taariikh** waxay ku kaydsan tahay DataStore (`day_<taariikh>_<dikhri>`), Room lama isticmaalo.
+- **Waqtiyada salaadda**: habka Muslim World League (Fajr 18°, Isha 17°), Asr shadow=1, Africa/Mogadishu (UTC+3). Waa xisaab, ma aha waqtiyada rasmiga ah ee masaajidka; isticmaaluhu wuu beddeli karaa gacanta. Location lama isticmaalo; magaalada waa la doortaa.
+- **Dhawaaqa ogeysiinta**: dhawaaqa caadiga ah ee telefoonka (adhaan duuban lama darin, sababtoo ah ma haysanno duubis leh license cad).
+- **Adkaarta**: qoraalka Quraanka (Aayatul Kursi, Ikhlaas, Falaq, Naas, Baqara 285–286) waxaa laga qaadaa dataset-ka; labada dikhri ee gaaban (Subxaanallaahi wa bixamdihi, Astaqfurullaah) gacanta ayaa lagu qoray — **dib u eeg ka hor intaadan daabicin**.
+- **Caqabadaha silsiladda**: maalin waxay tirsanaysaa haddii dikhri kasta la sameeyay (tiro > 0).
 - **Tarjumaad Quraan** lama darin (ikhtiyaari).
 - **Calaamadda (bookmark)**: hal calaamad oo dhan app-ka; aayad kasta lambarkeeda ayaa badhan ah.
 - **Icons**: waxaa la isticmaalay `material-icons-core` kaliya.
