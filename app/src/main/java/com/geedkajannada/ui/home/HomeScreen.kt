@@ -2,6 +2,12 @@ package com.geedkajannada.ui.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Canvas
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -94,14 +100,16 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                stringResource(R.string.app_name),
-                style = MaterialTheme.typography.headlineMedium,
-                color = BrownInk,
-                modifier = Modifier.weight(1f),
-            )
-            TextButton(onClick = onOpenSettings, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
-                Text(stringResource(R.string.home_gear), color = Indigo)
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium, color = BrownInk)
+                Text(stringResource(R.string.home_subtitle), style = MaterialTheme.typography.bodyMedium, color = BrownMid)
+            }
+            androidx.compose.material3.IconButton(onClick = onOpenSettings, modifier = Modifier.size(Dimens.TouchMin)) {
+                androidx.compose.material3.Icon(
+                    Icons.Filled.Settings,
+                    contentDescription = stringResource(R.string.home_gear),
+                    tint = Indigo,
+                )
             }
         }
 
@@ -136,7 +144,8 @@ fun HomeScreen(
                         Modifier
                             .weight(1f)
                             .heightIn(min = 84.dp)
-                            .background(CreamPanel, RoundedCornerShape(Dimens.TileRadius))
+                            .background(White, RoundedCornerShape(Dimens.TileRadius))
+                            .border(1.dp, Line, RoundedCornerShape(Dimens.TileRadius))
                             .clickable(onClick = t.onClick)
                             .padding(6.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -180,44 +189,71 @@ private fun HeroCard(
     remaining: Int?,
     onSetTimes: () -> Unit,
 ) {
-    Column(
+    Box(
         Modifier
             .fillMaxWidth()
+            .heightIn(min = 190.dp)
             .background(Brush.linearGradient(listOf(Indigo, IndigoLight)), RoundedCornerShape(Dimens.HeroRadius))
-            .padding(18.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+            .clip(RoundedCornerShape(Dimens.HeroRadius)),
     ) {
-        Text(date, style = MaterialTheme.typography.bodyMedium, color = White)
-        Text(hijri, style = MaterialTheme.typography.labelLarge, color = White)
-        if (current == null || next == null || remaining == null) {
-            Text(
-                stringResource(R.string.home_set_times),
-                style = MaterialTheme.typography.titleMedium,
-                color = Sun,
-                modifier = Modifier
-                    .heightIn(min = Dimens.TouchMin)
-                    .clickable(onClick = onSetTimes)
-                    .padding(top = 8.dp),
-            )
-        } else {
-            Text(stringResource(R.string.home_now), style = MaterialTheme.typography.labelLarge, color = Sun)
-            Text(
-                stringResource(current.prayer.nameRes),
-                style = MaterialTheme.typography.headlineMedium,
-                color = White,
-            )
-            Text(
-                stringResource(R.string.home_ends_in, PrayerMath.formatRemaining(remaining)),
-                style = MaterialTheme.typography.bodyMedium,
-                color = White,
-            )
-            Text(
-                stringResource(R.string.home_next) + ": " +
-                    stringResource(R.string.home_at, stringResource(next.prayer.nameRes), next.minuteOfDay?.let { PrayerMath.format(it) } ?: ""),
-                style = MaterialTheme.typography.titleMedium,
-                color = White,
-                modifier = Modifier.padding(top = 4.dp),
-            )
+        // Qorraxda iyo masjidka: qaab nala leh (Canvas), ma aha sawir la koobiyay.
+        Canvas(Modifier.matchParentSize()) {
+            val w = size.width
+            val h = size.height
+            drawCircle(Sun, radius = h * 0.26f, center = Offset(w * 0.68f, h * 0.50f))
+            val base = h * 0.98f
+            // dhismaha hoose
+            drawRect(Night, Offset(w * 0.40f, base - h * 0.16f), Size(w * 0.60f, h * 0.16f))
+            // qubbad weyn
+            drawArc(Night, 180f, 180f, true, Offset(w * 0.55f, base - h * 0.42f), Size(w * 0.26f, h * 0.52f))
+            // minaarad
+            drawRect(Night, Offset(w * 0.47f, base - h * 0.46f), Size(w * 0.035f, h * 0.46f))
+            drawRect(Night, Offset(w * 0.86f, base - h * 0.46f), Size(w * 0.035f, h * 0.46f))
+            drawCircle(Night, h * 0.03f, Offset(w * 0.4875f, base - h * 0.47f))
+            drawCircle(Night, h * 0.03f, Offset(w * 0.8775f, base - h * 0.47f))
+            // qubbad yar
+            drawArc(Night, 180f, 180f, true, Offset(w * 0.91f, base - h * 0.28f), Size(w * 0.10f, h * 0.30f))
+            // dhulka
+            drawRect(Night, Offset(0f, base), Size(w, h - base))
+        }
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(date, style = MaterialTheme.typography.bodyMedium, color = White)
+            Text(hijri, style = MaterialTheme.typography.labelLarge, color = White)
+            if (current == null || next == null || remaining == null) {
+                Text(
+                    stringResource(R.string.home_set_times),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Sun,
+                    modifier = Modifier
+                        .heightIn(min = Dimens.TouchMin)
+                        .clickable(onClick = onSetTimes)
+                        .padding(top = 12.dp),
+                )
+            } else {
+                Text(
+                    stringResource(R.string.home_next),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = White,
+                    modifier = Modifier.padding(top = 10.dp),
+                )
+                Text(stringResource(next.prayer.nameRes), style = MaterialTheme.typography.titleLarge, color = White)
+                Text(
+                    next.minuteOfDay?.let { PrayerMath.format(it) } ?: "",
+                    style = MaterialTheme.typography.displaySmall,
+                    color = White,
+                )
+                Text(
+                    stringResource(R.string.home_now) + ": " + stringResource(current.prayer.nameRes),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = Sun,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+                Text(
+                    stringResource(R.string.home_ends_in, PrayerMath.formatRemaining(remaining)),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = White,
+                )
+            }
         }
     }
 }
@@ -232,7 +268,7 @@ private fun PrayerTrackerCard(
     Column(
         Modifier
             .fillMaxWidth()
-            .background(CreamPanel, RoundedCornerShape(Dimens.CardRadius))
+            .background(White, RoundedCornerShape(Dimens.CardRadius))
             .padding(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
