@@ -38,10 +38,10 @@ import com.geedkajannada.ui.qibla.QiblaScreen
 import com.geedkajannada.ui.zakat.ZakatScreen
 import com.geedkajannada.ui.quran.ReaderScreen
 import com.geedkajannada.ui.settings.SettingsScreen
-import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Sun
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.BrownMid
 
 object Routes {
@@ -62,10 +62,10 @@ object Routes {
 private data class Tab(val route: String, val labelRes: Int, val icon: ImageVector)
 
 private val tabs = listOf(
-    Tab(Routes.HOME, R.string.nav_home, Icons.Filled.Home),
-    Tab(Routes.COUNTER, R.string.nav_counter, Icons.Filled.Favorite),
     Tab(Routes.QURAN, R.string.nav_quran, Icons.Filled.Menu),
     Tab(Routes.PRAYER, R.string.nav_prayer, Icons.Filled.Notifications),
+    Tab(Routes.HOME, R.string.nav_home, Icons.Filled.Home),
+    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Star),
     Tab(Routes.HISTORY, R.string.nav_history, Icons.Filled.DateRange),
 )
 
@@ -74,13 +74,13 @@ fun AppNav() {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
-    val showBar = tabs.any { it.route == route } || route == Routes.ADHKAR
+    val showBar = tabs.any { it.route == route } || route == Routes.COUNTER
 
     Scaffold(
-        containerColor = Sand,
+        containerColor = CreamPanel,
         bottomBar = {
             if (showBar) {
-                NavigationBar(containerColor = Sand) {
+                NavigationBar(containerColor = CreamPanel) {
                     tabs.forEach { t ->
                         NavigationBarItem(
                             selected = route == t.route,
@@ -94,7 +94,7 @@ fun AppNav() {
                             icon = { Icon(t.icon, contentDescription = null) },
                             label = { Text(stringResource(t.labelRes)) },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Sand,
+                                selectedIconColor = CreamPanel,
                                 selectedTextColor = Indigo,
                                 indicatorColor = Indigo,
                                 unselectedIconColor = BrownMid,
