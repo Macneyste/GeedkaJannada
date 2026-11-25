@@ -1,13 +1,6 @@
 package com.geedkajannada.ui.nav
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -59,14 +51,14 @@ object Routes {
     fun surah(id: Int, verse: Int = 1) = "surah/$id?verse=$verse"
 }
 
-private data class Tab(val route: String, val labelRes: Int, val icon: ImageVector)
+private data class Tab(val route: String, val labelRes: Int, @androidx.annotation.DrawableRes val icon: Int)
 
 private val tabs = listOf(
-    Tab(Routes.QURAN, R.string.nav_quran, Icons.Filled.Menu),
-    Tab(Routes.PRAYER, R.string.nav_prayer, Icons.Filled.Notifications),
-    Tab(Routes.HOME, R.string.nav_home, Icons.Filled.Home),
-    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Star),
-    Tab(Routes.HISTORY, R.string.nav_history, Icons.Filled.DateRange),
+    Tab(Routes.QURAN, R.string.nav_quran, R.drawable.ic_nav_quran),
+    Tab(Routes.PRAYER, R.string.nav_prayer, R.drawable.ic_nav_prayer),
+    Tab(Routes.HOME, R.string.nav_home, R.drawable.ic_nav_home),
+    Tab(Routes.ADHKAR, R.string.nav_adhkar, R.drawable.ic_nav_adhkar),
+    Tab(Routes.HISTORY, R.string.nav_history, R.drawable.ic_nav_history),
 )
 
 @Composable
@@ -91,7 +83,7 @@ fun AppNav() {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(t.icon, contentDescription = null) },
+                            icon = { Icon(androidx.compose.ui.res.painterResource(t.icon), contentDescription = null) },
                             label = { Text(stringResource(t.labelRes)) },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = CreamPanel,
