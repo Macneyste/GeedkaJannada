@@ -31,11 +31,11 @@ import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.PrayerMath
 import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.appViewModel
-import com.geedkajannada.ui.theme.Bark
+import com.geedkajannada.ui.theme.BrownMid
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
+import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Line
-import com.geedkajannada.ui.theme.Peach
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.White
 import com.geedkajannada.ui.theme.arabicStyle
 import kotlinx.coroutines.delay
@@ -75,8 +75,8 @@ fun HomeScreen(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium, color = Emerald)
-                Text(date, style = MaterialTheme.typography.bodyMedium, color = Bark)
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium, color = Indigo)
+                Text(date, style = MaterialTheme.typography.bodyMedium, color = BrownMid)
             }
             TextButton(onClick = onOpenSettings, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
                 Text(stringResource(R.string.settings))
@@ -88,7 +88,7 @@ fun HomeScreen(
         val next = PrayerMath.next(state.entries, minute, now.second)
         if (current == null || next == null) {
             GeedkaCard(Modifier.clickable(onClick = onOpenPrayer)) {
-                Text(stringResource(R.string.home_set_times), style = MaterialTheme.typography.titleMedium, color = Emerald)
+                Text(stringResource(R.string.home_set_times), style = MaterialTheme.typography.titleMedium, color = Indigo)
             }
         } else {
             PrayerCard(
@@ -114,14 +114,14 @@ fun HomeScreen(
                         Modifier
                             .weight(1f)
                             .heightIn(min = 96.dp)
-                            .background(Peach, RoundedCornerShape(Dimens.TileRadius))
+                            .background(CreamPanel, RoundedCornerShape(Dimens.TileRadius))
                             .clickable(onClick = t.onClick)
                             .padding(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
-                        Text(t.glyph, style = arabicStyle(26), color = Emerald)
-                        Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelLarge, color = Emerald)
+                        Text(t.glyph, style = arabicStyle(26), color = Indigo)
+                        Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelLarge, color = Indigo)
                     }
                 }
             }
@@ -130,8 +130,8 @@ fun HomeScreen(
         val last = state.lastRead
         GeedkaCard(
             Modifier.clickable(enabled = last != null) { last?.let { (s, v) -> onOpenSurah(s.id, v) } },
-            containerColor = Emerald,
-            border = BorderStroke(0.dp, Emerald),
+            containerColor = Indigo,
+            border = BorderStroke(0.dp, Indigo),
         ) {
             Text(stringResource(R.string.home_continue), style = MaterialTheme.typography.titleMedium, color = White)
             Text(
@@ -147,12 +147,12 @@ fun HomeScreen(
 @Composable
 private fun PrayerCard(label: String, entry: PrayerEntry, extra: String?) {
     GeedkaCard(border = BorderStroke(1.dp, Line)) {
-        Text(label, style = MaterialTheme.typography.labelLarge, color = Bark)
+        Text(label, style = MaterialTheme.typography.labelLarge, color = BrownMid)
         Text(
             stringResource(R.string.home_at, stringResource(entry.prayer.nameRes), entry.minuteOfDay?.let { PrayerMath.format(it) } ?: ""),
             style = MaterialTheme.typography.titleLarge,
-            color = Emerald,
+            color = Indigo,
         )
-        if (extra != null) Text(extra, style = MaterialTheme.typography.bodyMedium, color = Bark)
+        if (extra != null) Text(extra, style = MaterialTheme.typography.bodyMedium, color = BrownMid)
     }
 }

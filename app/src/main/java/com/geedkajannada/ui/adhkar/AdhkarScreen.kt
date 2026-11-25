@@ -42,8 +42,8 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Leaf
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.IndigoLight
 import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.arabicStyle
 import java.time.LocalDate
@@ -101,7 +101,7 @@ fun AdhkarScreen(
             contentPadding = PaddingValues(bottom = 32.dp),
         ) {
             items(state.rows, key = { it.item.id }) { row ->
-                GeedkaCard(border = if (row.done) BorderStroke(2.dp, Emerald) else BorderStroke(1.dp, Line)) {
+                GeedkaCard(border = if (row.done) BorderStroke(2.dp, Indigo) else BorderStroke(1.dp, Line)) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             stringResource(row.item.titleRes),
@@ -111,7 +111,7 @@ fun AdhkarScreen(
                         Text(
                             stringResource(R.string.adhkar_times, row.item.count),
                             style = MaterialTheme.typography.titleMedium,
-                            color = Emerald,
+                            color = Indigo,
                             modifier = Modifier.padding(start = 12.dp),
                         )
                     }
@@ -151,7 +151,7 @@ fun AdhkarScreen(
                                     .fillMaxWidth()
                                     .padding(bottom = 10.dp)
                                     .heightIn(min = 8.dp),
-                                color = Leaf,
+                                color = IndigoLight,
                                 trackColor = Line,
                             )
                             OutlinedButton(onClick = { vm.tap(row.item) }, modifier = btn, shape = shape) {

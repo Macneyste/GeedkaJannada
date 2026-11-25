@@ -35,12 +35,12 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Gold
-import com.geedkajannada.ui.theme.Peach
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.Sun
+import com.geedkajannada.ui.theme.CreamPanel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
-import com.geedkajannada.ui.theme.Leaf
+import com.geedkajannada.ui.theme.IndigoLight
 import com.geedkajannada.ui.theme.Line
 import java.time.format.TextStyle
 import java.util.Locale
@@ -88,7 +88,7 @@ fun HistoryScreen(vm: HistoryViewModel = appViewModel { HistoryViewModel(it.stat
                     Text(
                         (s.perDhikr[d.id] ?: 0).toString(),
                         style = MaterialTheme.typography.titleMedium,
-                        color = Emerald,
+                        color = Indigo,
                     )
                 }
             }
@@ -101,7 +101,7 @@ private fun StatCard(label: String, value: String, modifier: Modifier) {
     Column(modifier) {
         GeedkaCard {
             Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(value, style = MaterialTheme.typography.headlineMedium, color = Emerald)
+            Text(value, style = MaterialTheme.typography.headlineMedium, color = Indigo)
         }
     }
 }
@@ -127,7 +127,7 @@ private fun WeekChart(s: StatsSummary) {
                 drawRoundRect(Line, Offset(x, 0f), Size(barW, size.height), CornerRadius(8.dp.toPx()))
                 val h = size.height * b.total / max
                 if (b.total > 0) {
-                    drawRoundRect(Leaf, Offset(x, size.height - h), Size(barW, h), CornerRadius(8.dp.toPx()))
+                    drawRoundRect(IndigoLight, Offset(x, size.height - h), Size(barW, h), CornerRadius(8.dp.toPx()))
                 }
             }
         }
@@ -157,7 +157,7 @@ private fun ChallengeCard(s: StatsSummary) {
                 androidx.compose.foundation.layout.Box(
                     Modifier
                         .weight(1f)
-                        .background(if (done) Gold else Peach, RoundedCornerShape(12.dp))
+                        .background(if (done) Sun else CreamPanel, RoundedCornerShape(12.dp))
                         .padding(vertical = 10.dp)
                         .semantics {
                             contentDescription = if (done) "$m: ✓" else "$m"
@@ -167,7 +167,7 @@ private fun ChallengeCard(s: StatsSummary) {
                     Text(
                         m.toString(),
                         style = MaterialTheme.typography.titleMedium,
-                        color = if (done) Emerald else MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = if (done) Indigo else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -181,7 +181,7 @@ private fun ChallengeCard(s: StatsSummary) {
             LinearProgressIndicator(
                 progress = { (s.streak.toFloat() / next).coerceIn(0f, 1f) },
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp).height(10.dp),
-                color = Leaf,
+                color = IndigoLight,
                 trackColor = Line,
                 strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
             )

@@ -38,8 +38,8 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Peach
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.arabicStyle
 import com.geedkajannada.ui.theme.White
 
@@ -58,7 +58,7 @@ fun QuranListScreen(
         TabRow(
             selectedTabIndex = if (state.juzTab) 1 else 0,
             containerColor = androidx.compose.ui.graphics.Color.Transparent,
-            contentColor = Emerald,
+            contentColor = Indigo,
         ) {
             Tab(selected = !state.juzTab, onClick = { vm.showJuz(false) }, text = { Text(stringResource(R.string.quran_tab_surah)) }, modifier = Modifier.heightIn(min = Dimens.TouchMin))
             Tab(selected = state.juzTab, onClick = { vm.showJuz(true) }, text = { Text(stringResource(R.string.quran_tab_juz)) }, modifier = Modifier.heightIn(min = Dimens.TouchMin))
@@ -113,8 +113,8 @@ private fun Message(text: String) {
 private fun ContinueCard(surah: Surah, verse: Int, onClick: () -> Unit) {
     GeedkaCard(
         modifier = Modifier.clickable(onClick = onClick),
-        containerColor = Emerald,
-        border = androidx.compose.foundation.BorderStroke(0.dp, Emerald),
+        containerColor = Indigo,
+        border = androidx.compose.foundation.BorderStroke(0.dp, Indigo),
     ) {
         Text(stringResource(R.string.quran_continue), style = MaterialTheme.typography.titleMedium, color = White)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -136,10 +136,10 @@ private fun SurahRow(s: Surah, onClick: () -> Unit) {
             Box(
                 Modifier
                     .size(40.dp)
-                    .background(Peach, CircleShape),
+                    .background(CreamPanel, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(s.id.toString(), style = MaterialTheme.typography.labelLarge, color = Emerald)
+                Text(s.id.toString(), style = MaterialTheme.typography.labelLarge, color = Indigo)
             }
             Column(
                 Modifier
@@ -154,7 +154,7 @@ private fun SurahRow(s: Surah, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(s.nameAr, style = arabicStyle(24), color = Emerald)
+            Text(s.nameAr, style = arabicStyle(24), color = Indigo)
         }
     }
 }
@@ -170,8 +170,8 @@ private fun JuzList(surahs: List<Surah>, onOpenSurah: (Int, Int) -> Unit) {
             val name = surahs.firstOrNull { it.id == sid }?.nameSo ?: sid.toString()
             GeedkaCard(modifier = Modifier.clickable { onOpenSurah(sid, verse) }) {
                 Row(Modifier.heightIn(min = Dimens.TouchMin), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(40.dp).background(Peach, CircleShape), contentAlignment = Alignment.Center) {
-                        Text((i + 1).toString(), style = MaterialTheme.typography.labelLarge, color = Emerald)
+                    Box(Modifier.size(40.dp).background(CreamPanel, CircleShape), contentAlignment = Alignment.Center) {
+                        Text((i + 1).toString(), style = MaterialTheme.typography.labelLarge, color = Indigo)
                     }
                     Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
                         Text(stringResource(R.string.quran_juz_n, i + 1), style = MaterialTheme.typography.titleMedium)

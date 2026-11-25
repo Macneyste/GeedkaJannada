@@ -13,13 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import com.geedkajannada.ui.theme.Bark
-import com.geedkajannada.ui.theme.Cream
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Gold
-import com.geedkajannada.ui.theme.Leaf
-import com.geedkajannada.ui.theme.LeafLight
-import com.geedkajannada.ui.theme.Peach
+import com.geedkajannada.ui.theme.BrownMid
+import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.Sun
+import com.geedkajannada.ui.theme.IndigoLight
+import com.geedkajannada.ui.theme.IndigoLight
+import com.geedkajannada.ui.theme.CreamPanel
 import kotlin.math.floor
 
 /** Cabbirrada geedka ee 220 viewBox. */
@@ -56,7 +56,7 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
         // Iftiin dahab ah (radial)
         drawCircle(
             brush = Brush.radialGradient(
-                colors = listOf(Gold.copy(alpha = 0.45f), Gold.copy(alpha = 0f)),
+                colors = listOf(Sun.copy(alpha = 0.45f), Sun.copy(alpha = 0f)),
                 center = p(110f, 100f),
                 radius = 105f * s,
             ),
@@ -64,7 +64,7 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
             center = p(110f, 100f),
         )
         // Dhulka
-        drawOval(Peach, topLeft = p(40f, 194f), size = Size(140f * s, 24f * s))
+        drawOval(CreamPanel, topLeft = p(40f, 194f), size = Size(140f * s, 24f * s))
 
         // Geedka
         val top = TreeGeometry.top(r)
@@ -75,16 +75,16 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
             lineTo(p(106f, top).x, p(106f, top).y)
             close()
         }
-        drawPath(trunk, Bark)
+        drawPath(trunk, BrownMid)
         val branchY = top + TreeGeometry.trunkHeight(r) * 0.45f
-        drawLine(Bark, p(110f, branchY), p(110f - 24f * r - 6f, branchY - 22f - 10f * r), 5f * s, StrokeCap.Round)
-        drawLine(Bark, p(110f, branchY + 8f), p(110f + 24f * r + 6f, branchY - 14f - 10f * r), 5f * s, StrokeCap.Round)
+        drawLine(BrownMid, p(110f, branchY), p(110f - 24f * r - 6f, branchY - 22f - 10f * r), 5f * s, StrokeCap.Round)
+        drawLine(BrownMid, p(110f, branchY + 8f), p(110f + 24f * r + 6f, branchY - 14f - 10f * r), 5f * s, StrokeCap.Round)
 
         // Taajka
         val k = TreeGeometry.crownScale(r)
         val cx = 110f
         val cy = top
-        val layerColors = listOf<Color>(Emerald, Leaf, LeafLight.copy(alpha = 0.85f))
+        val layerColors = listOf<Color>(Indigo, IndigoLight, IndigoLight.copy(alpha = 0.85f))
         for (layer in 0..2) {
             for (b in blobs.filter { it.layer == layer }) {
                 drawCircle(layerColors[layer], b.radius * k * s, p(cx + b.dx * k, cy + b.dy * k))
@@ -95,9 +95,9 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
         for (i in 0 until shown) {
             val f = fruitSpots[i]
             val c = p(cx + f.x * k, cy + f.y * k)
-            drawCircle(Gold, 6f * k * s + 1.5f * s, c)
-            drawCircle(Cream.copy(alpha = 0.7f), 1.8f * s, Offset(c.x - 2f * s, c.y - 2f * s))
-            drawCircle(Bark.copy(alpha = 0.35f), 6f * k * s + 1.5f * s, c, style = Stroke(width = 0.8f * s))
+            drawCircle(Sun, 6f * k * s + 1.5f * s, c)
+            drawCircle(Sand.copy(alpha = 0.7f), 1.8f * s, Offset(c.x - 2f * s, c.y - 2f * s))
+            drawCircle(BrownMid.copy(alpha = 0.35f), 6f * k * s + 1.5f * s, c, style = Stroke(width = 0.8f * s))
         }
     }
 }

@@ -36,11 +36,11 @@ import com.geedkajannada.ui.prayer.PrayerScreen
 import com.geedkajannada.ui.quran.QuranListScreen
 import com.geedkajannada.ui.quran.ReaderScreen
 import com.geedkajannada.ui.settings.SettingsScreen
-import com.geedkajannada.ui.theme.Cream
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Gold
-import com.geedkajannada.ui.theme.Peach
-import com.geedkajannada.ui.theme.Bark
+import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.Sun
+import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.BrownMid
 
 object Routes {
     const val HOME = "home"
@@ -74,10 +74,10 @@ fun AppNav() {
     val showBar = tabs.any { it.route == route }
 
     Scaffold(
-        containerColor = Cream,
+        containerColor = Sand,
         bottomBar = {
             if (showBar) {
-                NavigationBar(containerColor = Cream) {
+                NavigationBar(containerColor = Sand) {
                     tabs.forEach { t ->
                         NavigationBarItem(
                             selected = route == t.route,
@@ -91,11 +91,11 @@ fun AppNav() {
                             icon = { Icon(t.icon, contentDescription = null) },
                             label = { Text(stringResource(t.labelRes)) },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Cream,
-                                selectedTextColor = Emerald,
-                                indicatorColor = Emerald,
-                                unselectedIconColor = Bark,
-                                unselectedTextColor = Bark,
+                                selectedIconColor = Sand,
+                                selectedTextColor = Indigo,
+                                indicatorColor = Indigo,
+                                unselectedIconColor = BrownMid,
+                                unselectedTextColor = BrownMid,
                             ),
                         )
                     }

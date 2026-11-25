@@ -6,25 +6,25 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val Scheme: ColorScheme = lightColorScheme(
-    primary = Emerald,
+    primary = Indigo,
     onPrimary = White,
-    primaryContainer = Peach,
-    onPrimaryContainer = Emerald,
-    secondary = Leaf,
+    primaryContainer = CreamPanel,
+    onPrimaryContainer = Indigo,
+    secondary = IndigoLight,
     onSecondary = White,
-    tertiary = Gold,
-    onTertiary = Ink,
-    background = Cream,
-    onBackground = Ink,
-    surface = White,
-    onSurface = Ink,
-    surfaceVariant = Peach,
-    onSurfaceVariant = Bark,
+    tertiary = Sun,
+    onTertiary = BrownInk,
+    background = Sand,
+    onBackground = BrownInk,
+    surface = CreamPanel,
+    onSurface = BrownInk,
+    surfaceVariant = CreamPanel,
+    onSurfaceVariant = BrownMid,
     outline = Line,
     outlineVariant = Line,
     error = ErrorRed,
     onError = White,
-    surfaceTint = Emerald,
+    surfaceTint = Indigo,
 )
 
 @Composable

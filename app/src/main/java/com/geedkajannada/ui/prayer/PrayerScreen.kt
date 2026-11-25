@@ -59,7 +59,7 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
+import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.ErrorRed
 import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.White
@@ -147,7 +147,7 @@ fun PrayerScreen(
                     checked = state.auto,
                     onCheckedChange = null,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = White, checkedTrackColor = Emerald,
+                        checkedThumbColor = White, checkedTrackColor = Indigo,
                         uncheckedThumbColor = White, uncheckedTrackColor = Line, uncheckedBorderColor = Line,
                     ),
                 )
@@ -241,7 +241,7 @@ fun PrayerScreen(
 @Composable
 private fun NextPrayerCard(entries: List<PrayerEntry>, nowSec: Int) {
     val next = PrayerMath.next(entries, nowSec / 60, nowSec % 60)
-    GeedkaCard(containerColor = Emerald, border = BorderStroke(0.dp, Emerald)) {
+    GeedkaCard(containerColor = Indigo, border = BorderStroke(0.dp, Indigo)) {
         Text(stringResource(R.string.prayer_next), style = MaterialTheme.typography.titleMedium, color = White)
         if (next == null) {
             Text(
@@ -290,7 +290,7 @@ private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit, onToggl
             enabled = e.minuteOfDay != null,
             modifier = Modifier.padding(start = 12.dp),
             colors = SwitchDefaults.colors(
-                checkedThumbColor = White, checkedTrackColor = Emerald,
+                checkedThumbColor = White, checkedTrackColor = Indigo,
                 uncheckedThumbColor = White, uncheckedTrackColor = Line, uncheckedBorderColor = Line,
             ),
         )

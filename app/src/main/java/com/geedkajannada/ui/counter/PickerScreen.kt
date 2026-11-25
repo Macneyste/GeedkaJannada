@@ -39,7 +39,7 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
+import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.arabicStyle
 
@@ -67,7 +67,7 @@ fun PickerScreen(
             val selected = d.id == state.selected.id
             GeedkaCard(
                 modifier = Modifier.selectable(selected = selected, role = Role.RadioButton, onClick = { vm.select(d) }),
-                border = if (selected) BorderStroke(2.dp, Emerald) else BorderStroke(1.dp, Line),
+                border = if (selected) BorderStroke(2.dp, Indigo) else BorderStroke(1.dp, Line),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
@@ -83,7 +83,7 @@ fun PickerScreen(
                         Icon(
                             Icons.Filled.Check,
                             contentDescription = stringResource(R.string.selected),
-                            tint = Emerald,
+                            tint = Indigo,
                         )
                     }
                 }

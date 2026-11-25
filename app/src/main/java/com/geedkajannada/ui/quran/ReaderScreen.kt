@@ -35,8 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import android.content.Intent
-import com.geedkajannada.ui.theme.Cream
-import com.geedkajannada.ui.theme.Ink
+import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.BrownInk
+import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Night
 import kotlinx.coroutines.delay
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -54,10 +56,10 @@ import com.geedkajannada.R
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Gold
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.Line
-import com.geedkajannada.ui.theme.Peach
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.White
 import com.geedkajannada.ui.theme.arabicStyle
 import androidx.compose.runtime.CompositionLocalProvider
@@ -95,8 +97,8 @@ fun ReaderScreen(
         }
     }
     val ctx = LocalContext.current
-    val bg = if (state.dark) Ink else Cream
-    val fg = if (state.dark) Cream else Ink
+    val bg = if (state.dark) Night else Sand
+    val fg = if (state.dark) CreamPanel else BrownInk
 
     Column(Modifier.fillMaxSize().background(bg)) {
         Row(
@@ -145,7 +147,7 @@ fun ReaderScreen(
                 Icon(
                     Icons.Filled.Star,
                     contentDescription = stringResource(if (marked) R.string.bookmark_remove else R.string.bookmark_add),
-                    tint = if (marked) Gold else Line,
+                    tint = if (marked) Sun else Line,
                 )
             }
         }
@@ -174,14 +176,14 @@ fun ReaderScreen(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .background(if (marked) Peach else if (state.dark) Emerald else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(if (state.dark) (if (marked) Indigo else Indigo.copy(alpha = 0.25f)) else if (marked) CreamPanel else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(10.dp),
                             verticalAlignment = Alignment.Top,
                         ) {
                             Text(
                                 verse,
                                 style = arabicStyle(state.fontSize, quran = true).copy(textDirection = TextDirection.Rtl),
-                                color = if (state.dark) Cream else Ink,
+                                color = if (state.dark) CreamPanel else BrownInk,
                                 textAlign = TextAlign.Start,
                                 modifier = Modifier.weight(1f),
                             )
@@ -189,7 +191,7 @@ fun ReaderScreen(
                                 Modifier
                                     .padding(start = 10.dp)
                                     .size(Dimens.TouchMin - 8.dp)
-                                    .background(if (marked) Gold else Peach, CircleShape)
+                                    .background(if (marked) Sun else CreamPanel, CircleShape)
                                     .clickable(
                                         onClickLabel = stringResource(
                                             if (marked) R.string.bookmark_remove else R.string.bookmark_add,
@@ -199,7 +201,7 @@ fun ReaderScreen(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                                    Text(n.toString(), style = MaterialTheme.typography.labelLarge, color = Emerald)
+                                    Text(n.toString(), style = MaterialTheme.typography.labelLarge, color = Indigo)
                                 }
                             }
                         }
@@ -222,15 +224,15 @@ fun ReaderScreen(
                     ctx.startActivity(Intent.createChooser(send, null))
                 },
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(R.string.reader_share), color = if (state.dark) Cream else Emerald) }
+            ) { Text(stringResource(R.string.reader_share), color = if (state.dark) CreamPanel else Indigo) }
             TextButton(
                 onClick = { auto = !auto },
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(if (auto) R.string.reader_auto_stop else R.string.reader_auto), color = if (state.dark) Cream else Emerald) }
+            ) { Text(stringResource(if (auto) R.string.reader_auto_stop else R.string.reader_auto), color = if (state.dark) CreamPanel else Indigo) }
             TextButton(
                 onClick = vm::toggleDark,
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(R.string.reader_theme), color = if (state.dark) Cream else Emerald) }
+            ) { Text(stringResource(R.string.reader_theme), color = if (state.dark) CreamPanel else Indigo) }
         }
         Row(
             Modifier

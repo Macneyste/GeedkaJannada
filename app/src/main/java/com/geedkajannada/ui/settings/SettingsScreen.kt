@@ -33,8 +33,8 @@ import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
-import com.geedkajannada.ui.theme.Emerald
-import com.geedkajannada.ui.theme.Gold
+import com.geedkajannada.ui.theme.Indigo
+import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.White
 
@@ -104,7 +104,7 @@ private fun SwitchRow(label: String, checked: Boolean, onChange: (Boolean) -> Un
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
                 checkedThumbColor = White,
-                checkedTrackColor = Emerald,
+                checkedTrackColor = Indigo,
                 uncheckedThumbColor = White,
                 uncheckedTrackColor = Line,
                 uncheckedBorderColor = Line,
