@@ -68,6 +68,7 @@ fun AppNav() {
     val route = entry?.destination?.route
     val showBar = tabs.any { it.route == route } || route == Routes.COUNTER
 
+    com.geedkajannada.ui.location.LocationGate()
     Scaffold(
         containerColor = CreamPanel,
         bottomBar = {

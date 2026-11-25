@@ -259,4 +259,15 @@
     <string name="tile_zakat_sub">Xisaab</string>
     <string name="tile_settings_sub">Xulasho</string>
     <string name="nav_tasbeeh">Tasbeeh</string>
+    <string name="loc_prompt_title">Waqtiyada salaadda goobtaada</string>
+    <string name="loc_prompt_body">Si loo helo waqtiyada salaadda ee goobta aad joogto, oggolow goobta qiyaasta ah (location). Goobtu waxay ku hadhaysaa qalabkaaga; server looma dirayo, internet looma isticmaalo. Haddii aad diiddo, waxaad dooran kartaa magaalo ama waqtiga gacanta geli.</string>
+    <string name="loc_allow">Oggolow</string>
+    <string name="loc_not_now">Hadda ma rabo</string>
+    <string name="loc_card_title">Goobtayda</string>
+    <string name="loc_card_hint">Isticmaal goobta qalabka si waqtiyada salaadda loogu xisaabiyo meesha aad joogto.</string>
+    <string name="loc_card_active">Waqtiyada waxaa lagu xisaabiyay goobtaada hadda.</string>
+    <string name="loc_failed">Goobta lama helin. Hubi inuu Location shidan yahay, ama dooro magaalo.</string>
+    <string name="loc_use">Isticmaal goobtayda</string>
+    <string name="loc_busy">Waa la raadinayaa…</string>
+    <string name="loc_clear">Ka tag goobta</string>
 </resources>

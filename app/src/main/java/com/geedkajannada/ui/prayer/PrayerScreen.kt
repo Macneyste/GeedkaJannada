@@ -106,6 +106,8 @@ fun PrayerScreen(
 
         NextPrayerCard(state.entries, nowSec)
 
+        com.geedkajannada.ui.location.LocationCard()
+
         if (state.notificationsDenied) {
             GeedkaCard(border = BorderStroke(1.5.dp, ErrorRed)) {
                 Text(stringResource(R.string.notif_denied_title), style = MaterialTheme.typography.titleMedium, color = ErrorRed)
