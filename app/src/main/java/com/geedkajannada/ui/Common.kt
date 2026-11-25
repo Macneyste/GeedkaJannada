@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -58,5 +60,23 @@ fun GeedkaCard(
 fun ScreenTitle(text: String, modifier: Modifier = Modifier) {
     Box(modifier.heightIn(min = Dimens.TouchMin), contentAlignment = Alignment.CenterStart) {
         Text(text, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
+    }
+}
+
+@Composable
+fun BackHeader(title: String, onBack: () -> Unit) {
+    androidx.compose.foundation.layout.Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        androidx.compose.material3.IconButton(onClick = onBack, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
+            androidx.compose.material3.Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = androidx.compose.ui.res.stringResource(com.geedkajannada.R.string.back),
+            )
+        }
+        Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
     }
 }
