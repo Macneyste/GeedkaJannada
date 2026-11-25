@@ -14,12 +14,12 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.geedkajannada.ui.theme.BrownMid
-import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.IndigoLight
 import com.geedkajannada.ui.theme.IndigoLight
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import kotlin.math.floor
 
 /** Cabbirrada geedka ee 220 viewBox. */
@@ -64,7 +64,7 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
             center = p(110f, 100f),
         )
         // Dhulka
-        drawOval(CreamPanel, topLeft = p(40f, 194f), size = Size(140f * s, 24f * s))
+        drawOval(Sand, topLeft = p(40f, 194f), size = Size(140f * s, 24f * s))
 
         // Geedka
         val top = TreeGeometry.top(r)
@@ -96,7 +96,7 @@ fun TreeCanvas(ratio: Float, modifier: Modifier = Modifier) {
             val f = fruitSpots[i]
             val c = p(cx + f.x * k, cy + f.y * k)
             drawCircle(Sun, 6f * k * s + 1.5f * s, c)
-            drawCircle(Sand.copy(alpha = 0.7f), 1.8f * s, Offset(c.x - 2f * s, c.y - 2f * s))
+            drawCircle(CreamPanel.copy(alpha = 0.7f), 1.8f * s, Offset(c.x - 2f * s, c.y - 2f * s))
             drawCircle(BrownMid.copy(alpha = 0.35f), 6f * k * s + 1.5f * s, c, style = Stroke(width = 0.8f * s))
         }
     }

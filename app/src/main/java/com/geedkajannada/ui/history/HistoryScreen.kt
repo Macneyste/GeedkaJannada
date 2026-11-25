@@ -37,7 +37,7 @@ import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Sun
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.geedkajannada.ui.theme.IndigoLight
@@ -157,7 +157,7 @@ private fun ChallengeCard(s: StatsSummary) {
                 androidx.compose.foundation.layout.Box(
                     Modifier
                         .weight(1f)
-                        .background(if (done) Sun else CreamPanel, RoundedCornerShape(12.dp))
+                        .background(if (done) Sun else Sand, RoundedCornerShape(12.dp))
                         .padding(vertical = 10.dp)
                         .semantics {
                             contentDescription = if (done) "$m: ✓" else "$m"

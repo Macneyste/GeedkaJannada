@@ -245,4 +245,18 @@
     <string name="zakat_due">Zakat la bixiyo: %1$s</string>
     <string name="zakat_below">Hantidu nisaabka ma gaarin; Zakat looma baahna.</string>
     <string name="zakat_disclaimer">Xisaabtan waa tilmaame, ma aha fatwa. La tasho aqoonyahan diineed.</string>
+    <string name="home_streak">Silsilad · %1$d maal</string>
+    <string name="home_continue_btn">Sii wad ›</string>
+    <string name="home_adhkar_card">Adkaarta Subax · %1$d/%2$d</string>
+    <string name="home_adhkar_start">Bilow</string>
+    <string name="home_adhkar_go">Sii wad</string>
+    <string name="tile_quran_sub">Akhri</string>
+    <string name="tile_qibla_sub">Jihada</string>
+    <string name="tile_tasbeeh_sub">Tirin</string>
+    <string name="tile_adhkar_sub">Subax/Galab</string>
+    <string name="tile_times_sub">Salaadda</string>
+    <string name="tile_history_sub">Hijri</string>
+    <string name="tile_zakat_sub">Xisaab</string>
+    <string name="tile_settings_sub">Xulasho</string>
+    <string name="nav_tasbeeh">Tasbeeh</string>
 </resources>

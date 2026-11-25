@@ -51,7 +51,7 @@ import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.BrownInk
 import com.geedkajannada.ui.theme.BrownMid
 import com.geedkajannada.ui.theme.Bronze
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.IndigoLight
@@ -65,7 +65,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.delay
 
-private data class Tile(val labelRes: Int, val glyph: String, val onClick: () -> Unit)
+private data class Tile(val labelRes: Int, val subRes: Int, val glyph: String, val onClick: () -> Unit)
 
 @Composable
 fun HomeScreen(
@@ -78,7 +78,7 @@ fun HomeScreen(
     onOpenZakat: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenSurah: (Int, Int) -> Unit,
-    vm: HomeViewModel = appViewModel { HomeViewModel(it.prayers, it.settings, it.quran) },
+    vm: HomeViewModel = appViewModel { HomeViewModel(it.prayers, it.settings, it.quran, it.stats) },
 ) {
     val state by vm.uiState.collectAsStateWithLifecycle()
     var now by remember { mutableStateOf(LocalDateTime.now()) }
@@ -122,20 +122,41 @@ fun HomeScreen(
             current = current,
             next = next?.first,
             remaining = next?.second,
+            streak = state.streak,
+            entries = state.entries,
             onSetTimes = onOpenPrayer,
         )
 
         PrayerTrackerCard(state.entries, state.checked, vm::toggleChecked, onOpenPrayer)
 
+        val last = state.lastRead
+        GeedkaCard(
+            Modifier.clickable(enabled = last != null) { last?.let { (s, v) -> onOpenSurah(s.id, v) } },
+            containerColor = Night,
+            border = BorderStroke(0.dp, Night),
+        ) {
+            Text(stringResource(R.string.home_continue), style = MaterialTheme.typography.labelLarge, color = Sun)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    if (last == null) stringResource(R.string.home_continue_none)
+                    else stringResource(R.string.quran_continue_detail, last.first.nameSo, last.second),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = White,
+                    modifier = Modifier.weight(1f),
+                )
+                if (last != null) Text(stringResource(R.string.home_continue_btn), style = MaterialTheme.typography.titleMedium, color = Sun)
+            }
+        }
+
         val tiles = listOf(
-            Tile(R.string.nav_counter, "سبح", onOpenCounter),
-            Tile(R.string.nav_quran, "ق", onOpenQuran),
-            Tile(R.string.nav_qibla, "ك", onOpenQibla),
-            Tile(R.string.nav_adhkar, "ذ", onOpenAdhkar),
-            Tile(R.string.nav_zakat, "ز", onOpenZakat),
-            Tile(R.string.nav_history, "ت", onOpenHistory),
-            Tile(R.string.nav_times, "ص", onOpenPrayer),
-            Tile(R.string.settings, "د", onOpenSettings),
+            Tile(R.string.nav_quran, R.string.tile_quran_sub, "ق", onOpenQuran),
+            Tile(R.string.nav_qibla, R.string.tile_qibla_sub, "ك", onOpenQibla),
+            Tile(R.string.nav_tasbeeh, R.string.tile_tasbeeh_sub, "سبح", onOpenCounter),
+            Tile(R.string.nav_adhkar, R.string.tile_adhkar_sub, "ذ", onOpenAdhkar),
+            Tile(R.string.nav_times, R.string.tile_times_sub, "ص", onOpenPrayer),
+            Tile(R.string.nav_history, R.string.tile_history_sub, "ت", onOpenHistory),
+            Tile(R.string.nav_zakat, R.string.tile_zakat_sub, "ز", onOpenZakat),
+            Tile(R.string.settings, R.string.tile_settings_sub, "د", onOpenSettings),
         )
         tiles.chunked(4).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -143,7 +164,7 @@ fun HomeScreen(
                     Column(
                         Modifier
                             .weight(1f)
-                            .heightIn(min = 84.dp)
+                            .heightIn(min = 92.dp)
                             .background(White, RoundedCornerShape(Dimens.TileRadius))
                             .border(1.dp, Line, RoundedCornerShape(Dimens.TileRadius))
                             .clickable(onClick = t.onClick)
@@ -152,30 +173,27 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Text(t.glyph, style = arabicStyle(24), color = Indigo)
-                        Text(
-                            stringResource(t.labelRes),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = BrownInk,
-                            maxLines = 1,
-                        )
+                        Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelMedium, color = BrownInk, maxLines = 1)
+                        Text(stringResource(t.subRes), style = MaterialTheme.typography.labelSmall, color = BrownMid, maxLines = 1)
                     }
                 }
             }
         }
 
-        val last = state.lastRead
-        GeedkaCard(
-            Modifier.clickable(enabled = last != null) { last?.let { (s, v) -> onOpenSurah(s.id, v) } },
-            containerColor = Night,
-            border = BorderStroke(0.dp, Night),
-        ) {
-            Text(stringResource(R.string.home_continue), style = MaterialTheme.typography.titleMedium, color = Sun)
-            Text(
-                if (last == null) stringResource(R.string.home_continue_none)
-                else stringResource(R.string.quran_continue_detail, last.first.nameSo, last.second),
-                style = MaterialTheme.typography.bodyLarge,
-                color = White,
-            )
+        GeedkaCard(Modifier.clickable(onClick = onOpenAdhkar)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    stringResource(R.string.home_adhkar_card, state.subaxDone, state.subaxTotal),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = BrownInk,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(
+                    stringResource(if (state.subaxDone == 0) R.string.home_adhkar_start else R.string.home_adhkar_go),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Indigo,
+                )
+            }
         }
     }
 }
@@ -187,6 +205,8 @@ private fun HeroCard(
     current: PrayerEntry?,
     next: PrayerEntry?,
     remaining: Int?,
+    streak: Int,
+    entries: List<PrayerEntry>,
     onSetTimes: () -> Unit,
 ) {
     Box(
@@ -219,6 +239,14 @@ private fun HeroCard(
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(date, style = MaterialTheme.typography.bodyMedium, color = White)
             Text(hijri, style = MaterialTheme.typography.labelLarge, color = White)
+            Text(
+                stringResource(R.string.home_streak, streak),
+                style = MaterialTheme.typography.labelLarge,
+                color = Night,
+                modifier = Modifier
+                    .background(Sun, RoundedCornerShape(50))
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+            )
             if (current == null || next == null || remaining == null) {
                 Text(
                     stringResource(R.string.home_set_times),
@@ -243,7 +271,8 @@ private fun HeroCard(
                     color = White,
                 )
                 Text(
-                    stringResource(R.string.home_now) + ": " + stringResource(current.prayer.nameRes),
+                    stringResource(R.string.home_now) + ": " +
+                        stringResource(R.string.home_at, stringResource(current.prayer.nameRes), current.minuteOfDay?.let { PrayerMath.format(it) } ?: ""),
                     style = MaterialTheme.typography.titleSmall,
                     color = Sun,
                     modifier = Modifier.padding(top = 4.dp),
@@ -253,6 +282,30 @@ private fun HeroCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = White,
                 )
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                        .background(Night.copy(alpha = 0.55f), RoundedCornerShape(16.dp))
+                        .padding(vertical = 8.dp, horizontal = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    entries.forEach { e ->
+                        val isNext = e.prayer == next.prayer
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                stringResource(e.prayer.nameRes),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (isNext) Sun else White,
+                            )
+                            Text(
+                                e.minuteOfDay?.let { PrayerMath.format(it) } ?: "--:--",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = if (isNext) Sun else White,
+                            )
+                        }
+                    }
+                }
             }
         }
     }

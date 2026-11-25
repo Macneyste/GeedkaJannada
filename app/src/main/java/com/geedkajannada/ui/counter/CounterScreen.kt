@@ -57,12 +57,12 @@ import com.geedkajannada.data.StatsCalc
 import com.geedkajannada.feedback.SoundPlayer
 import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.appViewModel
-import com.geedkajannada.ui.theme.Sand
+import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.IndigoLight
 import com.geedkajannada.ui.theme.Line
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.arabicStyle
 import java.time.LocalDate
 
@@ -283,7 +283,7 @@ private fun TreeCard(state: CounterUiState, onTap: () -> Unit) {
             .fillMaxWidth()
             .aspectRatio(1f)
             .scale(scale)
-            .background(CreamPanel, RoundedCornerShape(Dimens.TreeCardRadius))
+            .background(Sand, RoundedCornerShape(Dimens.TreeCardRadius))
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {

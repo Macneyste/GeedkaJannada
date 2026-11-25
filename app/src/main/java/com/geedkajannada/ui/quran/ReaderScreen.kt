@@ -35,9 +35,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import android.content.Intent
-import com.geedkajannada.ui.theme.Sand
-import com.geedkajannada.ui.theme.BrownInk
 import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.BrownInk
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.Night
 import kotlinx.coroutines.delay
 import androidx.compose.runtime.snapshotFlow
@@ -59,7 +59,7 @@ import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.Line
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.White
 import com.geedkajannada.ui.theme.arabicStyle
 import androidx.compose.runtime.CompositionLocalProvider
@@ -97,8 +97,8 @@ fun ReaderScreen(
         }
     }
     val ctx = LocalContext.current
-    val bg = if (state.dark) Night else Sand
-    val fg = if (state.dark) CreamPanel else BrownInk
+    val bg = if (state.dark) Night else CreamPanel
+    val fg = if (state.dark) Sand else BrownInk
 
     Column(Modifier.fillMaxSize().background(bg)) {
         Row(
@@ -176,14 +176,14 @@ fun ReaderScreen(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .background(if (state.dark) (if (marked) Indigo else Indigo.copy(alpha = 0.25f)) else if (marked) CreamPanel else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(if (state.dark) (if (marked) Indigo else Indigo.copy(alpha = 0.25f)) else if (marked) Sand else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(10.dp),
                             verticalAlignment = Alignment.Top,
                         ) {
                             Text(
                                 verse,
                                 style = arabicStyle(state.fontSize, quran = true).copy(textDirection = TextDirection.Rtl),
-                                color = if (state.dark) CreamPanel else BrownInk,
+                                color = if (state.dark) Sand else BrownInk,
                                 textAlign = TextAlign.Start,
                                 modifier = Modifier.weight(1f),
                             )
@@ -191,7 +191,7 @@ fun ReaderScreen(
                                 Modifier
                                     .padding(start = 10.dp)
                                     .size(Dimens.TouchMin - 8.dp)
-                                    .background(if (marked) Sun else CreamPanel, CircleShape)
+                                    .background(if (marked) Sun else Sand, CircleShape)
                                     .clickable(
                                         onClickLabel = stringResource(
                                             if (marked) R.string.bookmark_remove else R.string.bookmark_add,
@@ -224,15 +224,15 @@ fun ReaderScreen(
                     ctx.startActivity(Intent.createChooser(send, null))
                 },
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(R.string.reader_share), color = if (state.dark) CreamPanel else Indigo) }
+            ) { Text(stringResource(R.string.reader_share), color = if (state.dark) Sand else Indigo) }
             TextButton(
                 onClick = { auto = !auto },
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(if (auto) R.string.reader_auto_stop else R.string.reader_auto), color = if (state.dark) CreamPanel else Indigo) }
+            ) { Text(stringResource(if (auto) R.string.reader_auto_stop else R.string.reader_auto), color = if (state.dark) Sand else Indigo) }
             TextButton(
                 onClick = vm::toggleDark,
                 modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
-            ) { Text(stringResource(R.string.reader_theme), color = if (state.dark) CreamPanel else Indigo) }
+            ) { Text(stringResource(R.string.reader_theme), color = if (state.dark) Sand else Indigo) }
         }
         Row(
             Modifier

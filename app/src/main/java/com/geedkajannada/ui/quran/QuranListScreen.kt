@@ -39,7 +39,7 @@ import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
-import com.geedkajannada.ui.theme.CreamPanel
+import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.arabicStyle
 import com.geedkajannada.ui.theme.White
 
@@ -136,7 +136,7 @@ private fun SurahRow(s: Surah, onClick: () -> Unit) {
             Box(
                 Modifier
                     .size(40.dp)
-                    .background(CreamPanel, CircleShape),
+                    .background(Sand, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(s.id.toString(), style = MaterialTheme.typography.labelLarge, color = Indigo)
@@ -170,7 +170,7 @@ private fun JuzList(surahs: List<Surah>, onOpenSurah: (Int, Int) -> Unit) {
             val name = surahs.firstOrNull { it.id == sid }?.nameSo ?: sid.toString()
             GeedkaCard(modifier = Modifier.clickable { onOpenSurah(sid, verse) }) {
                 Row(Modifier.heightIn(min = Dimens.TouchMin), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(40.dp).background(CreamPanel, CircleShape), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(40.dp).background(Sand, CircleShape), contentAlignment = Alignment.Center) {
                         Text((i + 1).toString(), style = MaterialTheme.typography.labelLarge, color = Indigo)
                     }
                     Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
