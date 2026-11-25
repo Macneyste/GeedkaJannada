@@ -3,6 +3,7 @@ package com.geedkajannada.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -23,6 +24,9 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val prayerCity = stringPreferencesKey("prayer_city")
         val quranFontSize = intPreferencesKey("quran_font_size")
         val readerDark = booleanPreferencesKey("reader_dark")
+        val locLat = doublePreferencesKey("loc_lat")
+        val locLng = doublePreferencesKey("loc_lng")
+        val locationAsked = booleanPreferencesKey("location_asked")
         val lastSurah = intPreferencesKey("last_surah")
         val lastVerse = intPreferencesKey("last_verse")
         val bookmarkSurah = intPreferencesKey("bookmark_surah")
@@ -94,9 +98,19 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     }
 
     // ---- Salaad ----
+    /** Goobta la isticmaalayo: location-ka la kaydiyay (haddii la oggolaaday), ama magaalada la doortay. */
+    private fun effectiveCity(p: Preferences): City {
+        val lat = p[Keys.locLat]
+        val lng = p[Keys.locLng]
+        return if (lat != null && lng != null) City("gps", "Goobtaada", lat, lng) else Cities.byId(p[Keys.prayerCity])
+    }
+
+    private fun zoneOffsetHours(date: LocalDate): Double =
+        PrayerTimesCalc.ZONE.rules.getOffset(date.atTime(12, 0).atZone(PrayerTimesCalc.ZONE).toInstant()).totalSeconds / 3600.0
+
     private fun entriesFrom(p: Preferences, date: LocalDate): List<PrayerEntry> {
         val auto = p[Keys.prayerAuto] ?: true
-        val calc = if (auto) PrayerTimesCalc.compute(date, Cities.byId(p[Keys.prayerCity])) else null
+        val calc = if (auto) PrayerTimesCalc.compute(date, effectiveCity(p), zoneOffsetHours(date)) else null
         return Prayer.entries.map { pr ->
             val minute = calc?.get(pr) ?: p[Keys.prayerTime(pr.key)]?.takeIf { it >= 0 }
             PrayerEntry(pr, minute, p[Keys.prayerNotify(pr.key)] ?: false)
@@ -110,10 +124,43 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     suspend fun prayerEntriesFor(date: LocalDate): List<PrayerEntry> = entriesFrom(dataStore.data.first(), date)
 
     val prayerAuto: Flow<Boolean> = dataStore.data.map { it[Keys.prayerAuto] ?: true }
-    val prayerCity: Flow<City> = dataStore.data.map { Cities.byId(it[Keys.prayerCity]) }
+    val prayerCity: Flow<City> = dataStore.data.map { effectiveCity(it) }
+
+    /** Location-ka la kaydiyay (lat, lng) ama null. Waa maxalli; server looma dirayo. */
+    val savedLocation: Flow<Pair<Double, Double>?> = dataStore.data.map { p ->
+        val lat = p[Keys.locLat]
+        val lng = p[Keys.locLng]
+        if (lat != null && lng != null) lat to lng else null
+    }
+
+    suspend fun setLocation(lat: Double, lng: Double) {
+        dataStore.edit {
+            it[Keys.locLat] = lat
+            it[Keys.locLng] = lng
+            it[Keys.prayerAuto] = true
+        }
+    }
+
+    suspend fun clearLocation() {
+        dataStore.edit {
+            it.remove(Keys.locLat)
+            it.remove(Keys.locLng)
+        }
+    }
+
+    val locationAsked: Flow<Boolean> = dataStore.data.map { it[Keys.locationAsked] ?: false }
+
+    suspend fun setLocationAsked() {
+        dataStore.edit { it[Keys.locationAsked] = true }
+    }
 
     suspend fun setPrayerCity(id: String) {
-        dataStore.edit { it[Keys.prayerCity] = id }
+        dataStore.edit {
+            it[Keys.prayerCity] = id
+            // Magaalo gacanta la doortay ayaa ka sarreysa location-ka la kaydiyay.
+            it.remove(Keys.locLat)
+            it.remove(Keys.locLng)
+        }
     }
 
     /** Auto ON: waqtiyada la xisaabiyo. Auto OFF: waqtiyada hadda la muujinayo ayaa gacanta loo koobiyeeyaa si loo bedelo. */

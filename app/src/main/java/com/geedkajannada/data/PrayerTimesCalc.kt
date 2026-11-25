@@ -43,8 +43,8 @@ object Cities {
  * Wixii ka duwan waqtiyada masaajidka maxalliga ah waa ay yihiin xisaab; isticmaaluhu wuu gacanta u beddeli karaa.
  */
 object PrayerTimesCalc {
-    /** Africa/Mogadishu = UTC+3 (DST ma jirto). */
-    val ZONE: ZoneId = ZoneId.of("Africa/Mogadishu")
+    /** Saacadda qalabka (Muqdisho = UTC+3). Waqtiyada waa waqtiga maxalliga ah ee qalabka. */
+    val ZONE: ZoneId get() = ZoneId.systemDefault()
 
     private fun rad(d: Double) = Math.toRadians(d)
     private fun deg(r: Double) = Math.toDegrees(r)
