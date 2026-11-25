@@ -204,4 +204,17 @@
     <string name="home_continue">Sii wad akhriska</string>
     <string name="home_continue_none">Weli wax lama akhriyin. Fur Quraanka.</string>
     <string name="nav_home">Hoyga</string>
+    <string name="hijri_format">%1$d %2$s %3$d H</string>
+    <string name="hijri_m1">Muxarram</string>
+    <string name="hijri_m2">Safar</string>
+    <string name="hijri_m3">Rabiicul Awwal</string>
+    <string name="hijri_m4">Rabiicul Aakhir</string>
+    <string name="hijri_m5">Jumaadal Uula</string>
+    <string name="hijri_m6">Jumaadal Aakhira</string>
+    <string name="hijri_m7">Rajab</string>
+    <string name="hijri_m8">Shacbaan</string>
+    <string name="hijri_m9">Ramadaan</string>
+    <string name="hijri_m10">Showaal</string>
+    <string name="hijri_m11">Dhul Qicda</string>
+    <string name="hijri_m12">Dhul Xijja</string>
 </resources>
