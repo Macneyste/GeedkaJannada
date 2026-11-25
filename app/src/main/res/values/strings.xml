@@ -69,6 +69,10 @@
     <string name="quran_verses">%1$d aayad</string>
     <string name="makki">Makki</string>
     <string name="madani">Madani</string>
+    <string name="quran_tab_surah">Suurad</string>
+    <string name="quran_tab_juz">Juz</string>
+    <string name="quran_juz_n">Juz %1$d</string>
+    <string name="quran_juz_starts">Waxay ka bilaabataa %1$s · aayadda %2$d</string>
     <string name="quran_empty">Suurad lama helin.</string>
     <string name="quran_error">Quraanka lama furi karo. Isku day mar kale.</string>
     <string name="quran_loading">Waa la soo rarayaa…</string>

@@ -20,6 +20,8 @@ data class QuranListUiState(
     val query: String = "",
     val surahs: List<Surah> = emptyList(),
     val continueReading: Pair<Surah, Int>? = null,
+    val juzTab: Boolean = false,
+    val allSurahs: List<Surah> = emptyList(),
 )
 
 class QuranListViewModel(
@@ -29,6 +31,7 @@ class QuranListViewModel(
     private val all = MutableStateFlow<List<Surah>?>(null)
     private val failed = MutableStateFlow(false)
     private val query = MutableStateFlow("")
+    private val juzTab = MutableStateFlow(false)
 
     init {
         viewModelScope.launch {
@@ -40,17 +43,20 @@ class QuranListViewModel(
         }
     }
 
-    val uiState: StateFlow<QuranListUiState> = combine(all, failed, query, store.lastRead) { list, bad, q, last ->
+    val uiState: StateFlow<QuranListUiState> = combine(all, failed, query, store.lastRead, juzTab) { list, bad, q, last, juz ->
         QuranListUiState(
             loading = list == null && !bad,
             error = bad,
             query = q,
+            juzTab = juz,
+            allSurahs = list.orEmpty(),
             surahs = list?.let { QuranParser.filter(it, q) }.orEmpty(),
             continueReading = last?.let { (s, v) -> list?.firstOrNull { it.id == s }?.let { it to v } },
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), QuranListUiState())
 
     fun onQuery(q: String) { query.value = q }
+    fun showJuz(on: Boolean) { juzTab.value = on }
 }
 
 data class ReaderUiState(

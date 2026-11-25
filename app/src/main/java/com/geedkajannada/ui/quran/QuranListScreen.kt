@@ -20,7 +20,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import com.geedkajannada.data.Juz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -52,7 +55,15 @@ fun QuranListScreen(
             .padding(horizontal = Dimens.ScreenPadding),
     ) {
         ScreenTitle(stringResource(R.string.quran_title), Modifier.padding(top = Dimens.Spacing))
-        OutlinedTextField(
+        TabRow(
+            selectedTabIndex = if (state.juzTab) 1 else 0,
+            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            contentColor = Emerald,
+        ) {
+            Tab(selected = !state.juzTab, onClick = { vm.showJuz(false) }, text = { Text(stringResource(R.string.quran_tab_surah)) }, modifier = Modifier.heightIn(min = Dimens.TouchMin))
+            Tab(selected = state.juzTab, onClick = { vm.showJuz(true) }, text = { Text(stringResource(R.string.quran_tab_juz)) }, modifier = Modifier.heightIn(min = Dimens.TouchMin))
+        }
+        if (!state.juzTab) OutlinedTextField(
             value = state.query,
             onValueChange = vm::onQuery,
             placeholder = { Text(stringResource(R.string.quran_search)) },
@@ -66,6 +77,7 @@ fun QuranListScreen(
         when {
             state.error -> Message(stringResource(R.string.quran_error))
             state.loading -> Message(stringResource(R.string.quran_loading))
+            state.juzTab -> JuzList(state.allSurahs, onOpenSurah)
             else -> LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = Dimens.Spacing),
@@ -143,6 +155,34 @@ private fun SurahRow(s: Surah, onClick: () -> Unit) {
                 )
             }
             Text(s.nameAr, style = arabicStyle(24), color = Emerald)
+        }
+    }
+}
+
+@Composable
+private fun JuzList(surahs: List<Surah>, onOpenSurah: (Int, Int) -> Unit) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = Dimens.Spacing),
+    ) {
+        items(Juz.COUNT, key = { it }) { i ->
+            val (sid, verse) = Juz.starts[i]
+            val name = surahs.firstOrNull { it.id == sid }?.nameSo ?: sid.toString()
+            GeedkaCard(modifier = Modifier.clickable { onOpenSurah(sid, verse) }) {
+                Row(Modifier.heightIn(min = Dimens.TouchMin), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(40.dp).background(Peach, CircleShape), contentAlignment = Alignment.Center) {
+                        Text((i + 1).toString(), style = MaterialTheme.typography.labelLarge, color = Emerald)
+                    }
+                    Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
+                        Text(stringResource(R.string.quran_juz_n, i + 1), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.quran_juz_starts, name, verse),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
         }
     }
 }
