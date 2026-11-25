@@ -59,13 +59,12 @@ import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.Night
 import com.geedkajannada.ui.theme.Sun
 import com.geedkajannada.ui.theme.White
-import com.geedkajannada.ui.theme.arabicStyle
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.delay
 
-private data class Tile(val labelRes: Int, val subRes: Int, val glyph: String, val onClick: () -> Unit)
+private data class Tile(val labelRes: Int, val subRes: Int, @androidx.annotation.DrawableRes val icon: Int, val onClick: () -> Unit)
 
 @Composable
 fun HomeScreen(
@@ -149,14 +148,14 @@ fun HomeScreen(
         }
 
         val tiles = listOf(
-            Tile(R.string.nav_quran, R.string.tile_quran_sub, "ق", onOpenQuran),
-            Tile(R.string.nav_qibla, R.string.tile_qibla_sub, "ك", onOpenQibla),
-            Tile(R.string.nav_tasbeeh, R.string.tile_tasbeeh_sub, "سبح", onOpenCounter),
-            Tile(R.string.nav_adhkar, R.string.tile_adhkar_sub, "ذ", onOpenAdhkar),
-            Tile(R.string.nav_times, R.string.tile_times_sub, "ص", onOpenPrayer),
-            Tile(R.string.nav_history, R.string.tile_history_sub, "ت", onOpenHistory),
-            Tile(R.string.nav_zakat, R.string.tile_zakat_sub, "ز", onOpenZakat),
-            Tile(R.string.settings, R.string.tile_settings_sub, "د", onOpenSettings),
+            Tile(R.string.nav_quran, R.string.tile_quran_sub, R.drawable.ic_nav_quran, onOpenQuran),
+            Tile(R.string.nav_qibla, R.string.tile_qibla_sub, R.drawable.ic_tile_qibla, onOpenQibla),
+            Tile(R.string.nav_tasbeeh, R.string.tile_tasbeeh_sub, R.drawable.ic_nav_adhkar, onOpenCounter),
+            Tile(R.string.nav_adhkar, R.string.tile_adhkar_sub, R.drawable.ic_tile_adhkar, onOpenAdhkar),
+            Tile(R.string.nav_times, R.string.tile_times_sub, R.drawable.ic_tile_times, onOpenPrayer),
+            Tile(R.string.nav_history, R.string.tile_history_sub, R.drawable.ic_nav_history, onOpenHistory),
+            Tile(R.string.nav_zakat, R.string.tile_zakat_sub, R.drawable.ic_tile_zakat, onOpenZakat),
+            Tile(R.string.settings, R.string.tile_settings_sub, R.drawable.ic_tile_settings, onOpenSettings),
         )
         tiles.chunked(4).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -172,7 +171,12 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
-                        Text(t.glyph, style = arabicStyle(24), color = Indigo)
+                        androidx.compose.material3.Icon(
+                            androidx.compose.ui.res.painterResource(t.icon),
+                            contentDescription = null,
+                            tint = Indigo,
+                            modifier = Modifier.size(28.dp),
+                        )
                         Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelMedium, color = BrownInk, maxLines = 1)
                         Text(stringResource(t.subRes), style = MaterialTheme.typography.labelSmall, color = BrownMid, maxLines = 1)
                     }
@@ -355,7 +359,12 @@ private fun PrayerTrackerCard(
                             .border(2.dp, if (done) Bronze else BrownMid, CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
-                        if (done) Text("✓", color = White, style = MaterialTheme.typography.titleMedium)
+                        if (done) androidx.compose.material3.Icon(
+                            androidx.compose.ui.res.painterResource(R.drawable.ic_check),
+                            contentDescription = null,
+                            tint = White,
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
                     Text(name, style = MaterialTheme.typography.labelMedium, color = BrownInk)
                     Text(time, style = MaterialTheme.typography.labelSmall, color = BrownMid)
