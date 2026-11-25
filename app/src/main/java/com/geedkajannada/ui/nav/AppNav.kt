@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -30,6 +31,7 @@ import com.geedkajannada.ui.adhkar.AdhkarScreen
 import com.geedkajannada.ui.counter.CounterScreen
 import com.geedkajannada.ui.counter.PickerScreen
 import com.geedkajannada.ui.history.HistoryScreen
+import com.geedkajannada.ui.home.HomeScreen
 import com.geedkajannada.ui.prayer.PrayerScreen
 import com.geedkajannada.ui.quran.QuranListScreen
 import com.geedkajannada.ui.quran.ReaderScreen
@@ -41,6 +43,7 @@ import com.geedkajannada.ui.theme.Peach
 import com.geedkajannada.ui.theme.Bark
 
 object Routes {
+    const val HOME = "home"
     const val COUNTER = "counter"
     const val QURAN = "quran"
     const val PRAYER = "prayer"
@@ -55,9 +58,10 @@ object Routes {
 private data class Tab(val route: String, val labelRes: Int, val icon: ImageVector)
 
 private val tabs = listOf(
-    Tab(Routes.COUNTER, R.string.nav_counter, Icons.Filled.Home),
+    Tab(Routes.HOME, R.string.nav_home, Icons.Filled.Home),
+    Tab(Routes.COUNTER, R.string.nav_counter, Icons.Filled.Favorite),
     Tab(Routes.QURAN, R.string.nav_quran, Icons.Filled.Menu),
-    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Favorite),
+    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Star),
     Tab(Routes.PRAYER, R.string.nav_prayer, Icons.Filled.Notifications),
     Tab(Routes.HISTORY, R.string.nav_history, Icons.Filled.DateRange),
 )
@@ -99,7 +103,25 @@ fun AppNav() {
             }
         },
     ) { padding ->
-        NavHost(nav, startDestination = Routes.COUNTER, modifier = Modifier.padding(padding)) {
+        NavHost(nav, startDestination = Routes.HOME, modifier = Modifier.padding(padding)) {
+            composable(Routes.HOME) {
+                val go = { r: String ->
+                    nav.navigate(r) {
+                        popUpTo(nav.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+                HomeScreen(
+                    onOpenQuran = { go(Routes.QURAN) },
+                    onOpenCounter = { go(Routes.COUNTER) },
+                    onOpenPrayer = { go(Routes.PRAYER) },
+                    onOpenHistory = { go(Routes.HISTORY) },
+                    onOpenAdhkar = { go(Routes.ADHKAR) },
+                    onOpenSettings = { nav.navigate(Routes.SETTINGS) },
+                    onOpenSurah = { id, v -> nav.navigate(Routes.surah(id, v)) },
+                )
+            }
             composable(Routes.COUNTER) {
                 CounterScreen(
                     onOpenSettings = { nav.navigate(Routes.SETTINGS) },

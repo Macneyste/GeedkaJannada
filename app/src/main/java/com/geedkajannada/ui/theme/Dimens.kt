@@ -8,5 +8,6 @@ object Dimens {
     val TouchMin = 52.dp
     val CardRadius = 18.dp
     val CardRadiusSmall = 16.dp
+    val TileRadius = 18.dp
     val TreeCardRadius = 28.dp
 }
