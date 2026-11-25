@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (in progress)
+- Design v3: new palette (Sand, Indigo, Night, Sun, Bronze), Home dashboard, Qibla, Zakat, automatic prayer times via optional coarse location.
+- Home screen, Quran Juz tab and reader share / auto-scroll / dark theme already landed (see git log).
+
 ## 1.2.0
 - Adkaar: five categories (Subax, Masaa, Salaadda kadib, Hurdo, Maalinta) with Somali meaning on every card.
 - After-prayer adhkar (istighfar x3, Allaahumma Antas-Salaam, 33/33/33, tahlil, Ayatul Kursi, Ikhlaas/Falaq/Naas).
