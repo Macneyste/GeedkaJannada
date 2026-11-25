@@ -48,6 +48,13 @@ object PrayerMath {
         return best!! to bestDelta
     }
 
+    /** Salaadda hadda socota: tan ugu dambeysay ee waqtigeedu ka hor yahay hadda (ama tii shalay haddii aan weli la gaarin). */
+    fun current(entries: List<PrayerEntry>, nowMinute: Int): PrayerEntry? {
+        val set = entries.filter { it.minuteOfDay != null }.sortedBy { it.minuteOfDay }
+        if (set.isEmpty()) return null
+        return set.lastOrNull { it.minuteOfDay!! <= nowMinute } ?: set.last()
+    }
+
     fun formatRemaining(seconds: Int): String {
         val h = seconds / 3600
         val m = (seconds % 3600) / 60

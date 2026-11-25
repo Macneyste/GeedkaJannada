@@ -20,3 +20,23 @@ class JuzTest {
         assertEquals(30, Juz.of(114, 6))
     }
 }
+
+class PrayerCurrentTest {
+    private fun e(p: com.geedkajannada.data.Prayer, m: Int?) = com.geedkajannada.data.PrayerEntry(p, m, false)
+    private val list = listOf(
+        e(com.geedkajannada.data.Prayer.SUBAX, 300), e(com.geedkajannada.data.Prayer.DUHUR, 720),
+        e(com.geedkajannada.data.Prayer.CASAR, null),
+    )
+
+    @Test fun currentIsLatestPassed() {
+        assertEquals(com.geedkajannada.data.Prayer.DUHUR, com.geedkajannada.data.PrayerMath.current(list, 800)?.prayer)
+    }
+
+    @Test fun beforeFirstWrapsToLast() {
+        assertEquals(com.geedkajannada.data.Prayer.DUHUR, com.geedkajannada.data.PrayerMath.current(list, 100)?.prayer)
+    }
+
+    @Test fun noneSetIsNull() {
+        assertEquals(null, com.geedkajannada.data.PrayerMath.current(listOf(e(com.geedkajannada.data.Prayer.CASAR, null)), 100))
+    }
+}

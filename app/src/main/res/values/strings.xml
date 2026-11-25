@@ -188,4 +188,12 @@
     <string name="history_per_dhikr">Dikhri kasta</string>
     <string name="history_empty">Weli wax lama tirin. Tirinta marka aad bilowdo halkan ayay ka muuqan doontaa.</string>
     <string name="history_total">%1$d</string>
+    <string name="home_now">HADDA</string>
+    <string name="home_next">SOO SOCOTA</string>
+    <string name="home_ends_in">Waxay dhamaanaysaa %1$s</string>
+    <string name="home_at">%1$s · %2$s</string>
+    <string name="home_set_times">Geli waqtiyada salaadda</string>
+    <string name="home_continue">Sii wad akhriska</string>
+    <string name="home_continue_none">Weli wax lama akhriyin. Fur Quraanka.</string>
+    <string name="nav_home">Hoyga</string>
 </resources>
