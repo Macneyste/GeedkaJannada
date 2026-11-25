@@ -9,5 +9,7 @@ object Dimens {
     val CardRadius = 18.dp
     val CardRadiusSmall = 16.dp
     val TileRadius = 18.dp
+    val HeroRadius = 26.dp
+    val HomePadding = 18.dp
     val TreeCardRadius = 28.dp
 }

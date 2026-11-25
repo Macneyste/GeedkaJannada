@@ -204,6 +204,12 @@
     <string name="home_continue">Sii wad akhriska</string>
     <string name="home_continue_none">Weli wax lama akhriyin. Fur Quraanka.</string>
     <string name="nav_home">Hoyga</string>
+    <string name="home_prayer_tracker">Calaamadda salaadda</string>
+    <string name="home_show">Fur ›</string>
+    <string name="home_prayer_done">%1$s la calaamadeeyay</string>
+    <string name="home_prayer_todo">%1$s ma la calaamadeynin</string>
+    <string name="nav_times">Waqtiyada</string>
+    <string name="home_gear">Dejimo</string>
     <string name="hijri_format">%1$d %2$s %3$d H</string>
     <string name="hijri_m1">Muxarram</string>
     <string name="hijri_m2">Safar</string>

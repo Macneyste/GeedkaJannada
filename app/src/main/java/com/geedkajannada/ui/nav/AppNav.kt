@@ -65,7 +65,6 @@ private val tabs = listOf(
     Tab(Routes.HOME, R.string.nav_home, Icons.Filled.Home),
     Tab(Routes.COUNTER, R.string.nav_counter, Icons.Filled.Favorite),
     Tab(Routes.QURAN, R.string.nav_quran, Icons.Filled.Menu),
-    Tab(Routes.ADHKAR, R.string.nav_adhkar, Icons.Filled.Star),
     Tab(Routes.PRAYER, R.string.nav_prayer, Icons.Filled.Notifications),
     Tab(Routes.HISTORY, R.string.nav_history, Icons.Filled.DateRange),
 )
@@ -75,7 +74,7 @@ fun AppNav() {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
-    val showBar = tabs.any { it.route == route }
+    val showBar = tabs.any { it.route == route } || route == Routes.ADHKAR
 
     Scaffold(
         containerColor = Sand,
@@ -122,6 +121,8 @@ fun AppNav() {
                     onOpenPrayer = { go(Routes.PRAYER) },
                     onOpenHistory = { go(Routes.HISTORY) },
                     onOpenAdhkar = { go(Routes.ADHKAR) },
+                    onOpenQibla = { nav.navigate(Routes.QIBLA) },
+                    onOpenZakat = { nav.navigate(Routes.ZAKAT) },
                     onOpenSettings = { nav.navigate(Routes.SETTINGS) },
                     onOpenSurah = { id, v -> nav.navigate(Routes.surah(id, v)) },
                 )
