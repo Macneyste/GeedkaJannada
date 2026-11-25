@@ -34,6 +34,8 @@ import com.geedkajannada.ui.history.HistoryScreen
 import com.geedkajannada.ui.home.HomeScreen
 import com.geedkajannada.ui.prayer.PrayerScreen
 import com.geedkajannada.ui.quran.QuranListScreen
+import com.geedkajannada.ui.qibla.QiblaScreen
+import com.geedkajannada.ui.zakat.ZakatScreen
 import com.geedkajannada.ui.quran.ReaderScreen
 import com.geedkajannada.ui.settings.SettingsScreen
 import com.geedkajannada.ui.theme.Sand
@@ -44,6 +46,8 @@ import com.geedkajannada.ui.theme.BrownMid
 
 object Routes {
     const val HOME = "home"
+    const val QIBLA = "qibla"
+    const val ZAKAT = "zakat"
     const val COUNTER = "counter"
     const val QURAN = "quran"
     const val PRAYER = "prayer"
@@ -162,6 +166,8 @@ fun AppNav() {
                 )
             }
             composable(Routes.ADHKAR) { AdhkarScreen() }
+            composable(Routes.QIBLA) { QiblaScreen(onBack = { nav.popBackStack() }) }
+            composable(Routes.ZAKAT) { ZakatScreen(onBack = { nav.popBackStack() }) }
             composable(Routes.PRAYER) { PrayerScreen() }
             composable(Routes.HISTORY) { HistoryScreen() }
         }

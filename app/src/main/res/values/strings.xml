@@ -217,4 +217,25 @@
     <string name="hijri_m10">Showaal</string>
     <string name="hijri_m11">Dhul Qicda</string>
     <string name="hijri_m12">Dhul Xijja</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_zakat">Zakat</string>
+    <string name="qibla_title">Qibla</string>
+    <string name="qibla_city">Goobta: %1$s (la xisaabiyay, internet looma isticmaalo)</string>
+    <string name="qibla_bearing">Jihada Qibla: %1$d° ee woqooyiga</string>
+    <string name="qibla_aligned">Waad ku jirtaa jihada Qibla</string>
+    <string name="qibla_turn_right">U rog midig %1$d°</string>
+    <string name="qibla_turn_left">U rog bidix %1$d°</string>
+    <string name="qibla_no_sensor">Qalabkaaga ma laha sensor-ka jihada (compass). Jihada Qibla waxaa lagu tusayaa darajooyin kaliya; isticmaal compass kale si aad u raacdo.</string>
+    <string name="qibla_hint">Ku hay telefoonka si siman; ka fogow birta iyo makaanadaha.</string>
+    <string name="zakat_title">Zakat</string>
+    <string name="zakat_cash">Lacagta aad haysato</string>
+    <string name="zakat_gold">Qiimaha dahabka / alaabta</string>
+    <string name="zakat_debts">Deymaha ay saaran yihiin</string>
+    <string name="zakat_nisab">Nisaabka (tusaale; adigaa beddela)</string>
+    <string name="zakat_rate">Heerka %</string>
+    <string name="zakat_invalid">Geli tiro sax ah (0 ama ka weyn).</string>
+    <string name="zakat_net">Hantida saafiga ah: %1$s</string>
+    <string name="zakat_due">Zakat la bixiyo: %1$s</string>
+    <string name="zakat_below">Hantidu nisaabka ma gaarin; Zakat looma baahna.</string>
+    <string name="zakat_disclaimer">Xisaabtan waa tilmaame, ma aha fatwa. La tasho aqoonyahan diineed.</string>
 </resources>
