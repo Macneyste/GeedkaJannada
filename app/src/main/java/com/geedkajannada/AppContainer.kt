@@ -3,6 +3,7 @@ package com.geedkajannada
 import android.app.Application
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
+import com.geedkajannada.data.LocationProvider
 import com.geedkajannada.data.PrayerRepository
 import com.geedkajannada.data.QuranRepository
 import com.geedkajannada.data.SettingsStore
@@ -16,6 +17,7 @@ class AppContainer(context: Context) {
     val quran = QuranRepository(context.applicationContext)
     val prayers = PrayerRepository(settings)
     val stats = StatsRepository(settings)
+    val location = LocationProvider(context.applicationContext)
 }
 
 class GeedkaApp : Application() {
