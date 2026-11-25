@@ -31,6 +31,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         fun goal(id: String) = intPreferencesKey("goal_$id")
         fun rounds(id: String) = intPreferencesKey("rounds_$id")
         fun day(dateKey: String, id: String) = intPreferencesKey("day_${dateKey}_$id")
+        fun checked(dateKey: String, prayer: String) = booleanPreferencesKey("check_${dateKey}_$prayer")
         fun adhkar(date: String, period: String, id: String) = booleanPreferencesKey("adhkar_${date}_${period}_$id")
         fun adhkarCount(date: String, period: String, id: String) = intPreferencesKey("adhkarc_${date}_${period}_$id")
         fun prayerTime(key: String) = intPreferencesKey("prayer_time_$key")
@@ -235,5 +236,17 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
             }
         }
         out
+    }
+
+    /** Salaadaha maanta la calaamadeeyay (taabasho ku jira shaashadda Hoyga). */
+    fun checkedPrayers(dateKey: String): Flow<Set<Prayer>> = dataStore.data.map { p ->
+        Prayer.entries.filter { p[Keys.checked(dateKey, it.key)] == true }.toSet()
+    }
+
+    suspend fun toggleChecked(dateKey: String, prayer: Prayer) {
+        dataStore.edit {
+            val k = Keys.checked(dateKey, prayer.key)
+            if (it[k] == true) it.remove(k) else it[k] = true
+        }
     }
 }
