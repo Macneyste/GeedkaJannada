@@ -80,6 +80,14 @@
     <string name="reader_bigger">Weynee qoraalka</string>
     <string name="reader_prev">Suuradda hore</string>
     <string name="reader_next">Suuradda xigta</string>
+    <string name="reader_share">Wadaag</string>
+    <string name="reader_auto">Auto</string>
+    <string name="reader_auto_stop">Jooji auto-ka</string>
+    <string name="reader_theme">Midabka</string>
+    <string name="reader_header">JUZ %1$d · Suura %2$d · %3$d aayadood</string>
+    <string name="reader_share_text">%1$s
+
+(%2$s %3$d:%4$d)</string>
     <string name="bookmark_add">Calaamadee aayaddan</string>
     <string name="bookmark_remove">Ka saar calaamadda</string>
     <string name="verse_number">Aayadda %1$d</string>

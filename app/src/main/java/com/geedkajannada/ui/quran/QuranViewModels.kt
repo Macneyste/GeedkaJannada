@@ -69,6 +69,8 @@ data class ReaderUiState(
     val hasPrev: Boolean = false,
     val hasNext: Boolean = false,
     val startVerse: Int = 1,
+    val dark: Boolean = false,
+    val juz: Int = 1,
 )
 
 class ReaderViewModel(
@@ -92,7 +94,7 @@ class ReaderViewModel(
     }
 
     val uiState: StateFlow<ReaderUiState> =
-        combine(text, failed, store.quranFontSize, store.bookmark) { t, bad, size, bm ->
+        combine(text, failed, store.quranFontSize, store.bookmark, store.readerDark) { t, bad, size, bm, dark ->
             ReaderUiState(
                 loading = t == null && !bad,
                 error = bad,
@@ -102,8 +104,12 @@ class ReaderViewModel(
                 hasPrev = surahId > 1,
                 hasNext = surahId < 114,
                 startVerse = startVerseArg,
+                dark = dark,
+                juz = com.geedkajannada.data.Juz.of(surahId, startVerseArg),
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ReaderUiState())
+
+    fun toggleDark() { viewModelScope.launch { store.setReaderDark(!uiState.value.dark) } }
 
     fun bigger() { viewModelScope.launch { store.setQuranFontSize(uiState.value.fontSize + 2) } }
     fun smaller() { viewModelScope.launch { store.setQuranFontSize(uiState.value.fontSize - 2) } }

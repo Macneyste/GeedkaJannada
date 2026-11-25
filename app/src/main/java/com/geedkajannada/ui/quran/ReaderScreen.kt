@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -29,6 +30,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
+import com.geedkajannada.ui.theme.Cream
+import com.geedkajannada.ui.theme.Ink
+import kotlinx.coroutines.delay
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,7 +86,19 @@ fun ReaderScreen(
         }
     }
 
-    Column(Modifier.fillMaxSize()) {
+    var auto by remember { mutableStateOf(false) }
+    LaunchedEffect(auto) {
+        while (auto) {
+            val moved = listState.scrollBy(1.5f)
+            if (moved == 0f) auto = false
+            delay(16)
+        }
+    }
+    val ctx = LocalContext.current
+    val bg = if (state.dark) Ink else Cream
+    val fg = if (state.dark) Cream else Ink
+
+    Column(Modifier.fillMaxSize().background(bg)) {
         Row(
             Modifier
                 .fillMaxWidth()
@@ -91,13 +112,13 @@ fun ReaderScreen(
                 Text(
                     text?.surah?.nameSo ?: "",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Emerald,
+                    color = fg,
                 )
                 text?.let {
                     Text(
-                        stringResource(R.string.quran_verses, it.surah.verseCount),
+                        stringResource(R.string.reader_header, com.geedkajannada.data.Juz.of(it.surah.id, listState.firstVisibleItemIndex + 1), it.surah.id, it.surah.verseCount),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = fg,
                     )
                 }
             }
@@ -108,13 +129,13 @@ fun ReaderScreen(
                 modifier = Modifier
                     .heightIn(min = Dimens.TouchMin)
                     .semantics { contentDescription = smallerDesc },
-            ) { Text("A−") }
+            ) { Text("A−", color = fg) }
             TextButton(
                 onClick = vm::bigger,
                 modifier = Modifier
                     .heightIn(min = Dimens.TouchMin)
                     .semantics { contentDescription = biggerDesc },
-            ) { Text("A+") }
+            ) { Text("A+", color = fg) }
             val firstVisible = listState.firstVisibleItemIndex + 1
             val marked = state.bookmarkedVerse != null
             IconButton(
@@ -153,14 +174,14 @@ fun ReaderScreen(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .background(if (marked) Peach else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(if (marked) Peach else if (state.dark) Emerald else White, androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(10.dp),
                             verticalAlignment = Alignment.Top,
                         ) {
                             Text(
                                 verse,
                                 style = arabicStyle(state.fontSize, quran = true).copy(textDirection = TextDirection.Rtl),
-                                color = MaterialTheme.colorScheme.onBackground,
+                                color = if (state.dark) Cream else Ink,
                                 textAlign = TextAlign.Start,
                                 modifier = Modifier.weight(1f),
                             )
@@ -188,6 +209,29 @@ fun ReaderScreen(
         }
 
         HorizontalDivider(color = Line)
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = Dimens.ScreenPadding),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            TextButton(
+                onClick = {
+                    val t = text ?: return@TextButton
+                    val v = (listState.firstVisibleItemIndex + 1).coerceIn(1, t.verses.size)
+                    val body = ctx.getString(R.string.reader_share_text, t.verses[v - 1], t.surah.nameSo, t.surah.id, v)
+                    val send = Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, body) }
+                    ctx.startActivity(Intent.createChooser(send, null))
+                },
+                modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
+            ) { Text(stringResource(R.string.reader_share), color = if (state.dark) Cream else Emerald) }
+            TextButton(
+                onClick = { auto = !auto },
+                modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
+            ) { Text(stringResource(if (auto) R.string.reader_auto_stop else R.string.reader_auto), color = if (state.dark) Cream else Emerald) }
+            TextButton(
+                onClick = vm::toggleDark,
+                modifier = Modifier.weight(1f).heightIn(min = Dimens.TouchMin),
+            ) { Text(stringResource(R.string.reader_theme), color = if (state.dark) Cream else Emerald) }
+        }
         Row(
             Modifier
                 .fillMaxWidth()

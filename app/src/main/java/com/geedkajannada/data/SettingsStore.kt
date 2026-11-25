@@ -22,6 +22,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val prayerAuto = booleanPreferencesKey("prayer_auto")
         val prayerCity = stringPreferencesKey("prayer_city")
         val quranFontSize = intPreferencesKey("quran_font_size")
+        val readerDark = booleanPreferencesKey("reader_dark")
         val lastSurah = intPreferencesKey("last_surah")
         val lastVerse = intPreferencesKey("last_verse")
         val bookmarkSurah = intPreferencesKey("bookmark_surah")
@@ -142,6 +143,12 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
 
     // ---- Quraan ----
     val quranFontSize: Flow<Int> = dataStore.data.map { it[Keys.quranFontSize] ?: 28 }
+
+    val readerDark: Flow<Boolean> = dataStore.data.map { it[Keys.readerDark] ?: false }
+
+    suspend fun setReaderDark(on: Boolean) {
+        dataStore.edit { it[Keys.readerDark] = on }
+    }
 
     suspend fun setQuranFontSize(sp: Int) {
         dataStore.edit { it[Keys.quranFontSize] = sp.coerceIn(18, 48) }
