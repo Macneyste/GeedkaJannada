@@ -148,8 +148,8 @@ fun AppNav() {
                     surahId = id,
                     startVerse = verse,
                     onBack = { nav.popBackStack() },
-                    onOpenSurah = { next ->
-                        nav.navigate(Routes.surah(next)) { popUpTo(Routes.QURAN) }
+                    onOpenSurah = { next, v ->
+                        nav.navigate(Routes.surah(next, v)) { popUpTo(Routes.SURAH) { inclusive = true } }
                     },
                 )
             }

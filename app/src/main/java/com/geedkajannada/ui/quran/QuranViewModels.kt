@@ -71,6 +71,9 @@ data class ReaderUiState(
     val startVerse: Int = 1,
     val dark: Boolean = false,
     val juz: Int = 1,
+    val surahs: List<Surah> = emptyList(),
+    /** Bismillaah madaxa suuradda (null: Al-Faatixa oo aayad ah, iyo At-Towba). */
+    val bismillah: String? = null,
 )
 
 class ReaderViewModel(
@@ -82,7 +85,15 @@ class ReaderViewModel(
     private val text = MutableStateFlow<SurahText?>(null)
     private val failed = MutableStateFlow(false)
 
+    private val extras = MutableStateFlow<Pair<List<Surah>, String?>>(emptyList<Surah>() to null)
+
     init {
+        viewModelScope.launch {
+            runCatching {
+                val basmala = if (surahId == 1 || surahId == 9) null else repo.surah(1)?.verses?.firstOrNull()
+                extras.value = repo.surahs() to basmala
+            }
+        }
         viewModelScope.launch {
             try {
                 val t = repo.surah(surahId)
@@ -107,12 +118,14 @@ class ReaderViewModel(
                 dark = dark,
                 juz = com.geedkajannada.data.Juz.of(surahId, startVerseArg),
             )
+        }.combine(extras) { state, (surahs, basmala) ->
+            state.copy(surahs = surahs, bismillah = basmala)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ReaderUiState())
+
+    fun setFontSize(sp: Int) { viewModelScope.launch { store.setQuranFontSize(sp) } }
 
     fun toggleDark() { viewModelScope.launch { store.setReaderDark(!uiState.value.dark) } }
 
-    fun bigger() { viewModelScope.launch { store.setQuranFontSize(uiState.value.fontSize + 2) } }
-    fun smaller() { viewModelScope.launch { store.setQuranFontSize(uiState.value.fontSize - 2) } }
 
     fun onVisibleVerse(verse: Int) {
         viewModelScope.launch { store.setLastRead(surahId, verse) }
