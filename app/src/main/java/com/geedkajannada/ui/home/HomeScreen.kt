@@ -181,13 +181,13 @@ private fun HeroCard(
     entries: List<PrayerEntry>,
     onSetTimes: () -> Unit,
 ) {
-    Box(
+    Column(
         Modifier
             .fillMaxWidth()
-            .heightIn(min = 190.dp)
             .background(Brush.linearGradient(listOf(Indigo, IndigoLight)), RoundedCornerShape(Dimens.HeroRadius))
             .clip(RoundedCornerShape(Dimens.HeroRadius)),
     ) {
+    Box(Modifier.fillMaxWidth().heightIn(min = 190.dp)) {
         // Qorraxda iyo masjidka: qaab nala leh (Canvas), ma aha sawir la koobiyay.
         Canvas(Modifier.matchParentSize()) {
             val w = size.width
@@ -254,31 +254,29 @@ private fun HeroCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = White,
                 )
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                        .background(Night.copy(alpha = 0.55f), RoundedCornerShape(16.dp))
-                        .padding(vertical = 8.dp, horizontal = 6.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    entries.forEach { e ->
-                        val isNext = e.prayer == next.prayer
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                stringResource(e.prayer.nameRes),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = if (isNext) Sun else White,
-                            )
-                            Text(
-                                e.minuteOfDay?.let { PrayerMath.format(it) } ?: "--:--",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = if (isNext) Sun else White,
-                            )
-                        }
-                    }
+            }
+        }
+    }
+    if (next != null && remaining != null) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Night)
+                .padding(vertical = 10.dp, horizontal = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            entries.forEach { e ->
+                val isNext = e.prayer == next.prayer
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(stringResource(e.prayer.nameRes), style = MaterialTheme.typography.labelSmall, color = if (isNext) Sun else White)
+                    Text(
+                        e.minuteOfDay?.let { PrayerMath.format(it) } ?: "--:--",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = if (isNext) Sun else White,
+                    )
                 }
             }
         }
+    }
     }
 }
