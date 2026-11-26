@@ -137,30 +137,35 @@ class CounterViewModelTest {
         now = 1050; vm.tap(); advanceUntilIdle()   // <120ms: diidan
         now = 1200; vm.tap(); advanceUntilIdle()
         assertEquals(2, st.count("subxaanallaah").first())
-        assertEquals(2, vm.uiState.value.count)
+        assertEquals(2, vm.uiState.value.current.count)
     }
-
-    @Test fun goalReachedShowsDialogAndDoesNotAutoReset() = runTest(dispatcher) {
+    @Test fun filledJarAdvancesAndCompletionStopsCounting() = runTest(dispatcher) {
         var now = 0L
         val st = store()
-        st.setGoal("subxaanallaah", 2)
+        Dhikrs.all.forEach { st.setGoal(it.id, 2) }
         val vm = CounterViewModel(st, { "2025-03-10" }, { now })
         collectState(vm)
         advanceUntilIdle()
-        vm.tap(); advanceUntilIdle()
-        assertFalse(vm.uiState.value.showGoalReached)
-        now += 200; vm.tap(); advanceUntilIdle()
-        assertTrue(vm.uiState.value.showGoalReached)
-        assertEquals(2, vm.uiState.value.count)
+        fun tapLater() { now += 200; vm.tap(); advanceUntilIdle() }
 
-        vm.continueAfterGoal(); advanceUntilIdle()
-        assertFalse(vm.uiState.value.showGoalReached)
-        assertEquals(2, vm.uiState.value.count)
+        tapLater()
+        assertEquals(0, vm.uiState.value.index)
+        tapLater()
+        assertEquals(1, vm.uiState.value.index)
+        repeat(4) { tapLater() }
+        assertTrue(vm.uiState.value.complete)
+        assertEquals(6, vm.uiState.value.total)
+
+        tapLater() // wareeggu wuu dhammaaday: lama tiriyo
+        assertEquals(6, vm.uiState.value.total)
 
         vm.startNewRound(); advanceUntilIdle()
-        assertEquals(0, vm.uiState.value.count)
+        assertEquals(0, vm.uiState.value.total)
+        assertEquals(0, vm.uiState.value.index)
         assertEquals(1, vm.uiState.value.rounds)
     }
+
+
 
     @Test fun resetRequiresConfirmation() = runTest(dispatcher) {
         val st = store()
@@ -170,11 +175,11 @@ class CounterViewModelTest {
         vm.tap(); advanceUntilIdle()
         vm.requestReset(); advanceUntilIdle()
         assertTrue(vm.uiState.value.showResetConfirm)
-        assertEquals(1, vm.uiState.value.count)
+        assertEquals(1, vm.uiState.value.current.count)
         vm.dismissReset(); advanceUntilIdle()
-        assertEquals(1, vm.uiState.value.count)
+        assertEquals(1, vm.uiState.value.current.count)
         vm.requestReset(); vm.confirmReset(); advanceUntilIdle()
-        assertEquals(0, vm.uiState.value.count)
+        assertEquals(0, vm.uiState.value.current.count)
     }
 
     @Test fun eventEmittedOnTap() = runTest(dispatcher) {
@@ -187,7 +192,7 @@ class CounterViewModelTest {
         advanceUntilIdle()
         vm.tap(); advanceUntilIdle()
         job.cancel()
-        assertEquals(listOf<CounterEvent>(CounterEvent.Tapped(false)), got)
+        assertEquals(listOf<CounterEvent>(CounterEvent.Tapped(jarFilled = false, completed = false)), got)
     }
 
     @Test fun pickerValidatesCustomGoal() = runTest(dispatcher) {

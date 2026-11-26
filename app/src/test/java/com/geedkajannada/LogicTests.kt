@@ -9,7 +9,6 @@ import com.geedkajannada.data.PrayerMath
 import com.geedkajannada.data.QuranParser
 import com.geedkajannada.data.StatsCalc
 import com.geedkajannada.reminder.ReminderScheduler
-import com.geedkajannada.ui.counter.TreeGeometry
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -52,22 +51,6 @@ class GoalValidatorTest {
         assertEquals(GoalValidation.NotNumber, GoalValidator.validate("3.5"))
     }
     @Test fun rejectsEmpty() = assertEquals(GoalValidation.Empty, GoalValidator.validate("  "))
-}
-
-class TreeGeometryTest {
-    @Test fun trunkAndTop() {
-        assertEquals(30f, TreeGeometry.trunkHeight(0f), 0.001f)
-        assertEquals(130f, TreeGeometry.trunkHeight(1f), 0.001f)
-        assertEquals(70f, TreeGeometry.top(1f), 0.001f)
-        assertEquals(0.45f, TreeGeometry.crownScale(0f), 0.001f)
-        assertEquals(0.9f, TreeGeometry.crownScale(1f), 0.001f)
-    }
-    @Test fun fruitCount() {
-        assertEquals(0, TreeGeometry.visibleFruit(0.16f))
-        assertEquals(1, TreeGeometry.visibleFruit(0.17f))
-        assertEquals(3, TreeGeometry.visibleFruit(0.5f))
-        assertEquals(6, TreeGeometry.visibleFruit(1f))
-    }
 }
 
 class StatsCalcTest {

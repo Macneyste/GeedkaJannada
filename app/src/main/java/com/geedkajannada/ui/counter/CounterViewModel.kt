@@ -6,7 +6,6 @@ import com.geedkajannada.data.CounterLogic
 import com.geedkajannada.data.Dhikr
 import com.geedkajannada.data.Dhikrs
 import com.geedkajannada.data.SettingsStore
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,93 +13,115 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Hal dhalo: dikhriga, tiradiisa iyo yoolkiisa. */
+data class Jar(val dhikr: Dhikr, val count: Int, val goal: Int) {
+    val full: Boolean get() = count >= goal
+}
+
 data class CounterUiState(
-    val dhikr: Dhikr = Dhikrs.all.first(),
-    val count: Int = 0,
-    val goal: Int = Dhikrs.all.first().defaultGoal,
+    val jars: List<Jar> = Dhikrs.all.map { Jar(it, 0, it.defaultGoal) },
+    /** Dikhriga hadda la tirinayo (0..2). */
+    val index: Int = 0,
     val rounds: Int = 0,
     val soundOn: Boolean = false,
     val hapticsOn: Boolean = false,
-    val showGoalReached: Boolean = false,
     val showResetConfirm: Boolean = false,
     val loaded: Boolean = false,
 ) {
-    val ratio: Float get() = CounterLogic.ratio(count, goal)
+    val current: Jar get() = jars[index]
+    val total: Int get() = jars.sumOf { minOf(it.count, it.goal) }
+    val totalGoal: Int get() = jars.sumOf { it.goal }
+    val complete: Boolean get() = jars.all { it.full }
 }
 
 sealed interface CounterEvent {
     /** Hal taabasho oo la aqbalay. */
-    data class Tapped(val goalReached: Boolean) : CounterEvent
+    data class Tapped(val jarFilled: Boolean, val completed: Boolean) : CounterEvent
 }
 
-private data class Base(
-    val dhikr: Dhikr,
-    val count: Int,
-    val goal: Int,
-    val rounds: Int,
-    val sound: Boolean,
-    val haptics: Boolean,
-)
-
-@OptIn(ExperimentalCoroutinesApi::class)
 class CounterViewModel(
     private val store: SettingsStore,
     private val dateKey: () -> String,
     private val nowMs: () -> Long = { System.currentTimeMillis() },
 ) : ViewModel() {
 
-    private val dialogs = MutableStateFlow(Pair(false, false)) // (goalReached, resetConfirm)
+    private val resetConfirm = MutableStateFlow(false)
     private var lastTapMs: Long? = null
+    private var tapping = false
 
     private val _events = MutableSharedFlow<CounterEvent>(extraBufferCapacity = 8)
     val events: SharedFlow<CounterEvent> = _events.asSharedFlow()
 
-    private val base = store.selectedDhikrId.flatMapLatest { id ->
-        val d = Dhikrs.byId(id)
-        combine(
-            store.count(d.id), store.goal(d), store.rounds(d.id),
-            store.soundEnabled, store.hapticsEnabled,
-        ) { c, g, r, s, h -> Base(d, c, g, r, s, h) }
-    }
+    private val jars = combine(
+        Dhikrs.all.map { d -> combine(store.count(d.id), store.goal(d)) { c, g -> Jar(d, c, g) } },
+    ) { it.toList() }
 
-    val uiState: StateFlow<CounterUiState> = combine(base, dialogs) { b, d ->
-        CounterUiState(b.dhikr, b.count, b.goal, b.rounds, b.sound, b.haptics, d.first, d.second, true)
+    private val prefs = combine(
+        store.selectedDhikrId, store.rounds(Dhikrs.all.first().id), store.soundEnabled, store.hapticsEnabled,
+    ) { id, rounds, sound, haptics -> Prefs(id, rounds, sound, haptics) }
+
+    private data class Prefs(val selected: String, val rounds: Int, val sound: Boolean, val haptics: Boolean)
+
+    val uiState: StateFlow<CounterUiState> = combine(jars, prefs, resetConfirm) { j, p, confirm ->
+        CounterUiState(
+            jars = j,
+            index = j.indexOfFirst { it.dhikr.id == p.selected }.coerceAtLeast(0),
+            rounds = p.rounds,
+            soundOn = p.sound,
+            hapticsOn = p.haptics,
+            showResetConfirm = confirm,
+            loaded = true,
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CounterUiState())
 
-    /** Hal taabasho = hal tiro; taabasho ka yar 120ms waa la diidaa. */
+    /** Hal taabasho = hal tiro; taabasho ka yar 120ms waa la diidaa. Marka dhaladu buuxsanto, tan xigta ayaa loo gudbaa. */
     fun tap() {
         val now = nowMs()
         if (!CounterLogic.acceptTap(now, lastTapMs)) return
-        lastTapMs = now
         val s = uiState.value
-        if (!s.loaded) return
+        if (!s.loaded || s.complete || tapping) return
+        lastTapMs = now
+        tapping = true
         viewModelScope.launch {
-            val n = store.increment(s.dhikr.id, dateKey())
-            val reached = CounterLogic.reachedGoal(n, s.goal)
-            if (reached) dialogs.update { it.copy(first = true) }
-            _events.emit(CounterEvent.Tapped(reached))
+            try {
+                val target = if (!s.current.full) s.current else s.jars.first { !it.full }
+                val n = store.increment(target.dhikr.id, dateKey())
+                val filled = n >= target.goal
+                val next = if (filled) nextOpen(s.jars, target) else null
+                store.selectDhikr((next ?: target).dhikr.id)
+                _events.emit(CounterEvent.Tapped(jarFilled = filled, completed = filled && next == null))
+            } finally {
+                tapping = false
+            }
         }
     }
 
-    fun requestReset() = dialogs.update { it.copy(second = true) }
-    fun dismissReset() = dialogs.update { it.copy(second = false) }
-
-    fun confirmReset() {
-        dismissReset()
-        viewModelScope.launch { store.reset(uiState.value.dhikr.id) }
+    /** Dhalada xigta ee aan weli buuxsamin (ka dib `done`, kadib dib u soo laabo). */
+    private fun nextOpen(all: List<Jar>, done: Jar): Jar? {
+        val i = all.indexOfFirst { it.dhikr.id == done.dhikr.id }
+        return (1 until all.size).map { all[(i + it) % all.size] }.firstOrNull { !it.full }
     }
 
-    /** "Sii wad": xir dialog-ka, tirada ha ahaato. */
-    fun continueAfterGoal() = dialogs.update { it.copy(first = false) }
+    fun requestReset() { resetConfirm.value = true }
+    fun dismissReset() { resetConfirm.value = false }
 
-    /** "Wareeg cusub": tirada eber, wareegyada +1. */
+    /** "Dib u bilow": eber saddexda dhalo. */
+    fun confirmReset() {
+        dismissReset()
+        viewModelScope.launch {
+            Dhikrs.all.forEach { store.reset(it.id) }
+            store.selectDhikr(Dhikrs.all.first().id)
+        }
+    }
+
+    /** "Wareeg cusub": ka dib 99, eber oo wareegyada +1. */
     fun startNewRound() {
-        dialogs.update { it.copy(first = false) }
-        viewModelScope.launch { store.newRound(uiState.value.dhikr.id) }
+        viewModelScope.launch {
+            Dhikrs.all.forEach { store.newRound(it.id) }
+            store.selectDhikr(Dhikrs.all.first().id)
+        }
     }
 }
