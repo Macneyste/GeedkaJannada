@@ -4,6 +4,9 @@ App Soomaali-ka ugu horreeya ee dikhriga, offline ah (Android, Kotlin, Jetpack C
 Akoon ma jiro, xayeysiis ma jiro, analytics ma jiro, backend ma jiro, `INTERNET` permission ma jiro, location ma jiro.
 
 ## Muuqaallada
+- **Tabs**: Quraan, Salaad, Hoyga, Dua, Kale.
+- **Dua**: 35 duco Quraan ah (macnaha weli lama hubin, eeg [docs/DUA_REVIEW.md](docs/DUA_REVIEW.md)).
+- Asturnaanta: [docs/PRIVACY.md](docs/PRIVACY.md).
 - **Tasbeeh**: 3 dhikri x 33 (hal taabasho = hal tiro, debounce 120ms), tusbax iyo giraangir, 3 dhalo midabbo leh, 5 dhawaaq oo la dami karo, "Xiga", "Dib u bilow" oo xaqiijin leh, kaarka dhammaystirka (99/99).
 - **Dejimaha**: codka (SoundPool, default ON) iyo gariirka (haptic, default OFF).
 - **Quraan**: liiska 114 suuradood, raadin, "Sii wad akhriska", akhriska RTL oo leh Amiri, cabbirka qoraalka, calaamad, suurad hore/xigta.
