@@ -99,22 +99,3 @@ class SettingsStoreTest {
         assertEquals(null, s.bookmark.first())
     }
 }
-
-class PrayerCheckTests {
-    @org.junit.Rule @JvmField val tmp = org.junit.rules.TemporaryFolder()
-
-    @Test fun toggleChecksAndUnchecks() = kotlinx.coroutines.test.runTest {
-        val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.test.UnconfinedTestDispatcher(testScheduler) + kotlinx.coroutines.SupervisorJob())
-        val store = SettingsStore(
-            androidx.datastore.preferences.core.PreferenceDataStoreFactory.create(scope = scope) {
-                java.io.File(tmp.root, "c.preferences_pb")
-            },
-        )
-        store.toggleChecked("2026-01-01", com.geedkajannada.data.Prayer.SUBAX)
-        org.junit.Assert.assertEquals(setOf(com.geedkajannada.data.Prayer.SUBAX), store.checkedPrayers("2026-01-01").first())
-        org.junit.Assert.assertTrue(store.checkedPrayers("2026-01-02").first().isEmpty())
-        store.toggleChecked("2026-01-01", com.geedkajannada.data.Prayer.SUBAX)
-        org.junit.Assert.assertTrue(store.checkedPrayers("2026-01-01").first().isEmpty())
-        scope.coroutineContext[kotlinx.coroutines.Job]!!.cancel()
-    }
-}

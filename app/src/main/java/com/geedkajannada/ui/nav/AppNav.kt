@@ -20,7 +20,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.geedkajannada.R
 import com.geedkajannada.ui.adhkar.AdhkarScreen
+import com.geedkajannada.feature.dua.DuaDetailScreen
+import com.geedkajannada.feature.dua.DuaHomeScreen
+import com.geedkajannada.feature.dua.DuaListScreen
 import com.geedkajannada.feature.tasbeeh.TasbeehScreen
+import com.geedkajannada.ui.more.AboutScreen
+import com.geedkajannada.ui.more.MoreItem
+import com.geedkajannada.ui.more.MoreScreen
 import com.geedkajannada.ui.history.HistoryScreen
 import com.geedkajannada.ui.home.HomeScreen
 import com.geedkajannada.ui.prayer.PrayerScreen
@@ -45,6 +51,13 @@ object Routes {
     const val ADHKAR = "adhkar"
     const val HISTORY = "history"
     const val SETTINGS = "settings"
+    const val DUA = "dua"
+    const val DUA_LIST = "dualist/{id}"
+    const val DUA_ITEM = "duaitem/{id}"
+    const val MORE = "more"
+    const val ABOUT = "about"
+    fun duaList(id: String) = "dualist/$id"
+    fun duaItem(id: String) = "duaitem/$id"
     const val SURAH = "surah/{id}?verse={verse}"
     fun surah(id: Int, verse: Int = 1) = "surah/$id?verse=$verse"
 }
@@ -55,16 +68,19 @@ private val tabs = listOf(
     Tab(Routes.QURAN, R.string.nav_quran, R.drawable.ic_nav_quran),
     Tab(Routes.PRAYER, R.string.nav_prayer, R.drawable.ic_nav_prayer),
     Tab(Routes.HOME, R.string.nav_home, R.drawable.ic_nav_home),
-    Tab(Routes.ADHKAR, R.string.nav_adhkar, R.drawable.ic_nav_adhkar),
-    Tab(Routes.HISTORY, R.string.nav_history, R.drawable.ic_nav_history),
+    Tab(Routes.DUA, R.string.nav_dua, R.drawable.ic_nav_adhkar),
+    Tab(Routes.MORE, R.string.nav_more, R.drawable.ic_nav_more),
 )
+
+/** Bogagga hoose ee aan lahayn badhan "Dib": bar-ku wuu sii muuqdaa. */
+private val subPagesWithBar = setOf(Routes.COUNTER, Routes.ADHKAR, Routes.HISTORY)
 
 @Composable
 fun AppNav() {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
-    val showBar = tabs.any { it.route == route } || route == Routes.COUNTER
+    val showBar = tabs.any { it.route == route } || route in subPagesWithBar
 
     com.geedkajannada.ui.location.LocationGate()
     Scaffold(
@@ -99,7 +115,7 @@ fun AppNav() {
     ) { padding ->
         NavHost(nav, startDestination = Routes.HOME, modifier = Modifier.padding(padding)) {
             composable(Routes.HOME) {
-                val go = { r: String ->
+                val tab = { r: String ->
                     nav.navigate(r) {
                         popUpTo(nav.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
@@ -107,17 +123,45 @@ fun AppNav() {
                     }
                 }
                 HomeScreen(
-                    onOpenQuran = { go(Routes.QURAN) },
-                    onOpenCounter = { go(Routes.COUNTER) },
-                    onOpenPrayer = { go(Routes.PRAYER) },
-                    onOpenHistory = { go(Routes.HISTORY) },
-                    onOpenAdhkar = { go(Routes.ADHKAR) },
                     onOpenQibla = { nav.navigate(Routes.QIBLA) },
+                    onOpenCounter = { nav.navigate(Routes.COUNTER) },
+                    onOpenDua = { tab(Routes.DUA) },
                     onOpenZakat = { nav.navigate(Routes.ZAKAT) },
+                    onOpenPrayer = { tab(Routes.PRAYER) },
                     onOpenSettings = { nav.navigate(Routes.SETTINGS) },
                     onOpenSurah = { id, v -> nav.navigate(Routes.surah(id, v)) },
                 )
             }
+            composable(Routes.DUA) {
+                DuaHomeScreen(
+                    onOpenCategory = { nav.navigate(Routes.duaList(it)) },
+                    onOpenDua = { nav.navigate(Routes.duaItem(it)) },
+                )
+            }
+            composable(Routes.DUA_LIST) { e ->
+                DuaListScreen(
+                    categoryId = e.arguments?.getString("id").orEmpty(),
+                    onBack = { nav.popBackStack() },
+                    onOpenDua = { nav.navigate(Routes.duaItem(it)) },
+                )
+            }
+            composable(Routes.DUA_ITEM) { e ->
+                DuaDetailScreen(duaId = e.arguments?.getString("id").orEmpty(), onBack = { nav.popBackStack() })
+            }
+            composable(Routes.MORE) {
+                MoreScreen(
+                    listOf(
+                        MoreItem(R.string.nav_tasbeeh, R.drawable.ic_nav_adhkar) { nav.navigate(Routes.COUNTER) },
+                        MoreItem(R.string.nav_qibla, R.drawable.ic_tile_qibla) { nav.navigate(Routes.QIBLA) },
+                        MoreItem(R.string.nav_zakat, R.drawable.ic_tile_zakat) { nav.navigate(Routes.ZAKAT) },
+                        MoreItem(R.string.nav_adhkar, R.drawable.ic_tile_adhkar) { nav.navigate(Routes.ADHKAR) },
+                        MoreItem(R.string.nav_history, R.drawable.ic_nav_history) { nav.navigate(Routes.HISTORY) },
+                        MoreItem(R.string.settings, R.drawable.ic_tile_settings) { nav.navigate(Routes.SETTINGS) },
+                        MoreItem(R.string.about_title, R.drawable.ic_nav_home) { nav.navigate(Routes.ABOUT) },
+                    ),
+                )
+            }
+            composable(Routes.ABOUT) { AboutScreen(onBack = { nav.popBackStack() }) }
             composable(Routes.COUNTER) {
                 TasbeehScreen()
             }

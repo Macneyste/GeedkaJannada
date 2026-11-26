@@ -1,5 +1,8 @@
 package com.geedkajannada.ui.home
 
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
@@ -20,12 +23,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,21 +37,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geedkajannada.R
 import com.geedkajannada.data.Hijri
 import com.geedkajannada.data.HijriMonthNames
-import com.geedkajannada.data.Prayer
 import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.PrayerMath
 import com.geedkajannada.ui.GeedkaCard
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.BrownInk
-import com.geedkajannada.ui.theme.BrownMid
-import com.geedkajannada.ui.theme.Bronze
 import com.geedkajannada.ui.theme.Sand
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
@@ -64,17 +60,15 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.delay
 
-private data class Tile(val labelRes: Int, val subRes: Int, @androidx.annotation.DrawableRes val icon: Int, val onClick: () -> Unit)
+private data class Tile(val labelRes: Int, @androidx.annotation.DrawableRes val icon: Int, val onClick: () -> Unit)
 
 @Composable
 fun HomeScreen(
-    onOpenQuran: () -> Unit,
-    onOpenCounter: () -> Unit,
-    onOpenPrayer: () -> Unit,
-    onOpenHistory: () -> Unit,
-    onOpenAdhkar: () -> Unit,
     onOpenQibla: () -> Unit,
+    onOpenCounter: () -> Unit,
+    onOpenDua: () -> Unit,
     onOpenZakat: () -> Unit,
+    onOpenPrayer: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenSurah: (Int, Int) -> Unit,
     vm: HomeViewModel = appViewModel { HomeViewModel(it.prayers, it.settings, it.quran, it.stats) },
@@ -95,20 +89,18 @@ fun HomeScreen(
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(Dimens.HomePadding),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+            .padding(Dimens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium, color = BrownInk)
-                Text(stringResource(R.string.home_subtitle), style = MaterialTheme.typography.bodyMedium, color = BrownMid)
-            }
-            androidx.compose.material3.IconButton(onClick = onOpenSettings, modifier = Modifier.size(Dimens.TouchMin)) {
-                androidx.compose.material3.Icon(
-                    Icons.Filled.Settings,
-                    contentDescription = stringResource(R.string.home_gear),
-                    tint = Indigo,
-                )
+            Text(
+                stringResource(R.string.app_name),
+                style = MaterialTheme.typography.headlineSmall,
+                color = BrownInk,
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(onClick = onOpenSettings, modifier = Modifier.size(Dimens.TouchMin)) {
+                Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.home_gear), tint = Indigo)
             }
         }
 
@@ -126,7 +118,30 @@ fun HomeScreen(
             onSetTimes = onOpenPrayer,
         )
 
-        PrayerTrackerCard(state.entries, state.checked, vm::toggleChecked, onOpenPrayer)
+        val tiles = listOf(
+            Tile(R.string.nav_qibla, R.drawable.ic_tile_qibla, onOpenQibla),
+            Tile(R.string.nav_tasbeeh, R.drawable.ic_nav_adhkar, onOpenCounter),
+            Tile(R.string.nav_dua, R.drawable.ic_tile_adhkar, onOpenDua),
+            Tile(R.string.nav_zakat, R.drawable.ic_tile_zakat, onOpenZakat),
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            tiles.forEach { t ->
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .heightIn(min = 80.dp)
+                        .background(White, RoundedCornerShape(16.dp))
+                        .border(1.dp, Line, RoundedCornerShape(16.dp))
+                        .clickable(onClick = t.onClick)
+                        .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Icon(painterResource(t.icon), contentDescription = null, tint = Indigo, modifier = Modifier.size(28.dp))
+                    Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelMedium, color = BrownInk, maxLines = 1)
+                }
+            }
+        }
 
         val last = state.lastRead
         GeedkaCard(
@@ -147,56 +162,9 @@ fun HomeScreen(
             }
         }
 
-        val tiles = listOf(
-            Tile(R.string.nav_quran, R.string.tile_quran_sub, R.drawable.ic_nav_quran, onOpenQuran),
-            Tile(R.string.nav_qibla, R.string.tile_qibla_sub, R.drawable.ic_tile_qibla, onOpenQibla),
-            Tile(R.string.nav_tasbeeh, R.string.tile_tasbeeh_sub, R.drawable.ic_nav_adhkar, onOpenCounter),
-            Tile(R.string.nav_adhkar, R.string.tile_adhkar_sub, R.drawable.ic_tile_adhkar, onOpenAdhkar),
-            Tile(R.string.nav_times, R.string.tile_times_sub, R.drawable.ic_tile_times, onOpenPrayer),
-            Tile(R.string.nav_history, R.string.tile_history_sub, R.drawable.ic_nav_history, onOpenHistory),
-            Tile(R.string.nav_zakat, R.string.tile_zakat_sub, R.drawable.ic_tile_zakat, onOpenZakat),
-            Tile(R.string.settings, R.string.tile_settings_sub, R.drawable.ic_tile_settings, onOpenSettings),
-        )
-        tiles.chunked(4).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                row.forEach { t ->
-                    Column(
-                        Modifier
-                            .weight(1f)
-                            .heightIn(min = 92.dp)
-                            .background(White, RoundedCornerShape(Dimens.TileRadius))
-                            .border(1.dp, Line, RoundedCornerShape(Dimens.TileRadius))
-                            .clickable(onClick = t.onClick)
-                            .padding(6.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        androidx.compose.material3.Icon(
-                            androidx.compose.ui.res.painterResource(t.icon),
-                            contentDescription = null,
-                            tint = Indigo,
-                            modifier = Modifier.size(28.dp),
-                        )
-                        Text(stringResource(t.labelRes), style = MaterialTheme.typography.labelMedium, color = BrownInk, maxLines = 1)
-                        Text(stringResource(t.subRes), style = MaterialTheme.typography.labelSmall, color = BrownMid, maxLines = 1)
-                    }
-                }
-            }
-        }
-
-        GeedkaCard(Modifier.clickable(onClick = onOpenAdhkar)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    stringResource(R.string.home_adhkar_card, state.subaxDone, state.subaxTotal),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = BrownInk,
-                    modifier = Modifier.weight(1f),
-                )
-                Text(
-                    stringResource(if (state.subaxDone == 0) R.string.home_adhkar_start else R.string.home_adhkar_go),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Indigo,
-                )
+        if (!state.notificationsOn) {
+            GeedkaCard(Modifier.clickable(onClick = onOpenPrayer)) {
+                Text(stringResource(R.string.home_notif_off), style = MaterialTheme.typography.bodyMedium, color = BrownInk)
             }
         }
     }
@@ -309,65 +277,6 @@ private fun HeroCard(
                             )
                         }
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun PrayerTrackerCard(
-    entries: List<PrayerEntry>,
-    checked: Set<Prayer>,
-    onToggle: (Prayer) -> Unit,
-    onShow: () -> Unit,
-) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .background(White, RoundedCornerShape(Dimens.CardRadius))
-            .padding(14.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                stringResource(R.string.home_prayer_tracker),
-                style = MaterialTheme.typography.titleMedium,
-                color = BrownInk,
-                modifier = Modifier.weight(1f),
-            )
-            TextButton(onClick = onShow, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
-                Text(stringResource(R.string.home_show), color = Indigo)
-            }
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Prayer.entries.forEach { p ->
-                val done = p in checked
-                val name = stringResource(p.nameRes)
-                val desc = stringResource(if (done) R.string.home_prayer_done else R.string.home_prayer_todo, name)
-                val time = entries.firstOrNull { it.prayer == p }?.minuteOfDay?.let { PrayerMath.format(it) } ?: "--:--"
-                Column(
-                    Modifier
-                        .clickable { onToggle(p) }
-                        .heightIn(min = Dimens.TouchMin)
-                        .semantics { contentDescription = desc },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Box(
-                        Modifier
-                            .size(36.dp)
-                            .background(if (done) Bronze else White, CircleShape)
-                            .border(2.dp, if (done) Bronze else BrownMid, CircleShape),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        if (done) androidx.compose.material3.Icon(
-                            androidx.compose.ui.res.painterResource(R.drawable.ic_check),
-                            contentDescription = null,
-                            tint = White,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
-                    Text(name, style = MaterialTheme.typography.labelMedium, color = BrownInk)
-                    Text(time, style = MaterialTheme.typography.labelSmall, color = BrownMid)
                 }
             }
         }
