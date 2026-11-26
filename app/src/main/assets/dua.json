@@ -1,0 +1,493 @@
+{
+ "version": 1,
+ "categories": [
+  {
+   "id": "subax",
+   "so": "Subax & Galab",
+   "en": "Morning & Evening",
+   "order": 1
+  },
+  {
+   "id": "safar",
+   "so": "Safarka",
+   "en": "Travel",
+   "order": 2
+  },
+  {
+   "id": "salaad",
+   "so": "Masjidka & Salaadda",
+   "en": "Mosque & Prayer",
+   "order": 3
+  },
+  {
+   "id": "caafimaad",
+   "so": "Cudurka & Caafimaadka",
+   "en": "Illness & Health",
+   "order": 4
+  },
+  {
+   "id": "walwal",
+   "so": "Dhibaato & Walwal",
+   "en": "Distress & Worry",
+   "order": 5
+  },
+  {
+   "id": "mahad",
+   "so": "Farxad & Mahad",
+   "en": "Joy & Gratitude",
+   "order": 6
+  },
+  {
+   "id": "istaqfaar",
+   "so": "Istaqfaar & Towbad",
+   "en": "Forgiveness & Repentance",
+   "order": 7
+  },
+  {
+   "id": "qoys",
+   "so": "Qoyska & Carruurta",
+   "en": "Family & Children",
+   "order": 8
+  },
+  {
+   "id": "rizqi",
+   "so": "Rizqiga & Cilmiga",
+   "en": "Provision & Knowledge",
+   "order": 9
+  },
+  {
+   "id": "aakhiro",
+   "so": "Dunida & Aakhiro",
+   "en": "This life & the Hereafter",
+   "order": 10
+  },
+  {
+   "id": "nabiyo",
+   "so": "Duca Nabiyada",
+   "en": "Prayers of the Prophets",
+   "order": 11
+  }
+ ],
+ "duas": [
+  {
+   "id": "q2_255",
+   "category": "subax",
+   "surah": 2,
+   "from": 255,
+   "to": 255,
+   "repeat": 1,
+   "so": "Aayatul Kursi: Alle mooyee ilaah kale ma jiro; waa Noolaha wax walba maamula.",
+   "en": "Ayat al-Kursi: there is no god but Allah, the Ever-Living, the Sustainer.",
+   "needsReview": true,
+   "order": 1
+  },
+  {
+   "id": "q112_1",
+   "category": "subax",
+   "surah": 112,
+   "from": 1,
+   "to": 4,
+   "repeat": 3,
+   "so": "Suuratul Ikhlaas: Alle waa Kelidiis, wax la mid ahna ma jiro.",
+   "en": "Al-Ikhlas: Allah is One, and nothing is comparable to Him.",
+   "needsReview": true,
+   "order": 2
+  },
+  {
+   "id": "q113_1",
+   "category": "subax",
+   "surah": 113,
+   "from": 1,
+   "to": 5,
+   "repeat": 3,
+   "so": "Suuratul Falaq: magangal sharka abuurka, sixirka iyo xaasidka.",
+   "en": "Al-Falaq: seeking refuge from the evil of creation, sorcery and envy.",
+   "needsReview": true,
+   "order": 3
+  },
+  {
+   "id": "q114_1",
+   "category": "subax",
+   "surah": 114,
+   "from": 1,
+   "to": 6,
+   "repeat": 3,
+   "so": "Suuratun Naas: magangal sharka waswaaska jinka iyo dadka.",
+   "en": "An-Nas: seeking refuge from the whisperer among jinn and people.",
+   "needsReview": true,
+   "order": 4
+  },
+  {
+   "id": "q2_201",
+   "category": "aakhiro",
+   "surah": 2,
+   "from": 201,
+   "to": 201,
+   "repeat": 1,
+   "so": "Rabbiyow adduunka iyo aakhiraba wanaag na sii, naartana naga ilaali.",
+   "en": "Our Lord, give us good in this world and the next, and protect us from the Fire.",
+   "needsReview": true,
+   "order": 5
+  },
+  {
+   "id": "q3_8",
+   "category": "aakhiro",
+   "surah": 3,
+   "from": 8,
+   "to": 8,
+   "repeat": 1,
+   "so": "Rabbiyow quluubteenna ha leexin markaad na hanuunisay ka dib.",
+   "en": "Our Lord, do not let our hearts deviate after You have guided us.",
+   "needsReview": true,
+   "order": 6
+  },
+  {
+   "id": "q2_127",
+   "category": "nabiyo",
+   "surah": 2,
+   "from": 127,
+   "to": 127,
+   "repeat": 1,
+   "so": "Ducadii Ibraahim iyo Ismaaciil: Rabbiyow naga aqbal.",
+   "en": "Prayer of Ibrahim and Ismail: Our Lord, accept this from us.",
+   "needsReview": true,
+   "order": 7
+  },
+  {
+   "id": "q2_128",
+   "category": "qoys",
+   "surah": 2,
+   "from": 128,
+   "to": 128,
+   "repeat": 1,
+   "so": "Rabbiyow naga yeel kuwo kuu hoggaansan, faracayagana ummad kuu hoggaansan.",
+   "en": "Our Lord, make us and our descendants submit to You.",
+   "needsReview": true,
+   "order": 8
+  },
+  {
+   "id": "q2_250",
+   "category": "walwal",
+   "surah": 2,
+   "from": 250,
+   "to": 250,
+   "repeat": 1,
+   "so": "Rabbiyow samir nagu shub, cagahayagana suj.",
+   "en": "Our Lord, pour patience upon us and make our feet firm.",
+   "needsReview": true,
+   "order": 9
+  },
+  {
+   "id": "q2_286",
+   "category": "istaqfaar",
+   "surah": 2,
+   "from": 286,
+   "to": 286,
+   "repeat": 1,
+   "so": "Rabbiyow ha nagu qabsan wixii aan illownay ama ku gefnay; noo dambi dhaaf.",
+   "en": "Our Lord, do not blame us if we forget or err; pardon and forgive us.",
+   "needsReview": true,
+   "order": 10
+  },
+  {
+   "id": "q3_16",
+   "category": "istaqfaar",
+   "surah": 3,
+   "from": 16,
+   "to": 16,
+   "repeat": 1,
+   "so": "Rabbiyow waan rumaynay, ee noo dambi dhaaf, naartana naga ilaali.",
+   "en": "Our Lord, we have believed, so forgive us and protect us from the Fire.",
+   "needsReview": true,
+   "order": 11
+  },
+  {
+   "id": "q3_147",
+   "category": "istaqfaar",
+   "surah": 3,
+   "from": 147,
+   "to": 147,
+   "repeat": 1,
+   "so": "Rabbiyow dambiyadayada iyo xad-gudubkayaga noo dhaaf, cagahayagana suj.",
+   "en": "Our Lord, forgive our sins and excesses and make our feet firm.",
+   "needsReview": true,
+   "order": 12
+  },
+  {
+   "id": "q3_173",
+   "category": "walwal",
+   "surah": 3,
+   "from": 173,
+   "to": 173,
+   "repeat": 1,
+   "so": "Alle ayaa nagu filan, isagaana ah Wakiilka ugu wanaagsan.",
+   "en": "Allah is sufficient for us, and He is the best Disposer of affairs.",
+   "needsReview": true,
+   "order": 13
+  },
+  {
+   "id": "q7_23",
+   "category": "istaqfaar",
+   "surah": 7,
+   "from": 23,
+   "to": 23,
+   "repeat": 1,
+   "so": "Ducadii Aadam iyo Xaawo: Rabbiyow naftayada ayaan dulminnay; haddaadan noo dambi dhaafin waan khasaarnaynaa.",
+   "en": "Prayer of Adam and Hawwa: Our Lord, we have wronged ourselves.",
+   "needsReview": true,
+   "order": 14
+  },
+  {
+   "id": "q14_40",
+   "category": "salaad",
+   "surah": 14,
+   "from": 40,
+   "to": 40,
+   "repeat": 1,
+   "so": "Rabbiyow iga yeel mid salaadda ooga, faracaygana sidoo kale.",
+   "en": "My Lord, make me one who establishes prayer, and my descendants too.",
+   "needsReview": true,
+   "order": 15
+  },
+  {
+   "id": "q14_41",
+   "category": "qoys",
+   "surah": 14,
+   "from": 41,
+   "to": 41,
+   "repeat": 1,
+   "so": "Rabbiyow ii dambi dhaaf, labadayda waalid iyo mu’miniinta.",
+   "en": "Our Lord, forgive me, my parents and the believers.",
+   "needsReview": true,
+   "order": 16
+  },
+  {
+   "id": "q17_24",
+   "category": "qoys",
+   "surah": 17,
+   "from": 24,
+   "to": 24,
+   "repeat": 1,
+   "so": "Rabbiyow u naxariiso labadayda waalid sidii ay ii soo barbaariyeen.",
+   "en": "My Lord, have mercy on my parents as they raised me when I was small.",
+   "needsReview": true,
+   "order": 17
+  },
+  {
+   "id": "q17_80",
+   "category": "safar",
+   "surah": 17,
+   "from": 80,
+   "to": 80,
+   "repeat": 1,
+   "so": "Rabbiyow gelid run ah igu geli, bixid run ahna iga bixi.",
+   "en": "My Lord, grant me a truthful entrance and a truthful exit.",
+   "needsReview": true,
+   "order": 18
+  },
+  {
+   "id": "q18_10",
+   "category": "walwal",
+   "surah": 18,
+   "from": 10,
+   "to": 10,
+   "repeat": 1,
+   "so": "Rabbiyow naxariis xaggaaga ah na sii, arrinkayagana toosnaan noo diyaari.",
+   "en": "Our Lord, grant us mercy from Yourself and guide our affair.",
+   "needsReview": true,
+   "order": 19
+  },
+  {
+   "id": "q20_25",
+   "category": "walwal",
+   "surah": 20,
+   "from": 25,
+   "to": 28,
+   "repeat": 1,
+   "so": "Ducadii Muuse: Rabbiyow laabta ii waasici, arrinkaygana ii fududee.",
+   "en": "Prayer of Musa: My Lord, expand my chest and ease my task.",
+   "needsReview": true,
+   "order": 20
+  },
+  {
+   "id": "q20_114",
+   "category": "rizqi",
+   "surah": 20,
+   "from": 114,
+   "to": 114,
+   "repeat": 1,
+   "so": "Rabbiyow cilmi ii kordhi.",
+   "en": "My Lord, increase me in knowledge.",
+   "needsReview": true,
+   "order": 21
+  },
+  {
+   "id": "q21_83",
+   "category": "caafimaad",
+   "surah": 21,
+   "from": 83,
+   "to": 83,
+   "repeat": 1,
+   "so": "Ducadii Ayyuub: waxaa i taabtay dhib, adigaana ugu naxariista badan.",
+   "en": "Prayer of Ayyub: harm has touched me, and You are the Most Merciful.",
+   "needsReview": true,
+   "order": 22
+  },
+  {
+   "id": "q21_87",
+   "category": "walwal",
+   "surah": 21,
+   "from": 87,
+   "to": 87,
+   "repeat": 1,
+   "so": "Ducadii Yuunus: Adiga mooyee ilaah kale ma jiro; waad nasahan tahay.",
+   "en": "Prayer of Yunus: there is no god but You; glory be to You.",
+   "needsReview": true,
+   "order": 23
+  },
+  {
+   "id": "q21_89",
+   "category": "nabiyo",
+   "surah": 21,
+   "from": 89,
+   "to": 89,
+   "repeat": 1,
+   "so": "Ducadii Zakariye: Rabbiyow keli ha iga tegin.",
+   "en": "Prayer of Zakariyya: My Lord, do not leave me alone.",
+   "needsReview": true,
+   "order": 24
+  },
+  {
+   "id": "q23_29",
+   "category": "safar",
+   "surah": 23,
+   "from": 29,
+   "to": 29,
+   "repeat": 1,
+   "so": "Rabbiyow i dejiya meel barakaysan.",
+   "en": "My Lord, let me land at a blessed landing place.",
+   "needsReview": true,
+   "order": 25
+  },
+  {
+   "id": "q23_97",
+   "category": "walwal",
+   "surah": 23,
+   "from": 97,
+   "to": 98,
+   "repeat": 1,
+   "so": "Rabbiyow waxaan kaa magan galayaa waswaaska shaydaannada.",
+   "en": "My Lord, I seek refuge in You from the promptings of the devils.",
+   "needsReview": true,
+   "order": 26
+  },
+  {
+   "id": "q25_74",
+   "category": "qoys",
+   "surah": 25,
+   "from": 74,
+   "to": 74,
+   "repeat": 1,
+   "so": "Rabbiyow xaasaskayaga iyo faracayaga nooga dhig qurrada indhaha.",
+   "en": "Our Lord, grant us joy in our spouses and children.",
+   "needsReview": true,
+   "order": 27
+  },
+  {
+   "id": "q27_19",
+   "category": "mahad",
+   "surah": 27,
+   "from": 19,
+   "to": 19,
+   "repeat": 1,
+   "so": "Ducadii Sulaymaan: Rabbiyow i waafaji inaan kaaga mahadceliyo nimcadaada.",
+   "en": "Prayer of Sulayman: My Lord, enable me to be grateful for Your favour.",
+   "needsReview": true,
+   "order": 28
+  },
+  {
+   "id": "q28_16",
+   "category": "istaqfaar",
+   "surah": 28,
+   "from": 16,
+   "to": 16,
+   "repeat": 1,
+   "so": "Rabbiyow naftayda ayaan dulmiyay, ee ii dambi dhaaf.",
+   "en": "My Lord, I have wronged myself, so forgive me.",
+   "needsReview": true,
+   "order": 29
+  },
+  {
+   "id": "q28_24",
+   "category": "rizqi",
+   "surah": 28,
+   "from": 24,
+   "to": 24,
+   "repeat": 1,
+   "so": "Rabbiyow waxaan u baahanahay wixii khayr ah ee aad ii soo dejiso.",
+   "en": "My Lord, I am in need of whatever good You send down to me.",
+   "needsReview": true,
+   "order": 30
+  },
+  {
+   "id": "q37_100",
+   "category": "qoys",
+   "surah": 37,
+   "from": 100,
+   "to": 100,
+   "repeat": 1,
+   "so": "Rabbiyow i sii farac ka mid ah kuwa suubban.",
+   "en": "My Lord, grant me a righteous child.",
+   "needsReview": true,
+   "order": 31
+  },
+  {
+   "id": "q43_13",
+   "category": "safar",
+   "surah": 43,
+   "from": 13,
+   "to": 14,
+   "repeat": 1,
+   "so": "Ducada gaadiid fuulidda: Waxaa hufan Kan noo sakhiray tan.",
+   "en": "On riding a vehicle: Glory to Him who has subjected this to us.",
+   "needsReview": true,
+   "order": 32
+  },
+  {
+   "id": "q46_15",
+   "category": "mahad",
+   "surah": 46,
+   "from": 15,
+   "to": 15,
+   "repeat": 1,
+   "so": "Rabbiyow i waafaji mahadnaqa, camal wanaagsan, faraceygana ii hagaaji.",
+   "en": "My Lord, enable me to be grateful, to do good, and make my offspring righteous.",
+   "needsReview": true,
+   "order": 33
+  },
+  {
+   "id": "q59_10",
+   "category": "istaqfaar",
+   "surah": 59,
+   "from": 10,
+   "to": 10,
+   "repeat": 1,
+   "so": "Rabbiyow noo dambi dhaaf annaga iyo walaalaheen iimaanka nooga horreeyay.",
+   "en": "Our Lord, forgive us and our brothers who preceded us in faith.",
+   "needsReview": true,
+   "order": 34
+  },
+  {
+   "id": "q71_28",
+   "category": "nabiyo",
+   "surah": 71,
+   "from": 28,
+   "to": 28,
+   "repeat": 1,
+   "so": "Ducadii Nuux: Rabbiyow ii dambi dhaaf, waalidkay iyo mu’miniinta.",
+   "en": "Prayer of Nuh: My Lord, forgive me, my parents and the believers.",
+   "needsReview": true,
+   "order": 35
+  }
+ ]
+}
