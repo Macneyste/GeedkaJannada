@@ -9,6 +9,12 @@ class PrayerRepository(private val store: SettingsStore) {
     val auto: Flow<Boolean> = store.prayerAuto
     val city: Flow<City> = store.prayerCity
 
+    val notificationsEnabled: Flow<Boolean> = store.notificationsEnabled
+    val notifyMode: Flow<NotifyMode> = store.notifyMode
+
+    suspend fun setNotificationsEnabled(on: Boolean) = store.setNotificationsEnabled(on)
+    suspend fun setNotifyMode(mode: NotifyMode) = store.setNotifyMode(mode)
+
     suspend fun setAuto(on: Boolean) = store.setPrayerAuto(on)
     suspend fun setCity(id: String) = store.setPrayerCity(id)
 

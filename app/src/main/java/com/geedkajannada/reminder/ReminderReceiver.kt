@@ -35,10 +35,10 @@ class ReminderReceiver : BroadcastReceiver() {
     }
 }
 
-/** Qalabka marka dib loo bilaabo, alarm-yada dib u deji. */
+/** Boot, cusboonaysiin app, beddel saacad/timezone ama ogolaansho alarm: dib u jadwali. */
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
+        if (intent.action !in RESCHEDULE_ACTIONS) return
         val pending = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
@@ -59,3 +59,11 @@ private suspend fun showFromStore(context: Context, prayer: Prayer, earlyMinutes
         context, prayer, earlyMinutes, minute, store.prayerCity.first().nameSo, store.notifyMode.first(),
     )
 }
+
+private val RESCHEDULE_ACTIONS = setOf(
+    Intent.ACTION_BOOT_COMPLETED,
+    Intent.ACTION_MY_PACKAGE_REPLACED,
+    Intent.ACTION_TIME_CHANGED,
+    Intent.ACTION_TIMEZONE_CHANGED,
+    "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED",
+)

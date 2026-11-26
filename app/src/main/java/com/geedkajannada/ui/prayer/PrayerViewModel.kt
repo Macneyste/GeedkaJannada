@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geedkajannada.data.Cities
 import com.geedkajannada.data.City
+import com.geedkajannada.data.NotifyMode
 import com.geedkajannada.data.Prayer
 import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.PrayerRepository
@@ -22,6 +23,8 @@ data class PrayerUiState(
     val city: City = Cities.default,
     /** Isticmaaluhu wuu diiday ogeysiinta: tus sharaxaad (ma jiro badhan been ah). */
     val notificationsDenied: Boolean = false,
+    val enabled: Boolean = false,
+    val mode: NotifyMode = NotifyMode.SOUND,
 )
 
 class PrayerViewModel(
@@ -32,6 +35,8 @@ class PrayerViewModel(
 
     val uiState: StateFlow<PrayerUiState> =
         combine(repo.entries, repo.offset, repo.auto, repo.city, denied) { e, o, a, c, d -> PrayerUiState(e, o, a, c, d) }
+            .combine(repo.notificationsEnabled) { s, on -> s.copy(enabled = on) }
+            .combine(repo.notifyMode) { s, m -> s.copy(mode = m) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PrayerUiState())
 
     fun setTime(prayer: Prayer, minuteOfDay: Int) {
@@ -69,10 +74,21 @@ class PrayerViewModel(
         }
     }
 
-    fun onPermissionResult(granted: Boolean, prayer: Prayer) {
+    fun setEnabled(on: Boolean) {
+        viewModelScope.launch {
+            repo.setNotificationsEnabled(on)
+            reschedule()
+        }
+    }
+
+    fun setMode(mode: NotifyMode) {
+        viewModelScope.launch { repo.setNotifyMode(mode) }
+    }
+
+    fun onPermissionResult(granted: Boolean) {
         if (granted) {
             denied.value = false
-            setNotify(prayer, true)
+            setEnabled(true)
         } else {
             denied.update { true }
         }

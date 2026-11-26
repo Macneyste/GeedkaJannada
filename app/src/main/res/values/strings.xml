@@ -86,11 +86,6 @@
     <string name="prayer_cishe">Cishe</string>
     <string name="prayer_time_unset">Geli waqtiga</string>
     <string name="prayer_set_time">Dooro waqtiga %1$s</string>
-    <string name="prayer_notify">Ogeysiin</string>
-    <string name="prayer_offset_title">Goorta la ogeysiiyo</string>
-    <string name="offset_0">Waqtiga salaadda</string>
-    <string name="offset_5">5 daqiiqo ka hor</string>
-    <string name="offset_10">10 daqiiqo ka hor</string>
     <string name="ok">Hagaag</string>
     <string name="notif_denied_title">Ogeysiisyada waa la diiday</string>
     <string name="notif_denied_body">App-ku wuu shaqeeyaa, laakiin ogeysiin lama diri karo. Si aad u daarto: Dejimaha qalabka → Apps → Geedka Jannada → Ogeysiisyada.</string>
@@ -275,4 +270,15 @@
     <string name="adhkar_prev">‹ Hore</string>
     <string name="adhkar_next">Xiga ›</string>
     <string name="adhkar_tap_page">Tiri dikrigan</string>
+    <string name="notif_section">Ogeysiisyada salaadda</string>
+    <string name="notif_off_hint">Shid si laguugu sheego marka waqtiga salaadda uu gaaro.</string>
+    <string name="notif_mode_title">Dhawaaqa</string>
+    <string name="notif_mode_sound">Dhawaaq</string>
+    <string name="notif_mode_vibrate">Gariir keliya</string>
+    <string name="notif_mode_silent">Aamusnaan</string>
+    <string name="notif_early_title">Ogeysiis hore</string>
+    <string name="notif_early_none">Ma jiro</string>
+    <string name="notif_early_minutes">%1$d daqiiqo ka hor</string>
+    <string name="notif_exact_button">Oggolow alarm sax ah</string>
+    <string name="notif_battery">Ogeysiisyadu ha soo daahin (dejimaha batteriga)</string>
 </resources>

@@ -10,6 +10,10 @@ import com.geedkajannada.data.SettingsStore
 import com.geedkajannada.data.StatsRepository
 import com.geedkajannada.feature.tasbeeh.TasbeehRepository
 import com.geedkajannada.reminder.NotificationHelper
+import com.geedkajannada.reminder.ReminderScheduler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private val Context.dataStore by preferencesDataStore(name = "geedka_settings")
 
@@ -30,6 +34,9 @@ class GeedkaApp : Application() {
         super.onCreate()
         container = AppContainer(this)
         NotificationHelper.ensureChannels(this)
+        CoroutineScope(Dispatchers.Default).launch {
+            ReminderScheduler.rescheduleAll(this@GeedkaApp, container.settings)
+        }
     }
 }
 

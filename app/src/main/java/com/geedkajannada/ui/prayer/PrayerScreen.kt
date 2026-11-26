@@ -52,7 +52,6 @@ import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.Cities
 import com.geedkajannada.data.PrayerMath
 import com.geedkajannada.data.PrayerTimesCalc
-import com.geedkajannada.data.ReminderOffsets
 import com.geedkajannada.reminder.NotificationHelper
 import com.geedkajannada.reminder.ReminderScheduler
 import com.geedkajannada.ui.GeedkaCard
@@ -77,14 +76,10 @@ fun PrayerScreen(
 ) {
     val state by vm.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    var pendingPrayer by remember { mutableStateOf<Prayer?>(null) }
     var editing by remember { mutableStateOf<Prayer?>(null) }
     var pickingCity by remember { mutableStateOf(false) }
 
-    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
-        pendingPrayer?.let { vm.onPermissionResult(ok, it) }
-        pendingPrayer = null
-    }
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> vm.onPermissionResult(ok) }
 
     var nowSec by remember { mutableIntStateOf(LocalTime.now(PrayerTimesCalc.ZONE).toSecondOfDay()) }
     LaunchedEffect(Unit) {
@@ -108,7 +103,7 @@ fun PrayerScreen(
 
         com.geedkajannada.ui.location.LocationCard()
 
-        if (state.notificationsDenied) {
+        if (state.notificationsDenied || (state.enabled && !NotificationHelper.hasPermission(context))) {
             GeedkaCard(border = BorderStroke(1.5.dp, ErrorRed)) {
                 Text(stringResource(R.string.notif_denied_title), style = MaterialTheme.typography.titleMedium, color = ErrorRed)
                 Text(
@@ -172,47 +167,24 @@ fun PrayerScreen(
                     e,
                     auto = state.auto,
                     onEdit = { editing = e.prayer },
-                    onToggle = { on ->
-                        if (!on) {
-                            vm.setNotify(e.prayer, false)
-                        } else if (NotificationHelper.hasPermission(context)) {
-                            vm.setNotify(e.prayer, true)
-                        } else {
-                            pendingPrayer = e.prayer
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                            }
-                        }
-                    },
                 )
                 if (i < state.entries.lastIndex) androidx.compose.material3.HorizontalDivider(color = Line)
             }
         }
 
-        GeedkaCard {
-            Text(stringResource(R.string.prayer_offset_title), style = MaterialTheme.typography.titleMedium)
-            val labels = mapOf(0 to R.string.offset_0, 5 to R.string.offset_5, 10 to R.string.offset_10)
-            ReminderOffsets.forEach { o ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = Dimens.TouchMin)
-                        .selectable(selected = state.offset == o, role = Role.RadioButton, onClick = { vm.setOffset(o) }),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    RadioButton(selected = state.offset == o, onClick = null)
-                    Text(stringResource(labels.getValue(o)), modifier = Modifier.padding(start = 12.dp))
+        NotificationSection(
+            state = state,
+            onEnabled = { on ->
+                if (!on || NotificationHelper.hasPermission(context)) {
+                    vm.setEnabled(on)
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
-            }
-            if (!ReminderScheduler.canScheduleExact(context)) {
-                Text(
-                    stringResource(R.string.exact_alarm_note),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-        }
+            },
+            onPrayer = vm::setNotify,
+            onMode = vm::setMode,
+            onOffset = vm::setOffset,
+        )
     }
 
     if (pickingCity) {
@@ -270,7 +242,7 @@ private fun NextPrayerCard(entries: List<PrayerEntry>, nowSec: Int) {
 }
 
 @Composable
-private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit, onToggle: (Boolean) -> Unit) {
+private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -286,16 +258,6 @@ private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit, onToggl
         ) {
             Text(e.minuteOfDay?.let { PrayerMath.format(it) } ?: stringResource(R.string.prayer_time_unset))
         }
-        Switch(
-            checked = e.notify && e.minuteOfDay != null,
-            onCheckedChange = onToggle,
-            enabled = e.minuteOfDay != null,
-            modifier = Modifier.padding(start = 12.dp),
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = White, checkedTrackColor = Indigo,
-                uncheckedThumbColor = White, uncheckedTrackColor = Line, uncheckedBorderColor = Line,
-            ),
-        )
     }
 }
 
