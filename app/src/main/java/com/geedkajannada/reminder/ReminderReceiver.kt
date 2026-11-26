@@ -10,16 +10,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-/** Alarm-ka marka uu dhaco: tus ogeysiinta, kadibna dib u deji berrito. */
+/** Alarm-ka marka uu dhaco: tus ogeysiinta (haddii aanay duugoobin), kadibna buuxi jadwalka. */
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val prayer = Prayer.entries.firstOrNull { it.key == intent.getStringExtra(ReminderScheduler.EXTRA_PRAYER) }
             ?: return
-        val offset = intent.getIntExtra(ReminderScheduler.EXTRA_OFFSET, 0)
+        val early = intent.getIntExtra(ReminderScheduler.EXTRA_EARLY, 0)
+        val now = System.currentTimeMillis()
+        val stale = ReminderPlan.isStale(
+            now,
+            intent.getLongExtra(ReminderScheduler.EXTRA_AT, now),
+            intent.getLongExtra(ReminderScheduler.EXTRA_PRAYER_AT, now),
+            early,
+        )
         val pending = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                showFromStore(context, prayer, offset)
+                if (!stale) showFromStore(context, prayer, early)
                 ReminderScheduler.rescheduleAll(context, context.container.settings)
             } finally {
                 pending.finish()
@@ -44,7 +51,7 @@ class BootReceiver : BroadcastReceiver() {
 }
 
 /** Akhri waqtiga, goobta iyo habka dhawaaqa, kadibna tus ogeysiinta. */
-internal suspend fun showFromStore(context: Context, prayer: Prayer, earlyMinutes: Int) {
+private suspend fun showFromStore(context: Context, prayer: Prayer, earlyMinutes: Int) {
     val store = context.container.settings
     if (!store.notificationsEnabled.first()) return
     val minute = store.prayerEntries.first().firstOrNull { it.prayer == prayer }?.minuteOfDay

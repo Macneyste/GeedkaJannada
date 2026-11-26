@@ -5,86 +5,67 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.geedkajannada.data.Prayer
 import com.geedkajannada.data.PrayerTimesCalc
 import com.geedkajannada.data.SettingsStore
 import java.time.ZonedDateTime
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 object ReminderScheduler {
     const val EXTRA_PRAYER = "prayer"
-    const val EXTRA_OFFSET = "offset"
+    const val EXTRA_EARLY = "early"
+    const val EXTRA_AT = "at"
+    const val EXTRA_PRAYER_AT = "prayer_at"
 
-    /** Waqtiga xiga ee ogeysiinta: haddii hadda ka dhaafay, berri. */
-    fun nextTrigger(minuteOfDay: Int, offsetMinutes: Int, now: ZonedDateTime): ZonedDateTime {
-        var t = now.toLocalDate().atStartOfDay(now.zone).plusMinutes((minuteOfDay - offsetMinutes).toLong())
-        if (!t.isAfter(now)) t = t.plusDays(1)
-        return t
-    }
+    private val lock = Mutex()
 
     fun canScheduleExact(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         return context.getSystemService(AlarmManager::class.java).canScheduleExactAlarms()
     }
 
-    private fun pendingIntent(context: Context, prayer: Prayer, offset: Int): PendingIntent {
-        val intent = Intent(context, ReminderReceiver::class.java)
-            .putExtra(EXTRA_PRAYER, prayer.key)
-            .putExtra(EXTRA_OFFSET, offset)
-        return PendingIntent.getBroadcast(
-            context, prayer.ordinal, intent,
+    private fun intent(context: Context) = Intent(context, ReminderReceiver::class.java)
+
+    private fun cancelAll(context: Context, alarms: AlarmManager) {
+        for (code in ReminderPlan.REQUEST_CODES) {
+            val existing = PendingIntent.getBroadcast(
+                context, code, intent(context), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE,
+            ) ?: continue
+            alarms.cancel(existing)
+            existing.cancel()
+        }
+    }
+
+    private fun schedule(context: Context, alarms: AlarmManager, a: PlannedAlarm, exact: Boolean) {
+        val pi = PendingIntent.getBroadcast(
+            context, a.requestCode,
+            intent(context)
+                .putExtra(EXTRA_PRAYER, a.prayer.key)
+                .putExtra(EXTRA_EARLY, a.earlyMinutes)
+                .putExtra(EXTRA_AT, a.atMillis)
+                .putExtra(EXTRA_PRAYER_AT, a.prayerMillis),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
-    }
-
-    private fun workName(prayer: Prayer) = "reminder_${prayer.key}"
-
-    fun cancel(context: Context, prayer: Prayer) {
-        context.getSystemService(AlarmManager::class.java).cancel(pendingIntent(context, prayer, 0))
-        WorkManager.getInstance(context).cancelUniqueWork(workName(prayer))
-    }
-
-    private fun schedule(context: Context, prayer: Prayer, at: ZonedDateTime, offset: Int) {
-        cancel(context, prayer)
-        val triggerMs = at.toInstant().toEpochMilli()
-        if (canScheduleExact(context)) {
-            context.getSystemService(AlarmManager::class.java)
-                .setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerMs, pendingIntent(context, prayer, offset))
+        if (exact) {
+            alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.atMillis, pi)
         } else {
-            // Exact alarm lama oggola: WorkManager oo inexact ah.
-            val delay = (triggerMs - System.currentTimeMillis()).coerceAtLeast(0)
-            val req = OneTimeWorkRequestBuilder<ReminderWorker>()
-                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-                .setInputData(workDataOf(EXTRA_PRAYER to prayer.key, EXTRA_OFFSET to offset))
-                .build()
-            WorkManager.getInstance(context).enqueueUniqueWork(workName(prayer), ExistingWorkPolicy.REPLACE, req)
+            // Exact alarm lama oggola: waa la soo daahin karaa (waxaa lagu sheegaa shaashadda Salaad).
+            alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.atMillis, pi)
         }
     }
 
-    /** Dib u deji dhammaan ogeysiisyada la furay (ka dib bedelid, fire, ama boot). */
-    suspend fun rescheduleAll(context: Context, store: SettingsStore) {
-        val offset = store.reminderOffset.first()
-        val enabled = store.notificationsEnabled.first()
+    /** Tirtir dhammaan, kadibna jadwali 7-da maalmood ee soo socda. */
+    suspend fun rescheduleAll(context: Context, store: SettingsStore) = lock.withLock {
+        val alarms = context.getSystemService(AlarmManager::class.java)
+        cancelAll(context, alarms)
+        if (!store.notificationsEnabled.first()) return@withLock
         val now = ZonedDateTime.now(PrayerTimesCalc.ZONE)
-        val today = now.toLocalDate()
-        val todayEntries = store.prayerEntriesFor(today)
-        val tomorrowEntries = store.prayerEntriesFor(today.plusDays(1))
-        for (e in todayEntries) {
-            val tomorrow = tomorrowEntries.first { it.prayer == e.prayer }
-            if (!enabled || !e.notify || e.minuteOfDay == null || tomorrow.minuteOfDay == null) {
-                cancel(context, e.prayer)
-                continue
-            }
-            // Maanta haddii weli soo socoto, haddii kale berri (waqtiga berrito si sax ah loo xisaabiyay).
-            val todayAt = today.atStartOfDay(now.zone).plusMinutes((e.minuteOfDay - offset).toLong())
-            val at = if (todayAt.isAfter(now)) todayAt
-            else today.plusDays(1).atStartOfDay(now.zone).plusMinutes((tomorrow.minuteOfDay - offset).toLong())
-            schedule(context, e.prayer, at, offset)
+        val days = (0 until ReminderPlan.DAYS).map {
+            val date = now.toLocalDate().plusDays(it.toLong())
+            date to store.prayerEntriesFor(date)
         }
+        val exact = canScheduleExact(context)
+        ReminderPlan.plan(days, store.reminderOffset.first(), now).forEach { schedule(context, alarms, it, exact) }
     }
 }

@@ -8,7 +8,7 @@ import com.geedkajannada.data.PrayerEntry
 import com.geedkajannada.data.PrayerMath
 import com.geedkajannada.data.QuranParser
 import com.geedkajannada.data.StatsCalc
-import com.geedkajannada.reminder.ReminderScheduler
+import com.geedkajannada.reminder.ReminderPlan
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -121,22 +121,37 @@ class PrayerMathTest {
     }
 }
 
-class ReminderSchedulerTest {
+class ReminderPlanTest {
     private val zone = ZoneId.of("Africa/Mogadishu")
-    @Test fun laterTodayWhenFuture() {
-        val now = ZonedDateTime.of(2025, 3, 10, 8, 0, 0, 0, zone)
-        val t = ReminderScheduler.nextTrigger(12 * 60, 0, now)
-        assertEquals(ZonedDateTime.of(2025, 3, 10, 12, 0, 0, 0, zone), t)
+    private val day = java.time.LocalDate.of(2025, 3, 10)
+    private fun entries(notify: Boolean = true) =
+        listOf(PrayerEntry(Prayer.SUBAX, 5 * 60, notify), PrayerEntry(Prayer.DUHUR, 12 * 60, notify))
+    private val days = (0L until 10L).map { day.plusDays(it) to entries() }
+    private fun at(h: Int, m: Int) = ZonedDateTime.of(2025, 3, 10, h, m, 0, 0, zone)
+
+    @Test fun pastPrayersAreSkippedAndOnlySevenDaysPlanned() {
+        val plan = ReminderPlan.plan(days, 0, at(8, 0))
+        assertEquals(13, plan.size) // 7 x 2, ka yar Subax-kii maanta ee dhaafay
+        assertEquals(at(12, 0).toInstant().toEpochMilli(), plan.first().atMillis)
+        assertEquals(plan.size, plan.map { it.requestCode }.toSet().size)
+        assertTrue(plan.all { it.requestCode in ReminderPlan.REQUEST_CODES })
     }
-    @Test fun offsetSubtracts() {
-        val now = ZonedDateTime.of(2025, 3, 10, 8, 0, 0, 0, zone)
-        val t = ReminderScheduler.nextTrigger(12 * 60, 10, now)
-        assertEquals(ZonedDateTime.of(2025, 3, 10, 11, 50, 0, 0, zone), t)
+
+    @Test fun earlyAlarmIsAddedBeforeThePrayer() {
+        val plan = ReminderPlan.plan(days.take(1), 15, at(8, 0))
+        assertEquals(listOf(0, 15), plan.map { it.earlyMinutes })
+        assertEquals(at(11, 45).toInstant().toEpochMilli(), plan[1].atMillis)
     }
-    @Test fun tomorrowWhenPast() {
-        val now = ZonedDateTime.of(2025, 3, 10, 13, 0, 0, 0, zone)
-        val t = ReminderScheduler.nextTrigger(12 * 60, 0, now)
-        assertEquals(ZonedDateTime.of(2025, 3, 11, 12, 0, 0, 0, zone), t)
+
+    @Test fun switchedOffPrayersAreNotPlanned() {
+        assertTrue(ReminderPlan.plan(listOf(day to entries(notify = false)), 5, at(0, 0)).isEmpty())
+    }
+
+    @Test fun staleRules() {
+        val prayer = at(12, 0).toInstant().toEpochMilli()
+        assertFalse(ReminderPlan.isStale(prayer + 60_000, prayer, prayer, 0))
+        assertTrue(ReminderPlan.isStale(prayer + ReminderPlan.STALE_AFTER_MS + 1, prayer, prayer, 0))
+        assertTrue(ReminderPlan.isStale(prayer, prayer - 5 * 60_000, prayer, 5))
     }
 }
 

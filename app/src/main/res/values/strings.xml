@@ -95,7 +95,7 @@
     <string name="notif_denied_title">Ogeysiisyada waa la diiday</string>
     <string name="notif_denied_body">App-ku wuu shaqeeyaa, laakiin ogeysiin lama diri karo. Si aad u daarto: Dejimaha qalabka → Apps → Geedka Jannada → Ogeysiisyada.</string>
     <string name="notif_open_settings">Fur dejimaha app-ka</string>
-    <string name="exact_alarm_note">Alarm-ka saxda ah lama oggola; ogeysiisku wuxuu yeelan karaa dib u dhac yar.</string>
+    <string name="exact_alarm_note">Alarm-ka saxda ah lama oggola, markaa ogeysiisku wuu soo daahi karaa. Fur oggolaanshaha "Alarms &amp; reminders".</string>
 
     <!-- Adhkar -->
     <string name="nav_adhkar">Adkaar</string>
