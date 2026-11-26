@@ -15,3 +15,8 @@ val BrownInk = Color(0xFF4A2C17)
 val BrownMid = Color(0xFF8A5A36)
 val Line = Color(0xFFE6CFAE)
 val ErrorRed = Color(0xFFB3261E)
+
+// Tasbeeh: midabada dhalooyinka (jar) iyo ribbon-ka.
+val JarGreen = Color(0xFF4CAF7A)
+val JarRed = Color(0xFFD9546A)
+val JarGold = Color(0xFFE0A526)

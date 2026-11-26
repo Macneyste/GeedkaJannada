@@ -8,6 +8,7 @@ import com.geedkajannada.data.PrayerRepository
 import com.geedkajannada.data.QuranRepository
 import com.geedkajannada.data.SettingsStore
 import com.geedkajannada.data.StatsRepository
+import com.geedkajannada.feature.tasbeeh.TasbeehRepository
 import com.geedkajannada.reminder.NotificationHelper
 
 private val Context.dataStore by preferencesDataStore(name = "geedka_settings")
@@ -18,6 +19,7 @@ class AppContainer(context: Context) {
     val prayers = PrayerRepository(settings)
     val stats = StatsRepository(settings)
     val location = LocationProvider(context.applicationContext)
+    val tasbeeh = TasbeehRepository(context.applicationContext.dataStore)
 }
 
 class GeedkaApp : Application() {
