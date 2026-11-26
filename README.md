@@ -4,8 +4,7 @@ App Soomaali-ka ugu horreeya ee dikhriga, offline ah (Android, Kotlin, Jetpack C
 Akoon ma jiro, xayeysiis ma jiro, analytics ma jiro, backend ma jiro, `INTERNET` permission ma jiro, location ma jiro.
 
 ## Muuqaallada
-- **Tasbeeh**: silsilad 33/33/33 (hal taabasho = hal tiro, debounce 120ms), tusbax iyo giraangir, 3 dhalo oo xabbaduhu ku dhacaan, kaarka dhammaystirka (99/99), yoolal la beddeli karo, "Dib u bilow" oo xaqiijin leh.
-- **Xulashada dikriga**: Subxaanallaah, Alxamdulillaah, Allaahu Akbar; yoolal 33 / 100 iyo yool gaar ah (1–9999).
+- **Tasbeeh**: 3 dhikri x 33 (hal taabasho = hal tiro, debounce 120ms), tusbax iyo giraangir, 3 dhalo midabbo leh, 5 dhawaaq oo la dami karo, "Xiga", "Dib u bilow" oo xaqiijin leh, kaarka dhammaystirka (99/99).
 - **Dejimaha**: codka (SoundPool, default ON) iyo gariirka (haptic, default OFF).
 - **Quraan**: liiska 114 suuradood, raadin, "Sii wad akhriska", akhriska RTL oo leh Amiri, cabbirka qoraalka, calaamad, suurad hore/xigta.
 - **Salaad**: waqtiyada si toos ah ayaa loo xisaabiyaa (offline, magaalo Soomaaliyeed la doorto) ama gacanta ayaa lagu geliyaa; salaadda soo socota + waqti ka hadhay; ogeysiin dhawaaq leh (waqtiga / 5 / 10 daqiiqo ka hor).
@@ -30,7 +29,7 @@ La hubiyay (orodsiiyay): `assembleDebug` guul, `testDebugUnitTest` dhammaan unit
 **Aan la hubin**: app-ka lama tijaabin qalab/emulator dhab ah (muuqaalka, SoundPool, gariirka, ogeysiinta iyo alarm-ka way dhisan yihiin laakiin lama arkin shaqeynaya); `androidTest` ma jiro; release build lama saxiixin.
 
 ## Decisions
-- **Dikhri kasta yoolkiisa caadiga ah = 33.**
+- **Yoolka waa 33 go'an** dhikri kasta (yoolal gaar ah iyo xulashada dikhriga waa la saaray).
 - **Alarm**: `setExactAndAllowWhileIdle` haddii `canScheduleExactAlarms()`; haddii kale WorkManager inexact (waxaa lagu sheegay Salaad shaashadda). `SCHEDULE_EXACT_ALARM` waa la dalbanayaa laakiin lama codsado si toos ah.
 - **POST_NOTIFICATIONS** waxaa la codsadaa kaliya marka isticmaaluhu shido switch-ka ogeysiinta salaad; haddii la diido switch-ku wuu ahaanayaa OFF oo sharax ayaa la muujiyaa.
 - **Taariikh** waxay ku kaydsan tahay DataStore (`day_<taariikh>_<dikhri>`), Room lama isticmaalo.
