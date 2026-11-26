@@ -264,9 +264,9 @@
     <string name="tas_mean_1">Alle ayaa ka hufan wax kasta oo nusqaan ah</string>
     <string name="tas_mean_2">Mahad oo dhan Alle ayaa iska leh</string>
     <string name="tas_mean_3">Alle ayaa ugu weyn</string>
-    <string name="tas_en_1">SubhanAllah · Glory be to Allah</string>
-    <string name="tas_en_2">Alhamdulillah · All praise is due to Allah</string>
-    <string name="tas_en_3">Allahu Akbar · Allah is the Greatest</string>
+    <string name="tas_en_1">SubhanAllah</string>
+    <string name="tas_en_2">Alhamdulillah</string>
+    <string name="tas_en_3">Allahu Akbar</string>
     <string name="tas_tap">Taabo si aad u tirisid</string>
     <string name="tas_tap_desc">Tasbeeh. Taabo si aad u tirisid. %1$s, %2$d ka mid ah %3$d</string>
     <string name="tas_jar_desc">%1$s: %2$d ka mid ah %3$d</string>
@@ -275,4 +275,7 @@
     <string name="tas_complete_meaning">Allaah ha na aqbalo, idinkana ha aqbalo</string>
     <string name="tas_goals">Yoolasha</string>
     <string name="tas_footer">GEEDKA JANNADA</string>
+    <string name="tas_mean_en_1">Glory be to Allah</string>
+    <string name="tas_mean_en_2">All praise is due to Allah</string>
+    <string name="tas_mean_en_3">Allah is the Greatest</string>
 </resources>
