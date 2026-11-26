@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.3.0 (in progress)
+- Quran reader shows flowing mushaf-style text with Juz/surah pickers and a bottom toolbar. Adhkar are one per page with tap-to-count and auto-advance.
 - Tasbeeh rebuilt (feature/tasbeeh): colour jars, mute icon, five original sounds, Xiga button, persisted completion total. Custom goals and the dhikr picker were removed (fixed 33 each).
 - Tasbeeh redesigned: 33/33/33 chain with bead string, wheel and three jars; the growing tree was removed.
 - Design v3: new palette (Sand, Indigo, Night, Sun, Bronze), Home dashboard, Qibla, Zakat, automatic prayer times via optional coarse location.

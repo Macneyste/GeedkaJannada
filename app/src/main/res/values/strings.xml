@@ -272,4 +272,7 @@
     <string name="notif_title_before">%1$s: %2$d daqiiqo ayaa ka hadhay</string>
     <string name="notif_body">%1$s · %2$s</string>
     <string name="notif_open">Fur</string>
+    <string name="adhkar_prev">‹ Hore</string>
+    <string name="adhkar_next">Xiga ›</string>
+    <string name="adhkar_tap_page">Tiri dikrigan</string>
 </resources>
