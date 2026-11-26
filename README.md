@@ -4,7 +4,7 @@ App Soomaali-ka ugu horreeya ee dikhriga, offline ah (Android, Kotlin, Jetpack C
 Akoon ma jiro, xayeysiis ma jiro, analytics ma jiro, backend ma jiro, `INTERNET` permission ma jiro, location ma jiro.
 
 ## Muuqaallada
-- **Tirin**: geedka jannada oo koraya marka la taabto (hal taabasho = hal tiro, debounce 120ms), yool, bar horumar, dialog-ka "Hambalyo!", "Dib u bilow" oo xaqiijin leh.
+- **Tasbeeh**: silsilad 33/33/33 (hal taabasho = hal tiro, debounce 120ms), tusbax iyo giraangir, 3 dhalo oo xabbaduhu ku dhacaan, kaarka dhammaystirka (99/99), yoolal la beddeli karo, "Dib u bilow" oo xaqiijin leh.
 - **Xulashada dikriga**: Subxaanallaah, Alxamdulillaah, Allaahu Akbar; yoolal 33 / 100 iyo yool gaar ah (1–9999).
 - **Dejimaha**: codka (SoundPool, default ON) iyo gariirka (haptic, default OFF).
 - **Quraan**: liiska 114 suuradood, raadin, "Sii wad akhriska", akhriska RTL oo leh Amiri, cabbirka qoraalka, calaamad, suurad hore/xigta.
