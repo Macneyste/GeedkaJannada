@@ -15,29 +15,17 @@
 
     <!-- Counter -->
     <string name="settings">Dejimo</string>
-    <string name="goal_progress">%1$d / %2$d</string>
     <string name="rounds_done">Wareegyada la dhammeeyay: %1$d</string>
     <string name="reset">Dib u bilow</string>
 
     <!-- Dialogs -->
-    <string name="new_round">Wareeg cusub</string>
     <string name="reset_title">Dib u bilow?</string>
     <string name="reset_body">Saddexda dhikri ee silsiladda waa eber noqonayaan. Taariikhda maalinlaha ah ma baabbi\'ayso.</string>
     <string name="confirm">Haa, dib u bilow</string>
     <string name="cancel">Jooji</string>
 
     <!-- Picker -->
-    <string name="picker_title">Dooro dikhri</string>
-    <string name="picker_default_goal">Yoolka caadiga ah: %1$d</string>
-    <string name="picker_goal_section">Yoolka</string>
-    <string name="goal_preset_33">33</string>
-    <string name="goal_preset_100">100</string>
     <string name="custom_goal">Yool gaar ah (1–9999)</string>
-    <string name="custom_goal_apply">Xaqiiji yoolka</string>
-    <string name="custom_goal_empty">Geli tiro.</string>
-    <string name="custom_goal_not_number">Tirooyin kaliya ayaa la oggol yahay.</string>
-    <string name="custom_goal_range">Tirada waa inay u dhaxaysaa 1 iyo 9999.</string>
-    <string name="goal_current">Yoolka hadda: %1$d</string>
     <string name="back">Dib u noqo</string>
     <string name="selected">La doortay</string>
 
@@ -273,9 +261,12 @@
     <string name="tas_complete">DHAMMAYSTIRAN · %1$d / %2$d</string>
     <string name="tas_complete_latin">Taqabbal Allaahu minnaa wa minkum</string>
     <string name="tas_complete_meaning">Allaah ha na aqbalo, idinkana ha aqbalo</string>
-    <string name="tas_goals">Yoolasha</string>
-    <string name="tas_footer">GEEDKA JANNADA</string>
+    <string name="tas_footer">IQRA TO JANNAH</string>
     <string name="tas_mean_en_1">Glory be to Allah</string>
     <string name="tas_mean_en_2">All praise is due to Allah</string>
     <string name="tas_mean_en_3">Allah is the Greatest</string>
+    <string name="tas_done">Dhammaad</string>
+    <string name="tas_next">Xiga ›</string>
+    <string name="tas_mute">Dami dhawaaqa</string>
+    <string name="tas_unmute">Shid dhawaaqa</string>
 </resources>
