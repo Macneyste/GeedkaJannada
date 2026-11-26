@@ -20,8 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.geedkajannada.R
 import com.geedkajannada.ui.adhkar.AdhkarScreen
-import com.geedkajannada.ui.counter.CounterScreen
-import com.geedkajannada.ui.counter.PickerScreen
+import com.geedkajannada.feature.tasbeeh.TasbeehScreen
 import com.geedkajannada.ui.history.HistoryScreen
 import com.geedkajannada.ui.home.HomeScreen
 import com.geedkajannada.ui.prayer.PrayerScreen
@@ -46,7 +45,6 @@ object Routes {
     const val ADHKAR = "adhkar"
     const val HISTORY = "history"
     const val SETTINGS = "settings"
-    const val PICKER = "picker"
     const val SURAH = "surah/{id}?verse={verse}"
     fun surah(id: Int, verse: Int = 1) = "surah/$id?verse=$verse"
 }
@@ -121,12 +119,8 @@ fun AppNav() {
                 )
             }
             composable(Routes.COUNTER) {
-                CounterScreen(
-                    onOpenSettings = { nav.navigate(Routes.SETTINGS) },
-                    onOpenPicker = { nav.navigate(Routes.PICKER) },
-                )
+                TasbeehScreen()
             }
-            composable(Routes.PICKER) { PickerScreen(onBack = { nav.popBackStack() }) }
             composable(Routes.SETTINGS) {
                 SettingsScreen(
                     onBack = { nav.popBackStack() },
