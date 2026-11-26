@@ -11,8 +11,20 @@ enum class Prayer(val key: String, @StringRes val nameRes: Int) {
     CISHE("cishe", R.string.prayer_cishe),
 }
 
-/** Waqtiga ogeysiinta: 0 = waqtiga salaadda, 5 / 10 daqiiqo ka hor. */
-val ReminderOffsets = listOf(0, 5, 10)
+/** Ogeysiis hore (ikhtiyaari): 0 = ma jiro, ama 5 / 10 / 15 daqiiqo ka hor. Waqtiga salaadda mar walba waa la ogeysiiyaa. */
+val ReminderOffsets = listOf(0, 5, 10, 15)
+
+/** Sida ogeysiintu u dhawaaqdo. Mid kasta channel gaar ah ayuu leeyahay (channel lama beddeli karo). */
+enum class NotifyMode(val key: String) {
+    SOUND("sound"),
+    VIBRATE("vibrate"),
+    SILENT("silent"),
+    ;
+
+    companion object {
+        fun byKey(key: String?): NotifyMode = entries.firstOrNull { it.key == key } ?: SOUND
+    }
+}
 
 data class PrayerEntry(
     val prayer: Prayer,

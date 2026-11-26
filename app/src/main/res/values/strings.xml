@@ -153,11 +153,7 @@
     <string name="desc_rabbana">Rabbigayaga, nagu sii wanaag adduunka iyo aakhiraba, na dhawr cadaabka dabka (Al-Baqara 2:201).</string>
 
     <!-- Notification -->
-    <string name="notif_channel_name">Xusuusinta salaadda</string>
-    <string name="notif_channel_desc">Ogeysiisyada waqtiyada salaadda ee aad gacanta ku gelisay</string>
-    <string name="notif_title">Geedka Jannada</string>
-    <string name="notif_text_now">Waa waqtiga salaadda %1$s.</string>
-    <string name="notif_text_before">Salaadda %1$s waxaa ka hadhay %2$d daqiiqo.</string>
+    <string name="notif_channel_desc">Ogeysiisyada waqtiyada salaadda</string>
 
     <!-- History -->
     <string name="history_title">Taariikh</string>
@@ -269,4 +265,11 @@
     <string name="tas_next">Xiga ›</string>
     <string name="tas_mute">Dami dhawaaqa</string>
     <string name="tas_unmute">Shid dhawaaqa</string>
+    <string name="notif_channel_sound">Salaad: dhawaaq</string>
+    <string name="notif_channel_vibrate">Salaad: gariir keliya</string>
+    <string name="notif_channel_silent">Salaad: aamusnaan</string>
+    <string name="notif_title_now">Waa waqtiga %1$s</string>
+    <string name="notif_title_before">%1$s: %2$d daqiiqo ayaa ka hadhay</string>
+    <string name="notif_body">%1$s · %2$s</string>
+    <string name="notif_open">Fur</string>
 </resources>

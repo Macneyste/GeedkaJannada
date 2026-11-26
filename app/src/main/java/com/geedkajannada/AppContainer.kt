@@ -29,7 +29,7 @@ class GeedkaApp : Application() {
     override fun onCreate() {
         super.onCreate()
         container = AppContainer(this)
-        NotificationHelper.ensureChannel(this)
+        NotificationHelper.ensureChannels(this)
     }
 }
 

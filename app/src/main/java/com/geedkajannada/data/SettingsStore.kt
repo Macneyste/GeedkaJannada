@@ -20,6 +20,8 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val sound = booleanPreferencesKey("sound_enabled")
         val haptics = booleanPreferencesKey("haptics_enabled")
         val reminderOffset = intPreferencesKey("reminder_offset")
+        val notifEnabled = booleanPreferencesKey("notif_enabled")
+        val notifMode = stringPreferencesKey("notif_mode")
         val prayerAuto = booleanPreferencesKey("prayer_auto")
         val prayerCity = stringPreferencesKey("prayer_city")
         val quranFontSize = intPreferencesKey("quran_font_size")
@@ -113,7 +115,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val calc = if (auto) PrayerTimesCalc.compute(date, effectiveCity(p), zoneOffsetHours(date)) else null
         return Prayer.entries.map { pr ->
             val minute = calc?.get(pr) ?: p[Keys.prayerTime(pr.key)]?.takeIf { it >= 0 }
-            PrayerEntry(pr, minute, p[Keys.prayerNotify(pr.key)] ?: false)
+            PrayerEntry(pr, minute, p[Keys.prayerNotify(pr.key)] ?: true)
         }
     }
 
@@ -176,6 +178,21 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
     }
 
     val reminderOffset: Flow<Int> = dataStore.data.map { it[Keys.reminderOffset] ?: 0 }
+
+    /** Switch-ka guud. Isticmaalayaasha hore: ON haddii salaad uun horay loo shiday. */
+    val notificationsEnabled: Flow<Boolean> = dataStore.data.map { p ->
+        p[Keys.notifEnabled] ?: Prayer.entries.any { p[Keys.prayerNotify(it.key)] == true }
+    }
+
+    suspend fun setNotificationsEnabled(on: Boolean) {
+        dataStore.edit { it[Keys.notifEnabled] = on }
+    }
+
+    val notifyMode: Flow<NotifyMode> = dataStore.data.map { NotifyMode.byKey(it[Keys.notifMode]) }
+
+    suspend fun setNotifyMode(mode: NotifyMode) {
+        dataStore.edit { it[Keys.notifMode] = mode.key }
+    }
 
     suspend fun setPrayerTime(prayer: Prayer, minuteOfDay: Int) {
         dataStore.edit { it[Keys.prayerTime(prayer.key)] = minuteOfDay }

@@ -12,7 +12,7 @@ class ReminderWorker(context: Context, params: WorkerParameters) : CoroutineWork
         val prayer = Prayer.entries.firstOrNull { it.key == inputData.getString(ReminderScheduler.EXTRA_PRAYER) }
             ?: return Result.failure()
         val offset = inputData.getInt(ReminderScheduler.EXTRA_OFFSET, 0)
-        NotificationHelper.showPrayer(applicationContext, prayer, offset)
+        showFromStore(applicationContext, prayer, offset)
         ReminderScheduler.rescheduleAll(applicationContext, applicationContext.container.settings)
         return Result.success()
     }

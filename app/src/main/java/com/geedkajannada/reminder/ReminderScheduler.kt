@@ -69,13 +69,14 @@ object ReminderScheduler {
     /** Dib u deji dhammaan ogeysiisyada la furay (ka dib bedelid, fire, ama boot). */
     suspend fun rescheduleAll(context: Context, store: SettingsStore) {
         val offset = store.reminderOffset.first()
+        val enabled = store.notificationsEnabled.first()
         val now = ZonedDateTime.now(PrayerTimesCalc.ZONE)
         val today = now.toLocalDate()
         val todayEntries = store.prayerEntriesFor(today)
         val tomorrowEntries = store.prayerEntriesFor(today.plusDays(1))
         for (e in todayEntries) {
             val tomorrow = tomorrowEntries.first { it.prayer == e.prayer }
-            if (!e.notify || e.minuteOfDay == null || tomorrow.minuteOfDay == null) {
+            if (!enabled || !e.notify || e.minuteOfDay == null || tomorrow.minuteOfDay == null) {
                 cancel(context, e.prayer)
                 continue
             }
