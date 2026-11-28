@@ -101,7 +101,10 @@ fun AppNav() {
                                 }
                             },
                             icon = { Icon(androidx.compose.ui.res.painterResource(t.icon), contentDescription = null) },
-                            label = { Text(stringResource(t.labelRes)) },
+                            label = {
+                                // Magacyada dheer (Magacyada Alle) waxay galaan laba saf.
+                                Text(stringResource(t.labelRes), style = androidx.compose.material3.MaterialTheme.typography.labelSmall, maxLines = 2, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = CreamPanel,
                                 selectedTextColor = Indigo,
