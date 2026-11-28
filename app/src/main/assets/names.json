@@ -1,0 +1,600 @@
+{
+ "version": 1,
+ "needsReview": true,
+ "names": [
+  {
+   "id": 1,
+   "ar": "الرَّحْمَٰنُ",
+   "latin": "Ar-Raxmaan",
+   "so": "Naxariistaha guud"
+  },
+  {
+   "id": 2,
+   "ar": "الرَّحِيمُ",
+   "latin": "Ar-Raxiim",
+   "so": "Naxariistaha gaarka ah"
+  },
+  {
+   "id": 3,
+   "ar": "الْمَلِكُ",
+   "latin": "Al-Malik",
+   "so": "Boqorka"
+  },
+  {
+   "id": 4,
+   "ar": "الْقُدُّوسُ",
+   "latin": "Al-Qudduus",
+   "so": "Kan daahirka ah"
+  },
+  {
+   "id": 5,
+   "ar": "السَّلَامُ",
+   "latin": "As-Salaam",
+   "so": "Kan nabadgelyada bixiya"
+  },
+  {
+   "id": 6,
+   "ar": "الْمُؤْمِنُ",
+   "latin": "Al-Mu'min",
+   "so": "Kan ammaanka siiya"
+  },
+  {
+   "id": 7,
+   "ar": "الْمُهَيْمِنُ",
+   "latin": "Al-Muhaymin",
+   "so": "Kan wax walba ilaaliya"
+  },
+  {
+   "id": 8,
+   "ar": "الْعَزِيزُ",
+   "latin": "Al-Caziiz",
+   "so": "Kan awoodda leh ee aan laga adkaan"
+  },
+  {
+   "id": 9,
+   "ar": "الْجَبَّارُ",
+   "latin": "Al-Jabbaar",
+   "so": "Kan wax walba ka sarreeya"
+  },
+  {
+   "id": 10,
+   "ar": "الْمُتَكَبِّرُ",
+   "latin": "Al-Mutakabbir",
+   "so": "Kan weynida iska leh"
+  },
+  {
+   "id": 11,
+   "ar": "الْخَالِقُ",
+   "latin": "Al-Khaaliq",
+   "so": "Abuuraha"
+  },
+  {
+   "id": 12,
+   "ar": "الْبَارِئُ",
+   "latin": "Al-Baari'",
+   "so": "Kan wax ka dhex saara waxla'aan"
+  },
+  {
+   "id": 13,
+   "ar": "الْمُصَوِّرُ",
+   "latin": "Al-Musawwir",
+   "so": "Qaab-yeelaha"
+  },
+  {
+   "id": 14,
+   "ar": "الْغَفَّارُ",
+   "latin": "Al-Ghaffaar",
+   "so": "Dambi-dhaafka badan"
+  },
+  {
+   "id": 15,
+   "ar": "الْقَهَّارُ",
+   "latin": "Al-Qahhaar",
+   "so": "Kan wax walba ka adkaada"
+  },
+  {
+   "id": 16,
+   "ar": "الْوَهَّابُ",
+   "latin": "Al-Wahhaab",
+   "so": "Hibeeyaha"
+  },
+  {
+   "id": 17,
+   "ar": "الرَّزَّاقُ",
+   "latin": "Ar-Razzaaq",
+   "so": "Arsaaq-bixiyaha"
+  },
+  {
+   "id": 18,
+   "ar": "الْفَتَّاحُ",
+   "latin": "Al-Fattaax",
+   "so": "Furaha khayrka"
+  },
+  {
+   "id": 19,
+   "ar": "الْعَلِيمُ",
+   "latin": "Al-Caliim",
+   "so": "Kan wax walba og"
+  },
+  {
+   "id": 20,
+   "ar": "الْقَابِضُ",
+   "latin": "Al-Qaabid",
+   "so": "Kan wax qabta (yareeya)"
+  },
+  {
+   "id": 21,
+   "ar": "الْبَاسِطُ",
+   "latin": "Al-Baasid",
+   "so": "Kan wax fidiya"
+  },
+  {
+   "id": 22,
+   "ar": "الْخَافِضُ",
+   "latin": "Al-Khaafid",
+   "so": "Kan wax hoos u dhiga"
+  },
+  {
+   "id": 23,
+   "ar": "الرَّافِعُ",
+   "latin": "Ar-Raafic",
+   "so": "Kan wax sare u qaada"
+  },
+  {
+   "id": 24,
+   "ar": "الْمُعِزُّ",
+   "latin": "Al-Mucizz",
+   "so": "Kan sharafta bixiya"
+  },
+  {
+   "id": 25,
+   "ar": "الْمُذِلُّ",
+   "latin": "Al-Mudill",
+   "so": "Kan dulliga u geeya cidduu doono"
+  },
+  {
+   "id": 26,
+   "ar": "السَّمِيعُ",
+   "latin": "As-Samiic",
+   "so": "Kan wax walba maqla"
+  },
+  {
+   "id": 27,
+   "ar": "الْبَصِيرُ",
+   "latin": "Al-Basiir",
+   "so": "Kan wax walba arka"
+  },
+  {
+   "id": 28,
+   "ar": "الْحَكَمُ",
+   "latin": "Al-Xakam",
+   "so": "Xaakimka"
+  },
+  {
+   "id": 29,
+   "ar": "الْعَدْلُ",
+   "latin": "Al-Cadl",
+   "so": "Caadilka"
+  },
+  {
+   "id": 30,
+   "ar": "اللَّطِيفُ",
+   "latin": "Al-Latiif",
+   "so": "Kan nimcada si qarsoon u gaarsiiya"
+  },
+  {
+   "id": 31,
+   "ar": "الْخَبِيرُ",
+   "latin": "Al-Khabiir",
+   "so": "Kan wax walba xog-ogaal u ah"
+  },
+  {
+   "id": 32,
+   "ar": "الْحَلِيمُ",
+   "latin": "Al-Xaliim",
+   "so": "Kan aan degdeg u ciqaabin"
+  },
+  {
+   "id": 33,
+   "ar": "الْعَظِيمُ",
+   "latin": "Al-Cadiim",
+   "so": "Weynaha"
+  },
+  {
+   "id": 34,
+   "ar": "الْغَفُورُ",
+   "latin": "Al-Ghafuur",
+   "so": "Dambi-dhaafaha"
+  },
+  {
+   "id": 35,
+   "ar": "الشَّكُورُ",
+   "latin": "Ash-Shakuur",
+   "so": "Kan camalka yar ka abaal mariya"
+  },
+  {
+   "id": 36,
+   "ar": "الْعَلِيُّ",
+   "latin": "Al-Caliyy",
+   "so": "Sarreeyaha"
+  },
+  {
+   "id": 37,
+   "ar": "الْكَبِيرُ",
+   "latin": "Al-Kabiir",
+   "so": "Kan ugu weyn"
+  },
+  {
+   "id": 38,
+   "ar": "الْحَفِيظُ",
+   "latin": "Al-Xafiid",
+   "so": "Ilaaliyaha"
+  },
+  {
+   "id": 39,
+   "ar": "الْمُقِيتُ",
+   "latin": "Al-Muqiit",
+   "so": "Kan quudka siiya abuurka"
+  },
+  {
+   "id": 40,
+   "ar": "الْحَسِيبُ",
+   "latin": "Al-Xasiib",
+   "so": "Xisaabiyaha ku filan"
+  },
+  {
+   "id": 41,
+   "ar": "الْجَلِيلُ",
+   "latin": "Al-Jaliil",
+   "so": "Kan haybadda leh"
+  },
+  {
+   "id": 42,
+   "ar": "الْكَرِيمُ",
+   "latin": "Al-Kariim",
+   "so": "Deeqsiga"
+  },
+  {
+   "id": 43,
+   "ar": "الرَّقِيبُ",
+   "latin": "Ar-Raqiib",
+   "so": "Kormeeraha"
+  },
+  {
+   "id": 44,
+   "ar": "الْمُجِيبُ",
+   "latin": "Al-Mujiib",
+   "so": "Ducada aqbalaha"
+  },
+  {
+   "id": 45,
+   "ar": "الْوَاسِعُ",
+   "latin": "Al-Waasic",
+   "so": "Kan deeqdiisu ballaaran tahay"
+  },
+  {
+   "id": 46,
+   "ar": "الْحَكِيمُ",
+   "latin": "Al-Xakiim",
+   "so": "Xigmadda badan"
+  },
+  {
+   "id": 47,
+   "ar": "الْوَدُودُ",
+   "latin": "Al-Waduud",
+   "so": "Kan jacaylka badan"
+  },
+  {
+   "id": 48,
+   "ar": "الْمَجِيدُ",
+   "latin": "Al-Majiid",
+   "so": "Kan sharafta weyn"
+  },
+  {
+   "id": 49,
+   "ar": "الْبَاعِثُ",
+   "latin": "Al-Baacith",
+   "so": "Kan dadka soo saara qiyaamada"
+  },
+  {
+   "id": 50,
+   "ar": "الشَّهِيدُ",
+   "latin": "Ash-Shahiid",
+   "so": "Markhaatiga wax walba"
+  },
+  {
+   "id": 51,
+   "ar": "الْحَقُّ",
+   "latin": "Al-Xaqq",
+   "so": "Runta"
+  },
+  {
+   "id": 52,
+   "ar": "الْوَكِيلُ",
+   "latin": "Al-Wakiil",
+   "so": "Kan la tala saarto"
+  },
+  {
+   "id": 53,
+   "ar": "الْقَوِيُّ",
+   "latin": "Al-Qawiyy",
+   "so": "Xoogga badan"
+  },
+  {
+   "id": 54,
+   "ar": "الْمَتِينُ",
+   "latin": "Al-Matiin",
+   "so": "Kan adag ee aan daciifin"
+  },
+  {
+   "id": 55,
+   "ar": "الْوَلِيُّ",
+   "latin": "Al-Waliyy",
+   "so": "Gargaaraha mu'miniinta"
+  },
+  {
+   "id": 56,
+   "ar": "الْحَمِيدُ",
+   "latin": "Al-Xamiid",
+   "so": "Kan mahadda mudan"
+  },
+  {
+   "id": 57,
+   "ar": "الْمُحْصِي",
+   "latin": "Al-Muxsii",
+   "so": "Kan wax walba tiriya"
+  },
+  {
+   "id": 58,
+   "ar": "الْمُبْدِئُ",
+   "latin": "Al-Mubdi'",
+   "so": "Kan abuurka bilaaba"
+  },
+  {
+   "id": 59,
+   "ar": "الْمُعِيدُ",
+   "latin": "Al-Muciid",
+   "so": "Kan abuurka soo celiya"
+  },
+  {
+   "id": 60,
+   "ar": "الْمُحْيِي",
+   "latin": "Al-Muxyii",
+   "so": "Nooleeyaha"
+  },
+  {
+   "id": 61,
+   "ar": "الْمُمِيتُ",
+   "latin": "Al-Mumiit",
+   "so": "Kan dila (geerida keena)"
+  },
+  {
+   "id": 62,
+   "ar": "الْحَيُّ",
+   "latin": "Al-Xayy",
+   "so": "Noolaha aan dhimanayn"
+  },
+  {
+   "id": 63,
+   "ar": "الْقَيُّومُ",
+   "latin": "Al-Qayyuum",
+   "so": "Kan wax walba maamula"
+  },
+  {
+   "id": 64,
+   "ar": "الْوَاجِدُ",
+   "latin": "Al-Waajid",
+   "so": "Kan aan waxba ka maqnayn"
+  },
+  {
+   "id": 65,
+   "ar": "الْمَاجِدُ",
+   "latin": "Al-Maajid",
+   "so": "Kan sharafta iyo deeqda leh"
+  },
+  {
+   "id": 66,
+   "ar": "الْوَاحِدُ",
+   "latin": "Al-Waaxid",
+   "so": "Kan kaliya"
+  },
+  {
+   "id": 67,
+   "ar": "الْأَحَدُ",
+   "latin": "Al-Axad",
+   "so": "Kelida aan la mid lahayn"
+  },
+  {
+   "id": 68,
+   "ar": "الصَّمَدُ",
+   "latin": "As-Samad",
+   "so": "Kan loo baahdo ee aan cidna u baahnayn"
+  },
+  {
+   "id": 69,
+   "ar": "الْقَادِرُ",
+   "latin": "Al-Qaadir",
+   "so": "Kan wax walba kara"
+  },
+  {
+   "id": 70,
+   "ar": "الْمُقْتَدِرُ",
+   "latin": "Al-Muqtadir",
+   "so": "Awoodda dhammaystiran leh"
+  },
+  {
+   "id": 71,
+   "ar": "الْمُقَدِّمُ",
+   "latin": "Al-Muqaddim",
+   "so": "Hormariyaha"
+  },
+  {
+   "id": 72,
+   "ar": "الْمُؤَخِّرُ",
+   "latin": "Al-Mu'akhkhir",
+   "so": "Dib-dhigaha"
+  },
+  {
+   "id": 73,
+   "ar": "الْأَوَّلُ",
+   "latin": "Al-Awwal",
+   "so": "Kan ugu horreeya"
+  },
+  {
+   "id": 74,
+   "ar": "الْآخِرُ",
+   "latin": "Al-Aakhir",
+   "so": "Kan ugu dambeeya"
+  },
+  {
+   "id": 75,
+   "ar": "الظَّاهِرُ",
+   "latin": "Ad-Daahir",
+   "so": "Muuqda (calaamadihiisu)"
+  },
+  {
+   "id": 76,
+   "ar": "الْبَاطِنُ",
+   "latin": "Al-Baatin",
+   "so": "Qarsoon (indhuhu ma arkaan)"
+  },
+  {
+   "id": 77,
+   "ar": "الْوَالِي",
+   "latin": "Al-Waalii",
+   "so": "Taliyaha wax walba"
+  },
+  {
+   "id": 78,
+   "ar": "الْمُتَعَالِي",
+   "latin": "Al-Mutacaalii",
+   "so": "Aad u sarreeya"
+  },
+  {
+   "id": 79,
+   "ar": "الْبَرُّ",
+   "latin": "Al-Barr",
+   "so": "Samofalaha"
+  },
+  {
+   "id": 80,
+   "ar": "التَّوَّابُ",
+   "latin": "At-Tawwaab",
+   "so": "Towbad aqbalaha"
+  },
+  {
+   "id": 81,
+   "ar": "الْمُنْتَقِمُ",
+   "latin": "Al-Muntaqim",
+   "so": "Kan dembiilayaasha ka aargoosta"
+  },
+  {
+   "id": 82,
+   "ar": "الْعَفُوُّ",
+   "latin": "Al-Cafuww",
+   "so": "Cafiyaha"
+  },
+  {
+   "id": 83,
+   "ar": "الرَّءُوفُ",
+   "latin": "Ar-Ra'uuf",
+   "so": "Kan aadka u turaya"
+  },
+  {
+   "id": 84,
+   "ar": "مَالِكُ الْمُلْكِ",
+   "latin": "Maalikul-Mulk",
+   "so": "Milkiilaha boqortooyada"
+  },
+  {
+   "id": 85,
+   "ar": "ذُو الْجَلَالِ وَالْإِكْرَامِ",
+   "latin": "Dhul-Jalaali wal-Ikraam",
+   "so": "Kan haybadda iyo sharafta leh"
+  },
+  {
+   "id": 86,
+   "ar": "الْمُقْسِطُ",
+   "latin": "Al-Muqsit",
+   "so": "Caddaaladda sameeya"
+  },
+  {
+   "id": 87,
+   "ar": "الْجَامِعُ",
+   "latin": "Al-Jaamic",
+   "so": "Kulmiyaha"
+  },
+  {
+   "id": 88,
+   "ar": "الْغَنِيُّ",
+   "latin": "Al-Ghaniyy",
+   "so": "Hodanka aan waxba u baahnayn"
+  },
+  {
+   "id": 89,
+   "ar": "الْمُغْنِي",
+   "latin": "Al-Mughnii",
+   "so": "Kan wax hodmiya"
+  },
+  {
+   "id": 90,
+   "ar": "الْمَانِعُ",
+   "latin": "Al-Maanic",
+   "so": "Kan wax diida ama celiya"
+  },
+  {
+   "id": 91,
+   "ar": "الضَّارُّ",
+   "latin": "Ad-Daarr",
+   "so": "Kan dhibka qaddara"
+  },
+  {
+   "id": 92,
+   "ar": "النَّافِعُ",
+   "latin": "An-Naafic",
+   "so": "Kan nafaca keena"
+  },
+  {
+   "id": 93,
+   "ar": "النُّورُ",
+   "latin": "An-Nuur",
+   "so": "Iftiinka"
+  },
+  {
+   "id": 94,
+   "ar": "الْهَادِي",
+   "latin": "Al-Haadii",
+   "so": "Hanuuniyaha"
+  },
+  {
+   "id": 95,
+   "ar": "الْبَدِيعُ",
+   "latin": "Al-Badiic",
+   "so": "Kan wax cusub oo aan tusaale lahayn abuura"
+  },
+  {
+   "id": 96,
+   "ar": "الْبَاقِي",
+   "latin": "Al-Baaqii",
+   "so": "Kan waara"
+  },
+  {
+   "id": 97,
+   "ar": "الْوَارِثُ",
+   "latin": "Al-Waarith",
+   "so": "Kan wax walba dhaxla"
+  },
+  {
+   "id": 98,
+   "ar": "الرَّشِيدُ",
+   "latin": "Ar-Rashiid",
+   "so": "Kan toosnaanta tilmaama"
+  },
+  {
+   "id": 99,
+   "ar": "الصَّبُورُ",
+   "latin": "As-Sabuur",
+   "so": "Samirka badan"
+  }
+ ]
+}

@@ -23,6 +23,7 @@ import com.geedkajannada.ui.adhkar.AdhkarScreen
 import com.geedkajannada.feature.dua.DuaDetailScreen
 import com.geedkajannada.feature.dua.DuaHomeScreen
 import com.geedkajannada.feature.dua.DuaListScreen
+import com.geedkajannada.feature.names.NamesScreen
 import com.geedkajannada.feature.tasbeeh.TasbeehScreen
 import com.geedkajannada.ui.more.AboutScreen
 import com.geedkajannada.ui.more.MoreItem
@@ -55,6 +56,7 @@ object Routes {
     const val DUA_LIST = "dualist/{id}"
     const val DUA_ITEM = "duaitem/{id}"
     const val MORE = "more"
+    const val NAMES = "names"
     const val ABOUT = "about"
     fun duaList(id: String) = "dualist/$id"
     fun duaItem(id: String) = "duaitem/$id"
@@ -69,7 +71,7 @@ private val tabs = listOf(
     Tab(Routes.PRAYER, R.string.nav_prayer, R.drawable.ic_nav_prayer),
     Tab(Routes.HOME, R.string.nav_home, R.drawable.ic_nav_home),
     Tab(Routes.DUA, R.string.nav_dua, R.drawable.ic_nav_adhkar),
-    Tab(Routes.MORE, R.string.nav_more, R.drawable.ic_nav_more),
+    Tab(Routes.NAMES, R.string.nav_names, R.drawable.ic_nav_names),
 )
 
 /** Bogagga hoose ee aan lahayn badhan "Dib": bar-ku wuu sii muuqdaa. */
@@ -128,7 +130,7 @@ fun AppNav() {
                     onOpenDua = { tab(Routes.DUA) },
                     onOpenZakat = { nav.navigate(Routes.ZAKAT) },
                     onOpenPrayer = { tab(Routes.PRAYER) },
-                    onOpenSettings = { nav.navigate(Routes.SETTINGS) },
+                    onOpenMore = { nav.navigate(Routes.MORE) },
                     onOpenSurah = { id, v -> nav.navigate(Routes.surah(id, v)) },
                 )
             }
@@ -148,8 +150,11 @@ fun AppNav() {
             composable(Routes.DUA_ITEM) { e ->
                 DuaDetailScreen(duaId = e.arguments?.getString("id").orEmpty(), onBack = { nav.popBackStack() })
             }
+            composable(Routes.NAMES) { NamesScreen() }
             composable(Routes.MORE) {
                 MoreScreen(
+                    onBack = { nav.popBackStack() },
+                    items =
                     listOf(
                         MoreItem(R.string.nav_tasbeeh, R.drawable.ic_nav_adhkar) { nav.navigate(Routes.COUNTER) },
                         MoreItem(R.string.nav_qibla, R.drawable.ic_tile_qibla) { nav.navigate(Routes.QIBLA) },

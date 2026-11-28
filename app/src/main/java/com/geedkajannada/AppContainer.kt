@@ -9,6 +9,7 @@ import com.geedkajannada.data.QuranRepository
 import com.geedkajannada.data.SettingsStore
 import com.geedkajannada.data.StatsRepository
 import com.geedkajannada.feature.dua.DuaRepository
+import com.geedkajannada.feature.names.NamesRepository
 import com.geedkajannada.feature.tasbeeh.TasbeehRepository
 import com.geedkajannada.reminder.NotificationHelper
 import com.geedkajannada.reminder.ReminderScheduler
@@ -24,6 +25,7 @@ class AppContainer(context: Context) {
     val prayers = PrayerRepository(settings)
     val stats = StatsRepository(settings)
     val location = LocationProvider(context.applicationContext)
+    val names = NamesRepository(context.applicationContext, context.applicationContext.dataStore)
     val duas = DuaRepository(context.applicationContext, quran, context.applicationContext.dataStore)
     val tasbeeh = TasbeehRepository(context.applicationContext.dataStore)
 }

@@ -6,8 +6,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -69,7 +67,7 @@ fun HomeScreen(
     onOpenDua: () -> Unit,
     onOpenZakat: () -> Unit,
     onOpenPrayer: () -> Unit,
-    onOpenSettings: () -> Unit,
+    onOpenMore: () -> Unit,
     onOpenSurah: (Int, Int) -> Unit,
     vm: HomeViewModel = appViewModel { HomeViewModel(it.prayers, it.settings, it.quran, it.stats) },
 ) {
@@ -99,8 +97,8 @@ fun HomeScreen(
                 color = BrownInk,
                 modifier = Modifier.weight(1f),
             )
-            IconButton(onClick = onOpenSettings, modifier = Modifier.size(Dimens.TouchMin)) {
-                Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.home_gear), tint = Indigo)
+            IconButton(onClick = onOpenMore, modifier = Modifier.size(Dimens.TouchMin)) {
+                Icon(painterResource(R.drawable.ic_nav_more), contentDescription = stringResource(R.string.nav_more), tint = Indigo)
             }
         }
 

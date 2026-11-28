@@ -21,24 +21,23 @@ import androidx.compose.ui.unit.dp
 import com.geedkajannada.R
 import com.geedkajannada.ui.BackHeader
 import com.geedkajannada.ui.GeedkaCard
-import com.geedkajannada.ui.ScreenTitle
 import com.geedkajannada.ui.theme.BrownInk
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
 
 data class MoreItem(val label: Int, val icon: Int, val onClick: () -> Unit)
 
-/** Bogga "Kale": wax walba oo aan tab lahayn. */
+/** Bogga "Kale": wax walba oo aan tab lahayn (waxaa laga furaa Hoyga). */
 @Composable
-fun MoreScreen(items: List<MoreItem>) {
+fun MoreScreen(onBack: () -> Unit, items: List<MoreItem>) {
     Column(
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(Dimens.ScreenPadding),
+            .padding(horizontal = Dimens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        ScreenTitle(stringResource(R.string.nav_more))
+        BackHeader(stringResource(R.string.nav_more), onBack)
         items.forEach { item ->
             GeedkaCard(Modifier.clickable(onClick = item.onClick)) {
                 Row(Modifier.heightIn(min = 32.dp), verticalAlignment = Alignment.CenterVertically) {
