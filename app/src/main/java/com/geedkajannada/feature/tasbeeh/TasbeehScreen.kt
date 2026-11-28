@@ -5,18 +5,16 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -42,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geedkajannada.R
 import com.geedkajannada.data.StatsCalc
@@ -53,7 +50,6 @@ import com.geedkajannada.feature.tasbeeh.components.JarRow
 import com.geedkajannada.feature.tasbeeh.sound.TasbeehSoundPlayer
 import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.BrownInk
-import com.geedkajannada.ui.theme.BrownMid
 import com.geedkajannada.ui.theme.CreamPanel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
@@ -141,10 +137,9 @@ private fun TasbeehContent(
         Modifier
             .fillMaxSize()
             .background(tint)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = Dimens.ScreenPadding, vertical = Dimens.Spacing),
+            .padding(horizontal = Dimens.ScreenPadding, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -168,18 +163,20 @@ private fun TasbeehContent(
             color = BrownInk,
             modifier = Modifier
                 .background(JarGold, RoundedCornerShape(50))
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = 4.dp),
         )
 
-        DhikrHeader(jar.dhikr)
-
         if (state.complete) {
-            CompletionCard(state.total, state.totalGoal, state.totalCompleted, onRestart)
+            // Kaarka dhammaystirka wuxuu beddelaa madaxa iyo tusbaxa.
+            Box(Modifier.weight(1.4f), contentAlignment = Alignment.Center) {
+                CompletionCard(state.total, state.totalGoal, state.totalCompleted, onRestart)
+            }
         } else {
-            BeadString(state.total, color, Modifier.fillMaxWidth().widthIn(max = 480.dp).height(160.dp))
+            DhikrHeader(jar.dhikr)
+            BeadString(state.total, color, Modifier.weight(0.8f).fillMaxWidth().widthIn(max = 480.dp))
         }
 
-        JarRow(state.jars, Modifier.widthIn(max = 480.dp))
+        JarRow(state.jars, Modifier.weight(1f).widthIn(max = 480.dp))
 
         if (!state.complete) {
             val desc = stringResource(R.string.tas_tap_desc, stringResource(jar.dhikr.nameRes), jar.count, jar.goal)
@@ -188,7 +185,7 @@ private fun TasbeehContent(
                 modifier = Modifier
                     .widthIn(max = 480.dp)
                     .fillMaxWidth()
-                    .heightIn(min = 88.dp)
+                    .heightIn(min = 64.dp)
                     .semantics { contentDescription = desc },
                 shape = RoundedCornerShape(Dimens.HeroRadius),
             ) { Text(stringResource(R.string.tas_tap), style = MaterialTheme.typography.titleLarge) }
@@ -203,10 +200,5 @@ private fun TasbeehContent(
             }
         }
 
-        Text(
-            stringResource(R.string.tas_footer),
-            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 4.sp),
-            color = BrownMid,
-        )
     }
 }

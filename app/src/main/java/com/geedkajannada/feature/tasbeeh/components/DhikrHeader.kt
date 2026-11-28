@@ -23,7 +23,7 @@ import com.geedkajannada.ui.theme.arabicStyle
 fun DhikrHeader(dhikr: Dhikr, modifier: Modifier = Modifier) {
     Crossfade(dhikr, modifier, tween(800), label = "dhikr") { d ->
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(d.arabic, style = arabicStyle(34), color = BrownInk, textAlign = TextAlign.Center)
+            Text(d.arabic, style = arabicStyle(32), color = BrownInk, textAlign = TextAlign.Center)
             Text(stringResource(d.englishRes), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = BrownInk)
             Text(stringResource(d.nameRes), fontSize = 16.sp, color = BrownInk, style = MaterialTheme.typography.bodyLarge)
             Text(

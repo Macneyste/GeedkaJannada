@@ -51,7 +51,7 @@ fun BeadString(steps: Int, color: Color, modifier: Modifier = Modifier) {
         }
 
         val center = Offset(w / 2f, h * 0.72f)
-        val wheel = h * 0.25f
+        val wheel = minOf(h * 0.25f, w * 0.16f)
         drawCircle(White, wheel, center)
         drawCircle(BrownMid, wheel, center, style = Stroke(6f))
         rotate(shift * WHEEL_DEGREES_PER_TAP, center) {

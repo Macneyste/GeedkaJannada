@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -44,10 +45,11 @@ fun JarRow(jars: List<Jar>, modifier: Modifier = Modifier) {
             Column(
                 Modifier
                     .weight(1f)
+                    .fillMaxHeight()
                     .semantics(mergeDescendants = true) { contentDescription = desc },
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                JarArt(jar.count, jar.goal, color, Modifier.fillMaxWidth().height(150.dp))
+                JarArt(jar.count, jar.goal, color, Modifier.fillMaxWidth().weight(1f))
                 Box(Modifier.height(24.dp), contentAlignment = Alignment.Center) {
                     if (jar.full) {
                         Icon(
