@@ -285,7 +285,8 @@
     <string name="privacy_body">Xog kaama ururinno, meelna kama dirno. App-ku internet ma isticmaalo. Tirinta, dejimaha iyo duada aad doorato qalabkaaga ayay ku kaydsan yihiin. Goobta qiyaasta ah waxaa la akhriyaa kaliya marka aad oggolaato, si waqtiyada salaadda iyo Qibla loo xisaabiyo, qalabkana kama baxdo.</string>
     <string name="about_sources_title">Ilaha</string>
     <string name="about_sources">Qoraalka Quraanka: Tanzil / quran-json (CC BY). Font: Amiri (SIL OFL 1.1). Duada waxaa laga soo qaatay Quraanka; macnayaasha weli lama hubin.</string>
-    <string name="nav_names">Magacyada</string>
+    <string name="nav_names">Asmaa Alle</string>
+    <string name="names_subtitle">Al-Asmaa\'ul Xusnaa: 99-ka magac ee Alle</string>
     <string name="names_title">Magacyada Alle</string>
     <string name="names_progress">Waxaad baratay %1$d / %2$d</string>
     <string name="names_search">Raadi magac ama macne</string>

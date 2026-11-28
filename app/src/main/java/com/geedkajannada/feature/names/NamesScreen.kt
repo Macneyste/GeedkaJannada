@@ -68,6 +68,7 @@ fun NamesScreen(vm: NamesViewModel = appViewModel { NamesViewModel(it.names) }) 
 private fun NamesList(state: NamesUiState, vm: NamesViewModel) {
     Column(Modifier.fillMaxSize().padding(horizontal = Dimens.ScreenPadding)) {
         ScreenTitle(stringResource(R.string.names_title), Modifier.padding(top = 8.dp))
+        Text(stringResource(R.string.names_subtitle), style = MaterialTheme.typography.titleSmall, color = BrownInk)
         Text(stringResource(R.string.names_progress, state.learned.size, state.total), color = BrownMid)
         LinearProgressIndicator(
             progress = { if (state.total == 0) 0f else state.learned.size.toFloat() / state.total },
