@@ -5,9 +5,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class QuranTextTest {
-    @Test fun markerUsesArabicIndicDigits() {
-        assertEquals("۝١", QuranText.verseMarker(1))
-        assertEquals("۝٢٥٥", QuranText.verseMarker(255))
+    @Test fun verseNumbersUseArabicIndicDigits() {
+        assertEquals("١", QuranText.arabicDigits(1))
+        assertEquals("٢٥٥", QuranText.arabicDigits(255))
     }
 
     @Test fun blocksCoverEveryVerseOnce() {

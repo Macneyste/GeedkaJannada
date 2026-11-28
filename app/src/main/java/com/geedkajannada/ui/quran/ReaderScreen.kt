@@ -12,6 +12,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -283,14 +291,55 @@ private fun MushafText(
                         withStyle(SpanStyle(color = color)) {
                             append(text.verses[n - 1])
                             append(' ')
-                            append(QuranText.verseMarker(n))
+                            // Goobada lambarka: app-ka ayaa sawira, kuma xirna farta telefoonka.
+                            appendInlineContent("v$n", QuranText.arabicDigits(n))
                         }
                     }
                     append(' ')
                 }
             }
-            Text(annotated, style = style, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            val markers = range.associate { n ->
+                "v$n" to InlineTextContent(
+                    Placeholder((fontSize * 1.25f).sp, (fontSize * 1.25f).sp, PlaceholderVerticalAlign.Center),
+                ) { VerseMarker(n, fontSize, if (n == selected) highlight else ink) { onSelect(n) } }
+            }
+            Text(annotated, style = style, textAlign = TextAlign.Center, inlineContent = markers, modifier = Modifier.fillMaxWidth())
         }
+    }
+}
+
+/** Goobo leh lambarka aayadda oo dhexda ku jira. */
+@Composable
+private fun VerseMarker(number: Int, fontSize: Int, color: Color, onClick: () -> Unit) {
+    // Saddex lambar (tusaale 286) waxay u baahan yihiin far yar.
+    val digitSize = fontSize * when {
+        number < 10 -> 0.74f
+        number < 100 -> 0.64f
+        else -> 0.5f
+    }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(1.dp)
+            .border(1.5.dp, color, CircleShape)
+            .padding(2.dp)
+            .border(0.7.dp, color.copy(alpha = 0.5f), CircleShape)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            QuranText.arabicDigits(number),
+            style = TextStyle(
+                fontSize = digitSize.sp,
+                lineHeight = digitSize.sp,
+                color = color,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                platformStyle = PlatformTextStyle(includeFontPadding = false),
+                lineHeightStyle = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None),
+            ),
+            maxLines = 1,
+        )
     }
 }
 

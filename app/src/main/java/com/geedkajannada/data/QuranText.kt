@@ -5,9 +5,8 @@ object QuranText {
     /** Aayadaha waxaa loo qaybiyaa baloogyo si suuradaha dhaadheer aanay u culusaan. */
     const val VERSES_PER_BLOCK = 10
 
-    /** Calaamadda dhammaadka aayadda (U+06DD) oo lambarka Carabiga ku dhex jiro. */
-    fun verseMarker(number: Int): String =
-        "۝" + number.toString().map { '٠' + (it - '0') }.joinToString("")
+    /** Lambarka aayadda oo tirooyinka Carabiga (٠-٩) ah. */
+    fun arabicDigits(number: Int): String = number.toString().map { '\u0660' + (it - '0') }.joinToString("")
 
     fun blockOf(verse: Int): Int = (verse - 1).coerceAtLeast(0) / VERSES_PER_BLOCK
 
