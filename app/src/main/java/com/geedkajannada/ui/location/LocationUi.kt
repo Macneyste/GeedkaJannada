@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -91,21 +91,21 @@ fun LocationCard(vm: LocationViewModel = rememberLocationViewModel()) {
         if (state.failed) {
             Text(stringResource(R.string.loc_failed), style = MaterialTheme.typography.bodyMedium, color = ErrorRed)
         }
-        Row(
+        Column(
             Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Button(
                 onClick = {
                     if (hasPermission(ctx)) vm.refresh() else launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                 },
                 enabled = !state.busy,
-                modifier = Modifier.heightIn(min = Dimens.TouchMin),
+                modifier = Modifier.fillMaxWidth().heightIn(min = Dimens.TouchMin),
             ) { Text(stringResource(if (state.busy) R.string.loc_busy else R.string.loc_use)) }
             if (state.hasLocation) {
-                OutlinedButton(onClick = vm::clear, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
+                OutlinedButton(onClick = vm::clear, modifier = Modifier.fillMaxWidth().heightIn(min = Dimens.TouchMin)) {
                     Text(stringResource(R.string.loc_clear))
                 }
             }
