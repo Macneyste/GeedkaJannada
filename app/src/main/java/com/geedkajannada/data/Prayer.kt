@@ -17,6 +17,8 @@ val ReminderOffsets = listOf(0, 5, 10, 15)
 /** Sida ogeysiintu u dhawaaqdo. Mid kasta channel gaar ah ayuu leeyahay (channel lama beddeli karo). */
 enum class NotifyMode(val key: String) {
     SOUND("sound"),
+    /** Faylka aadaanka ee isticmaaluhu doortay. */
+    ADHAN("adhan"),
     VIBRATE("vibrate"),
     SILENT("silent"),
     ;

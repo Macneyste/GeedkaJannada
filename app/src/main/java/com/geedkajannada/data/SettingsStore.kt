@@ -22,6 +22,7 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
         val reminderOffset = intPreferencesKey("reminder_offset")
         val notifEnabled = booleanPreferencesKey("notif_enabled")
         val notifMode = stringPreferencesKey("notif_mode")
+        val adhanName = stringPreferencesKey("adhan_name")
         val prayerAuto = booleanPreferencesKey("prayer_auto")
         val prayerCity = stringPreferencesKey("prayer_city")
         val quranFontSize = intPreferencesKey("quran_font_size")
@@ -191,6 +192,13 @@ class SettingsStore(val dataStore: DataStore<Preferences>) {
 
     suspend fun setNotifyMode(mode: NotifyMode) {
         dataStore.edit { it[Keys.notifMode] = mode.key }
+    }
+
+    /** Magaca faylka aadaanka ee la doortay, ama null. */
+    val adhanName: Flow<String?> = dataStore.data.map { it[Keys.adhanName] }
+
+    suspend fun setAdhanName(name: String) {
+        dataStore.edit { it[Keys.adhanName] = name }
     }
 
     suspend fun setPrayerTime(prayer: Prayer, minuteOfDay: Int) {

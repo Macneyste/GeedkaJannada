@@ -11,6 +11,7 @@ class PrayerRepository(private val store: SettingsStore) {
 
     val notificationsEnabled: Flow<Boolean> = store.notificationsEnabled
     val notifyMode: Flow<NotifyMode> = store.notifyMode
+    val adhanName: Flow<String?> = store.adhanName
 
     suspend fun setNotificationsEnabled(on: Boolean) = store.setNotificationsEnabled(on)
     suspend fun setNotifyMode(mode: NotifyMode) = store.setNotifyMode(mode)

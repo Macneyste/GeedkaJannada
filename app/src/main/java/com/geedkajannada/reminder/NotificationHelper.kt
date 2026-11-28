@@ -1,6 +1,7 @@
 package com.geedkajannada.reminder
 
 import android.Manifest
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -39,6 +40,7 @@ object NotificationHelper {
                     NotifyMode.SOUND -> R.string.notif_channel_sound
                     NotifyMode.VIBRATE -> R.string.notif_channel_vibrate
                     NotifyMode.SILENT -> R.string.notif_channel_silent
+                    NotifyMode.ADHAN -> R.string.notif_channel_adhan
                 },
             )
             val channel = NotificationChannel(channelId(mode), name, NotificationManager.IMPORTANCE_HIGH).apply {
@@ -56,16 +58,18 @@ object NotificationHelper {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
-    /** earlyMinutes = 0: waqtigii salaadda; > 0: ogeysiis hore. */
-    fun showPrayer(
+    fun notificationId(prayer: Prayer): Int = prayer.ordinal + 100
+
+    /** earlyMinutes = 0: waqtigii salaadda; > 0: ogeysiis hore. stop != null: badhan "Jooji" (aadaan). */
+    fun prayerNotification(
         context: Context,
         prayer: Prayer,
         earlyMinutes: Int,
         minuteOfDay: Int?,
         place: String,
         mode: NotifyMode,
-    ) {
-        if (!hasPermission(context)) return
+        stop: PendingIntent? = null,
+    ): Notification {
         ensureChannels(context)
         val name = context.getString(prayer.nameRes)
         val title = if (earlyMinutes == 0) {
@@ -78,16 +82,30 @@ object NotificationHelper {
             context, 0, Intent(context, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
-        val n = NotificationCompat.Builder(context, channelId(mode))
+        val builder = NotificationCompat.Builder(context, channelId(mode))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(context.getString(R.string.notif_body, time, place))
             .setContentIntent(open)
-            .addAction(0, context.getString(R.string.notif_open), open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setAutoCancel(true)
-            .build()
-        NotificationManagerCompat.from(context).notify(prayer.ordinal + 100, n)
+        if (stop != null) builder.addAction(0, context.getString(R.string.notif_stop), stop)
+        builder.addAction(0, context.getString(R.string.notif_open), open)
+        return builder.build()
+    }
+
+    fun showPrayer(
+        context: Context,
+        prayer: Prayer,
+        earlyMinutes: Int,
+        minuteOfDay: Int?,
+        place: String,
+        mode: NotifyMode,
+    ) {
+        if (!hasPermission(context)) return
+        val n = prayerNotification(context, prayer, earlyMinutes, minuteOfDay, place, mode)
+        NotificationManagerCompat.from(context).notify(notificationId(prayer), n)
     }
 }

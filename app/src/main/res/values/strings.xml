@@ -72,7 +72,6 @@
     <!-- Prayer -->
     <string name="prayer_title">Waqtiyada salaadda</string>
     <string name="prayer_auto">Waqtiyada si toos ah</string>
-    <string name="prayer_auto_hint">Waxaa loo xisaabiyaa magaaladaada (internet iyo location lama isticmaalo). Waqtiyada masaajidkaaga way ka duwanaan karaan; dami si aad gacanta u geliso.</string>
     <string name="prayer_city">Magaalada: %1$s</string>
     <string name="prayer_city_title">Dooro magaalada</string>
     <string name="prayer_next">Salaadda soo socota</string>
@@ -89,7 +88,7 @@
     <string name="notif_denied_title">Ogeysiisyada waa la diiday</string>
     <string name="notif_denied_body">App-ku wuu shaqeeyaa, laakiin ogeysiin lama diri karo. Si aad u daarto: Dejimaha qalabka → Apps → Geedka Jannada → Ogeysiisyada.</string>
     <string name="notif_open_settings">Fur dejimaha app-ka</string>
-    <string name="exact_alarm_note">Alarm-ka saxda ah lama oggola, markaa ogeysiisku wuu soo daahi karaa. Fur oggolaanshaha "Alarms &amp; reminders".</string>
+    <string name="exact_alarm_note">Ogeysiisku wuu soo daahi karaa: alarm-ka saxda ah lama oggola.</string>
 
     <!-- Adhkar -->
     <string name="nav_adhkar">Adkaar</string>
@@ -252,16 +251,14 @@
     <string name="adhkar_next">Xiga ›</string>
     <string name="adhkar_tap_page">Tiri dikrigan</string>
     <string name="notif_section">Ogeysiisyada salaadda</string>
-    <string name="notif_off_hint">Shid si laguugu sheego marka waqtiga salaadda uu gaaro.</string>
-    <string name="notif_mode_title">Dhawaaqa</string>
-    <string name="notif_mode_sound">Dhawaaq</string>
-    <string name="notif_mode_vibrate">Gariir keliya</string>
-    <string name="notif_mode_silent">Aamusnaan</string>
-    <string name="notif_early_title">Ogeysiis hore</string>
-    <string name="notif_early_none">Ma jiro</string>
+    <string name="notif_mode_sound">Cod</string>
+    <string name="notif_mode_vibrate">Gariir</string>
+    <string name="notif_mode_silent">Aamus</string>
+    <string name="notif_early_title">Xasuusin ka hor</string>
+    <string name="notif_early_none">Maya</string>
     <string name="notif_early_minutes">%1$d daqiiqo ka hor</string>
     <string name="notif_exact_button">Oggolow alarm sax ah</string>
-    <string name="notif_battery">Ogeysiisyadu ha soo daahin (dejimaha batteriga)</string>
+    <string name="notif_battery">Dejimaha batteriga (haddii ogeysiisku daaho)</string>
     <string name="nav_dua">Dua</string>
     <string name="nav_more">Kale</string>
     <string name="home_notif_off">Ogeysiisyada waa xiran yihiin · Fur</string>
@@ -294,4 +291,19 @@
     <string name="names_unlearn">Weli ma baran</string>
     <string name="names_show_meaning">Taabo si aad u aragto macnaha</string>
     <string name="names_note">Liiska caanka ah ee 99-ka magac. Macnaha weli culimo ma hubin.</string>
+    <string name="notif_channel_adhan">Salaad: aadaan</string>
+    <string name="notif_stop">Jooji</string>
+    <string name="notif_mode_adhan">Aadaan</string>
+    <string name="notif_early_short">%1$d daq</string>
+    <string name="notif_pick_adhan">Dooro faylka aadaanka</string>
+    <string name="notif_adhan_file">Aadaan: %1$s</string>
+    <string name="notif_adhan_hint">Ka dooro fayl cod ah oo telefoonkaaga ku jira. Ilaa aad doorato, cod gaaban ayaa dhawaaqaya.</string>
+    <string name="notif_adhan_failed">Faylkaas lama akhrin karin (ugu badnaan 20 MB).</string>
+    <string name="notif_test">Tijaabi hadda</string>
+    <string name="prayer_setup">Goobta iyo waqtiyada</string>
+    <string name="prayer_setup_open">Fur</string>
+    <string name="prayer_setup_close">Xir</string>
+    <string name="prayer_auto_short">Si toos ah u xisaabi</string>
+    <string name="prayer_bell_on">Ogeysiiska %1$s waa shidan yahay</string>
+    <string name="prayer_bell_off">Ogeysiiska %1$s waa damsan yahay</string>
 </resources>

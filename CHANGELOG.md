@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.3.0 (in progress)
+- Prayer screen simplified (one bell per prayer, chips, collapsed setup). Optional adhan playback from a user-chosen audio file with a Stop action, and a "test now" button. Tasbeeh fits one screen without scrolling.
 - New "Magacyada" tab to learn the 99 names of Allah (search, progress, learning card). "Kale" moved to the Home header button.
 - Five tabs (Quraan, Salaad, Hoyga, Dua, Kale); simplified Home; new Dua section with 35 Quranic duas (search, favorites, recent, counter, copy/share, text size). Notification settings UI, boot/timezone reschedule, About/Privacy screen.
 - Quran reader shows flowing mushaf-style text with Juz/surah pickers and a bottom toolbar. Adhkar are one per page with tap-to-count and auto-advance.

@@ -1,8 +1,17 @@
 package com.geedkajannada.ui.prayer
 
+import com.geedkajannada.ui.theme.BrownMid
+import com.geedkajannada.ui.theme.BrownInk
+import com.geedkajannada.reminder.PrayerAlert
+import com.geedkajannada.reminder.AdhanAudio
+import androidx.compose.ui.res.painterResource
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -18,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -27,7 +35,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -60,7 +67,6 @@ import com.geedkajannada.ui.appViewModel
 import com.geedkajannada.ui.theme.Dimens
 import com.geedkajannada.ui.theme.Indigo
 import com.geedkajannada.ui.theme.ErrorRed
-import com.geedkajannada.ui.theme.Line
 import com.geedkajannada.ui.theme.White
 import java.time.LocalTime
 import kotlinx.coroutines.delay
@@ -70,7 +76,12 @@ fun PrayerScreen(
     vm: PrayerViewModel = run {
         val ctx = LocalContext.current.applicationContext
         appViewModel { c ->
-            PrayerViewModel(c.prayers) { ReminderScheduler.rescheduleAll(ctx, c.settings) }
+            PrayerViewModel(
+                c.prayers,
+                reschedule = { ReminderScheduler.rescheduleAll(ctx, c.settings) },
+                importAdhan = { uri -> AdhanAudio.import(ctx, uri, c.settings) },
+                testAlert = { prayer -> PrayerAlert.fire(ctx, prayer, 0) },
+            )
         }
     },
 ) {
@@ -78,14 +89,19 @@ fun PrayerScreen(
     val context = LocalContext.current
     var editing by remember { mutableStateOf<Prayer?>(null) }
     var pickingCity by remember { mutableStateOf(false) }
+    var setupOpen by rememberSaveable { mutableStateOf(false) }
 
-    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> vm.onPermissionResult(ok) }
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
+        vm.onPermissionResult(ok)
+    }
+    val adhanPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) vm.onAdhanPicked(uri)
+    }
 
     var nowSec by remember { mutableIntStateOf(LocalTime.now(PrayerTimesCalc.ZONE).toSecondOfDay()) }
     LaunchedEffect(Unit) {
         while (true) {
-            val t = LocalTime.now(PrayerTimesCalc.ZONE)
-            nowSec = t.toSecondOfDay()
+            nowSec = LocalTime.now(PrayerTimesCalc.ZONE).toSecondOfDay()
             delay(1000)
         }
     }
@@ -94,23 +110,37 @@ fun PrayerScreen(
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = Dimens.ScreenPadding, vertical = Dimens.Spacing),
-        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing),
+            .padding(horizontal = Dimens.ScreenPadding, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         ScreenTitle(stringResource(R.string.prayer_title))
-
         NextPrayerCard(state.entries, nowSec)
 
-        com.geedkajannada.ui.location.LocationCard()
+        // Waqtiyada: magac, waqti, iyo gambaleel (ogeysiiska salaaddaas)
+        GeedkaCard {
+            state.entries.forEach { e ->
+                PrayerRow(
+                    e,
+                    auto = state.auto,
+                    bell = state.enabled && e.notify,
+                    onEdit = { editing = e.prayer },
+                    onBell = {
+                        if (state.enabled) {
+                            vm.setNotify(e.prayer, !e.notify)
+                        } else if (NotificationHelper.hasPermission(context)) {
+                            vm.setNotify(e.prayer, true)
+                            vm.setEnabled(true)
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    },
+                )
+            }
+        }
 
         if (state.notificationsDenied || (state.enabled && !NotificationHelper.hasPermission(context))) {
             GeedkaCard(border = BorderStroke(1.5.dp, ErrorRed)) {
-                Text(stringResource(R.string.notif_denied_title), style = MaterialTheme.typography.titleMedium, color = ErrorRed)
-                Text(
-                    stringResource(R.string.notif_denied_body),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(vertical = 8.dp),
-                )
+                Text(stringResource(R.string.notif_denied_body), style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
                     onClick = {
                         context.startActivity(
@@ -119,56 +149,8 @@ fun PrayerScreen(
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         )
                     },
-                    modifier = Modifier.heightIn(min = Dimens.TouchMin),
+                    modifier = Modifier.padding(top = 8.dp).heightIn(min = Dimens.TouchMin),
                 ) { Text(stringResource(R.string.notif_open_settings)) }
-            }
-        }
-
-        GeedkaCard {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = Dimens.TouchMin)
-                    .toggleable(value = state.auto, role = Role.Switch, onValueChange = vm::setAuto),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.prayer_auto), style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        stringResource(R.string.prayer_auto_hint),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(
-                    checked = state.auto,
-                    onCheckedChange = null,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = White, checkedTrackColor = Indigo,
-                        uncheckedThumbColor = White, uncheckedTrackColor = Line, uncheckedBorderColor = Line,
-                    ),
-                )
-            }
-            if (state.auto) {
-                OutlinedButton(
-                    onClick = { pickingCity = true },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                        .heightIn(min = Dimens.TouchMin),
-                    shape = RoundedCornerShape(Dimens.CardRadiusSmall),
-                ) { Text(stringResource(R.string.prayer_city, state.city.nameSo)) }
-            }
-        }
-
-        GeedkaCard {
-            state.entries.forEachIndexed { i, e ->
-                PrayerRow(
-                    e,
-                    auto = state.auto,
-                    onEdit = { editing = e.prayer },
-                )
-                if (i < state.entries.lastIndex) androidx.compose.material3.HorizontalDivider(color = Line)
             }
         }
 
@@ -181,10 +163,47 @@ fun PrayerScreen(
                     permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
             },
-            onPrayer = vm::setNotify,
             onMode = vm::setMode,
             onOffset = vm::setOffset,
+            onPickAdhan = { adhanPicker.launch(arrayOf("audio/*")) },
+            onTest = {
+                val next = PrayerMath.next(state.entries, nowSec / 60, nowSec % 60)?.first?.prayer ?: Prayer.SUBAX
+                vm.test(next)
+            },
         )
+
+        // Dejinta naadir ah waa la laabay si boggu nadiif u ahaado
+        GeedkaCard {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = Dimens.TouchMin)
+                    .clickable { setupOpen = !setupOpen },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(stringResource(R.string.prayer_setup), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                Text(stringResource(if (setupOpen) R.string.prayer_setup_close else R.string.prayer_setup_open), color = Indigo)
+            }
+            if (setupOpen) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = Dimens.TouchMin)
+                        .toggleable(value = state.auto, role = Role.Switch, onValueChange = vm::setAuto),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(stringResource(R.string.prayer_auto_short), modifier = Modifier.weight(1f))
+                    Switch(checked = state.auto, onCheckedChange = null)
+                }
+                if (state.auto) {
+                    OutlinedButton(
+                        onClick = { pickingCity = true },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).heightIn(min = Dimens.TouchMin),
+                    ) { Text(stringResource(R.string.prayer_city, state.city.nameSo)) }
+                }
+                com.geedkajannada.ui.location.LocationCard()
+            }
+        }
     }
 
     if (pickingCity) {
@@ -242,21 +261,29 @@ private fun NextPrayerCard(entries: List<PrayerEntry>, nowSec: Int) {
 }
 
 @Composable
-private fun PrayerRow(e: PrayerEntry, auto: Boolean, onEdit: () -> Unit) {
+private fun PrayerRow(e: PrayerEntry, auto: Boolean, bell: Boolean, onEdit: () -> Unit, onBell: () -> Unit) {
+    val name = stringResource(e.prayer.nameRes)
     Row(
         Modifier
             .fillMaxWidth()
-            .heightIn(min = 64.dp),
+            .heightIn(min = 56.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(e.prayer.nameRes), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-        OutlinedButton(
-            onClick = onEdit,
-            enabled = !auto,
-            modifier = Modifier.heightIn(min = Dimens.TouchMin),
-            shape = RoundedCornerShape(Dimens.CardRadiusSmall),
-        ) {
-            Text(e.minuteOfDay?.let { PrayerMath.format(it) } ?: stringResource(R.string.prayer_time_unset))
+        Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+        // Waqtiga gacanta ayaa lagu beddeli karaa marka xisaabta tooska ah damsan tahay.
+        TextButton(onClick = onEdit, enabled = !auto, modifier = Modifier.heightIn(min = Dimens.TouchMin)) {
+            Text(
+                e.minuteOfDay?.let { PrayerMath.format(it) } ?: stringResource(R.string.prayer_time_unset),
+                style = MaterialTheme.typography.titleLarge,
+                color = BrownInk,
+            )
+        }
+        IconButton(onClick = onBell, modifier = Modifier.size(Dimens.TouchMin)) {
+            Icon(
+                painterResource(if (bell) R.drawable.ic_bell else R.drawable.ic_bell_off),
+                contentDescription = stringResource(if (bell) R.string.prayer_bell_on else R.string.prayer_bell_off, name),
+                tint = if (bell) Indigo else BrownMid,
+            )
         }
     }
 }

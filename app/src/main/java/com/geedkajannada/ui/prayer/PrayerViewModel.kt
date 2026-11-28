@@ -25,18 +25,27 @@ data class PrayerUiState(
     val notificationsDenied: Boolean = false,
     val enabled: Boolean = false,
     val mode: NotifyMode = NotifyMode.SOUND,
+    val adhanName: String? = null,
+    /** Faylkii la doortay lama akhrin karin. */
+    val adhanFailed: Boolean = false,
 )
 
 class PrayerViewModel(
     private val repo: PrayerRepository,
     private val reschedule: suspend () -> Unit,
+    private val importAdhan: suspend (android.net.Uri) -> Boolean = { false },
+    private val testAlert: suspend (Prayer) -> Unit = {},
 ) : ViewModel() {
+    private val adhanFailed = MutableStateFlow(false)
+
     private val denied = MutableStateFlow(false)
 
     val uiState: StateFlow<PrayerUiState> =
         combine(repo.entries, repo.offset, repo.auto, repo.city, denied) { e, o, a, c, d -> PrayerUiState(e, o, a, c, d) }
             .combine(repo.notificationsEnabled) { s, on -> s.copy(enabled = on) }
             .combine(repo.notifyMode) { s, m -> s.copy(mode = m) }
+            .combine(repo.adhanName) { s, n -> s.copy(adhanName = n) }
+            .combine(adhanFailed) { s, f -> s.copy(adhanFailed = f) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PrayerUiState())
 
     fun setTime(prayer: Prayer, minuteOfDay: Int) {
@@ -83,6 +92,19 @@ class PrayerViewModel(
 
     fun setMode(mode: NotifyMode) {
         viewModelScope.launch { repo.setNotifyMode(mode) }
+    }
+
+    fun onAdhanPicked(uri: android.net.Uri) {
+        viewModelScope.launch {
+            val ok = importAdhan(uri)
+            adhanFailed.value = !ok
+            if (ok) repo.setNotifyMode(NotifyMode.ADHAN)
+        }
+    }
+
+    /** Isla digniinta dhabta ah hadda u dir, si isticmaaluhu u maqlo oo u arko. */
+    fun test(prayer: Prayer) {
+        viewModelScope.launch { testAlert(prayer) }
     }
 
     fun onPermissionResult(granted: Boolean) {

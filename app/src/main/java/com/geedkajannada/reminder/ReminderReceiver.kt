@@ -7,7 +7,6 @@ import com.geedkajannada.container
 import com.geedkajannada.data.Prayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /** Alarm-ka marka uu dhaco: tus ogeysiinta (haddii aanay duugoobin), kadibna buuxi jadwalka. */
@@ -26,7 +25,7 @@ class ReminderReceiver : BroadcastReceiver() {
         val pending = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                if (!stale) showFromStore(context, prayer, early)
+                if (!stale) PrayerAlert.fire(context, prayer, early)
                 ReminderScheduler.rescheduleAll(context, context.container.settings)
             } finally {
                 pending.finish()
@@ -48,16 +47,6 @@ class BootReceiver : BroadcastReceiver() {
             }
         }
     }
-}
-
-/** Akhri waqtiga, goobta iyo habka dhawaaqa, kadibna tus ogeysiinta. */
-private suspend fun showFromStore(context: Context, prayer: Prayer, earlyMinutes: Int) {
-    val store = context.container.settings
-    if (!store.notificationsEnabled.first()) return
-    val minute = store.prayerEntries.first().firstOrNull { it.prayer == prayer }?.minuteOfDay
-    NotificationHelper.showPrayer(
-        context, prayer, earlyMinutes, minute, store.prayerCity.first().nameSo, store.notifyMode.first(),
-    )
 }
 
 private val RESCHEDULE_ACTIONS = setOf(
